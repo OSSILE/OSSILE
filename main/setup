@@ -1,5 +1,10 @@
 #!/usr/bin/qsh
-./project1/setup_project1
-./project2/setup_project1
-./project3/setup_project1
-./project4/setup_project1
+export -s TGTLIB=OSSILE
+system "crtlib $TGTLIB"
+export WORKDIR=$(pwd)/$(dirname $0)
+cd $WORKDIR
+cd udtf_machine_attrs && setup
+#./project1/setup
+#./project2/setup
+#./project3/setup
+#./project4/setup
