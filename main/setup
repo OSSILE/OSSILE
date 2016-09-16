@@ -1,0 +1,5 @@
+#!/usr/bin/qsh
+./project1/setup_project1
+./project2/setup_project1
+./project3/setup_project1
+./project4/setup_project1
