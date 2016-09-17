@@ -2,6 +2,41 @@
 export -s TGTLIB=OSSILE
 system "crtlib $TGTLIB"
 export WORKDIR=$(pwd)/$(dirname $0)
-cd $WORKDIR/udtf_machine_attrs && setup
-cd $WORKDIR/udtf_image_catalog_details && setup
-cd $WORKDIR/udtf_cartridge_info && setup
+
+export PRODS=$(cat $WORKDIR/buildlist.txt)
+
+export FAILURE_PRODS=""
+export SUCCESS_PRODS=""
+
+for PROD in $PRODS
+do
+ cd $WORKDIR/$PROD && setup
+ if [ $? -eq 0 ] ; then
+  echo product $PROD built successfully
+  SUCCESS_PRODS="$SUCCESS_PRODS $PROD"
+ else
+  echo product $PROD failed to build
+  FAILURE_PRODS="$FAILURE_PRODS $PROD"
+ fi
+done
+echo "The following has built successfully:"
+for PROD in $SUCCESS_PRODS
+do
+ echo "   $PROD"
+done
+if [ "$FAILURE_PRODS" == "" ] ; then
+ echo " "
+ echo "No failures"
+ echo " "
+ exit 0
+fi
+
+echo " "
+echo " "
+echo "The following has failed to build:"
+for PROD in $FAILURE_PRODS
+do
+ echo "   $PROD"
+done
+echo " "
+exit 5
