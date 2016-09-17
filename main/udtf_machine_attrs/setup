@@ -2,4 +2,4 @@
 set PWD=$(pwd)
 system -kpieb "CRTRPGMOD MODULE(OSSILE/MACHATTR) SRCSTMF('$PWD/machattr.rpgle')"
 system -kpieb "CRTSRVPGM SRVPGM(OSSILE/MACHATTR) EXPORT(*ALL) TEXT('Machine attributes UDTF')"
-system -kpieb "RUNSQLSTM SRCSTMF('$PWD/udtf_Machine_Attributes.sql') DFTRDBCOL(OSSILE)"
+exec system -kpieb "RUNSQLSTM SRCSTMF('$PWD/udtf_Machine_Attributes.sql') DFTRDBCOL(OSSILE)"

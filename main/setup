@@ -2,9 +2,6 @@
 export -s TGTLIB=OSSILE
 system "crtlib $TGTLIB"
 export WORKDIR=$(pwd)/$(dirname $0)
-cd $WORKDIR
-cd udtf_machine_attrs && setup
-#./project1/setup
-#./project2/setup
-#./project3/setup
-#./project4/setup
+cd $WORKDIR/udtf_machine_attrs && setup
+cd $WORKDIR/udtf_image_catalog_details && setup
+cd $WORKDIR/udtf_cartridge_info && setup
