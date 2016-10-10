@@ -1,4 +1,4 @@
-#!/usr/bin/qsh
+#!/QOpenSys/usr/bin/sh
 set PWD=$(pwd)
 system -kpieb "CRTRPGMOD MODULE(OSSILE/MACHATTR) SRCSTMF('$PWD/machattr.rpgle')"
 system -kpieb "CRTSRVPGM SRVPGM(OSSILE/MACHATTR) EXPORT(*ALL) TEXT('Machine attributes UDTF')"

@@ -1,5 +1,5 @@
-#!/usr/bin/qsh
-export -s TGTLIB=OSSILE
+#!/QOpenSys/usr/bin/sh
+export TGTLIB=OSSILE
 system "crtlib $TGTLIB"
 export WORKDIR=$(pwd)/$(dirname $0)
 

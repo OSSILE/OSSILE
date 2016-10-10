@@ -1,4 +1,4 @@
-#!/usr/bin/qsh
+#!/QOpenSys/usr/bin/sh
 set PWD=$(pwd)
 system -kpieb "CRTRPGMOD MODULE(OSSILE/IMGCATDET) SRCSTMF('$PWD/imgcatdet.rpgle')"
 system -kpieb "CRTSRVPGM SRVPGM(OSSILE/IMGCATDET) EXPORT(*ALL) TEXT('Image Catalog Details UDTF')"
