@@ -1,5 +1,5 @@
 #!/QOpenSys/usr/bin/sh
-set PWD=$(pwd)
+export PWD=$(pwd)
 system -kpieb "CRTRPGMOD MODULE(OSSILE/CARTINFO) SRCSTMF('$PWD/cartinfo.rpgle')"
 system -kpieb "CRTSRVPGM SRVPGM(OSSILE/CARTINFO) EXPORT(*ALL) TEXT('Cartridge Info UDTF')"
 exec system -kpieb "RUNSQLSTM SRCSTMF('$PWD/udtf_Cartridge_Info.sql') DFTRDBCOL(OSSILE)"
