@@ -1,0 +1,93 @@
+:pnlgrp.
+
+.* Command help section:
+
+:help name='CRTFRMSTMF'.Create Object From Stream File - Help
+:p.
+The Create Object From Stream File command (CRTFRMSTMF) copies the source to a temporary source file
+and executes the specified compile command.
+:p.
+The temporary source file is named QSOURCE and is stored in QTEMP.
+:ehelp.
+
+:help name='CRTFRMSTMF/OBJ'.Object (OBJ) - Help
+:xh3.Object (OBJ)
+:p.
+Specifies the object name and library name for the object
+you are creating.  The object name and library name must
+conform to server naming conventions.  If no library is specified,
+the created object is stored in the current library.
+:parml.
+:pt.:pk.object-name:epk.
+:pd.
+Enter the name of the object.
+:pt.:pk def.*CURLIB:epk.
+:pd.
+The created object is stored in the current library. If
+you have not specified a current library, QGPL is used.
+:pt.:pk.library-name:epk.
+:pd.
+Enter the name of the library where the created object
+is to be stored.
+:eparml.
+:ehelp.
+
+:help name='CRTFRMSTMF/CMD'.Compile command (CMD) - Help
+:xh3.Compile command (CMD)
+:p.
+Specifies the compile command used to create the object.
+:parml.
+:pt.:pk.CRTCMD:epk.
+:pd.
+The CRTCMD compile command is executed.
+:pt.:pk.CRTBNDCL:epk.
+:pd.
+The CRTBNDCL compile command is executed.
+:pt.:pk.CRTCLMOD:epk.
+:pd.
+The CRTCLMOD compile command is executed.
+:pt.:pk.CRTDSPF:epk.
+:pd.
+The CRTDSPF compile command is executed.
+:pt.:pk.CRTPRTF:epk.
+:pd.
+The CRTPRTF compile command is executed.
+:pt.:pk.CRTLF:epk.
+:pd.
+The CRTLF compile command is executed.
+:pt.:pk.CRTPF:epk.
+:pd.
+The CRTPF compile command is executed.
+:pt.:pk.CRTPNLGRP:epk.
+:pd.
+The CRTPNLGRP compile command is executed.
+:pt.:pk.CRTSRVPGM:epk.
+:pd.
+The CRTSRVPGM compile command is executed.
+:eparml.
+:ehelp.
+
+:help name='CRTFRMSTMF/SRCSTMF'.Source stream file (SRCSTMF) - Help
+:xh3.Source stream file (SRCSTMF)
+:p.
+Specifies the path name of the stream file containing the source code to be compiled.
+:p.
+The path name can be either absolutely or relatively qualified. An
+absolute path name starts with '/'; a relative path name starts with
+a character other than '/'.
+:p.
+If absolutely-qualified, the path name is complete. If
+relatively-qualified, the path name is completed by appending the
+job's current working directory to the path name.
+:ehelp.
+
+:help name='CRTFRMSTMF/PARMS'.Parameter (PARMS) - Help
+:xh3.Parameter (PARMS)
+:p.
+Specifies the parameters added to the compile command.
+:p.
+The parameters are specific to the compile command and will be added to the command
+before the command is executed.
+:ehelp.
+
+:epnlgrp.
