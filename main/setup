@@ -1,6 +1,8 @@
-#!/usr/bin/qsh
-export -s TGTLIB=OSSILE
-system "crtlib $TGTLIB"
+#!QOpenSys/usr/bin/sh
+export TGTLIB=OSSILE
+if [ ! -e /qsys.lib/ossile.lib ] ; then
+  system "crtlib $TGTLIB"
+fi
 export WORKDIR=$(pwd)/$(dirname $0)
 
 ITEMS=$(tr '\n' ' ' < $WORKDIR/buildlist.txt)
@@ -20,6 +22,10 @@ do
   FAILURE_ITEMS="$FAILURE_ITEMS $ITEM"
  fi
 done
+echo " "
+echo "========================================"
+echo " "
+echo " "
 echo "The following has built successfully:"
 for ITEM in $SUCCESS_ITEMS
 do
