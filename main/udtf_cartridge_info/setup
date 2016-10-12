@@ -1,4 +1,4 @@
-#!QOpenSys/usr/bin/sh
+#!/QOpenSys/usr/bin/sh
 export PWD=$(pwd)
 system -kpieb "CRTRPGMOD MODULE(OSSILE/CARTINFO) SRCSTMF('$PWD/cartinfo.rpgle')"
 system -kpieb "CRTSRVPGM SRVPGM(OSSILE/CARTINFO) EXPORT(*ALL) TEXT('Cartridge Info UDTF')"
