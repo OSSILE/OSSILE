@@ -1,0 +1,8 @@
+name:
+	SQL UDTF Cartridge Info (OSSILE)
+version:
+	1
+build:
+	CRTRPGMOD MODULE(&INTOLIB/CARTINFO) SRCSTMF('&DIR/cartinfo.rpgle')
+	CRTSRVPGM SRVPGM(&INTOLIB/CARTINFO) EXPORT(*ALL) TEXT('Cartridge Info UDTF')
+	RUNSQLSTM SRCSTMF('&DIR/udtf_Cartridge_Info.sql') DFTRDBCOL(&INTOLIB)
