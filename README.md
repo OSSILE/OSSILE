@@ -16,6 +16,11 @@ Welcome to the OSSILE project. This project is to serve two purposes:
   * ``cd OSSILE-master/main && ./setup``
 To exclude an item from building, remove it from buildlist.txt
 
+#### Installing via Relic Package Manager
+Each directory in `/main/` is a seperate item, each are installable seperatly with Relic. The base command is `RELICGET PLOC('https://github.com/OSSILE/OSSILE/archive/master.zip') PDIR('OSSILE-master/main/<ITEM>') PNAME(OSSILE)`, where `<ITEM>` is one of those directories. For example:
+
+* `PDIR('OSSILE-master/main/crtfrmstmf')`
+* `PDIR('OSSILE-master/main/udtf_image_catalog_details')`
 
 # OSSILE directory structure
 There are three main directories within OSSILE:
