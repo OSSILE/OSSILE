@@ -1,0 +1,93 @@
+/*      Hopefully you will find this utility useful                    */       
+/*      This program download(FTP) the CD image files from the         */       
+/*      IBM FIX CENTRAL website.  Additionally it will create          */       
+/*      and image catalog and add the downloaded files to it.          */       
+/*      The image catalog will be loaded to the virtual optical CD.    */       
+/*                                                                     */       
+/* Prequisites:                                                        */       
+/*      RUNSQL                                                         */       
+/*                V6.1   SI46208 (or supersedes)                       */       
+/*                V7.1   SI46219 (or supersedes)                       */       
+/*      QVOIFIMG  PTF                                                  */       
+/*                V6.1   SI39364 (or supersedes)                       */       
+/*                V7.1   SI39362 (or supersedes)                       */       
+/*                                                                     */       
+/*     Bryan Dietz                                                     */       
+/*                 bryandietz@yahoo.com                                */       
+/*     http://bryandietz.us/getiptf.html   (*original version)         */       
+                                                                                
+PGM  parm(&site &user &pwd &dir &imgclg &ldir)                                  
+    DCL &USER      *CHAR 15                                                     
+    DCL &PWD       *CHAR 15                                                     
+    DCL &DIR       *CHAR 50    /* Remote directory */                           
+    DCL &LDIR      *CHAR 30    /* Local Directory */                            
+    DCL &LDIR1     *CHAR 32                                                     
+    DCL &site      *CHAR 128                                                    
+    DCL &FTPDIR    *CHAR 53 VALUE('cd ')                                        
+    DCL &LCLDIR    *CHAR 34 VALUE('lcd ')                                       
+    DCL &UP        *CHAR 21                                                     
+    DCL &imgclg    *CHAR 10                                                     
+    DCL &Q         *CHAR 1  Value('''')                                         
+    DCL &SQLStmt   *CHAR 80                                                     
+      DCL &Preamble  *CHAR STG(*DEFINED) LEN(40) DEFVAR(&SQLSTMT  1)            
+      DCL &action    *CHAR STG(*DEFINED) LEN(30) DEFVAR(&SQLSTMT 42)            
+                                                                                
+	CRTIMGCLG IMGCLG(IPTF) DIR(&LDIR) CRTDIR(*YES)  
+	monmsg CPFBC01
+                                                                                
+             CHGVAR     VAR(%SST(&FTPDIR 4 50)) VALUE(&DIR)                     
+             CHGVAR     VAR(%SST(&lclDIR 5 30)) VALUE(&lDIR)                    
+             CHGVAR     VAR(&UP) VALUE(&USER || ' ' || &PWD)                    
+             DLTF       FILE(QTEMP/FTP)                                         
+             MONMSG     MSGID(CPF2105)                                          
+             CRTSRCPF   FILE(QTEMP/FTP) MBR(CMD)                                
+chgvar &preamble ('Insert into QTEMP/FTP (SRCDTA)  values(' || &Q)              
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE(&UP *TCAT &Q || ')')                 
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE('na 1' *TCAT &Q || ')')              
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE(&LCLDIR *TCAT &Q || ')')             
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE('ascii' *TCAT &Q || ')')             
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE(&FTPDIR *TCAT &Q || ')')             
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE('mget *.txt' *TCAT &Q || ')')        
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE('binary' *TCAT &Q || ')')            
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE('mget *.bin' *TCAT &Q || ')')        
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             CHGVAR     VAR(&ACTION) VALUE('quit' *TCAT &Q || ')')              
+             RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SYS)                
+                                                                                
+             ADDPFM     FILE(QTEMP/FTP) MBR(LOG)                                
+             OVRDBF     FILE(INPUT) TOFILE(QTEMP/FTP) MBR(CMD)                  
+             OVRDBF     FILE(OUTPUT) TOFILE(QTEMP/FTP) MBR(LOG)                 
+                                                                                
+           FTP        RMTSYS(&SITE)                                             
+           CPYF       FROMFILE(QTEMP/FTP) TOFILE(*PRINT) FROMMBR(*ALL)          
+           CHGVAR &LDIR1 (&LDIR *TCAT '/*')                                     
+             DSPLNK     OBJ(&LDIR1) OUTPUT(*PRINT) OBJTYPE(*ALL) +              
+                          DETAIL(*BASIC) DSPOPT(*ALL)                           
+                                                                                
+             CALL       PGM(QVOIFIMG) PARM(&IMGCLG '*ALL' 0)                    
+                                                                                
+  LODIMGCLG  IMGCLG(&IMGCLG) DEV(OPTVRT01)                                      
+  MONMSG     MSGID(CPFBC00) /* IGNORE NOT LOADED MESSAGES */                    
+  VFYIMGCLG  IMGCLG(&IMGCLG) TYPE(*PTF) SORT(*YES)                              
+  MONMSG     MSGID(CPFBC00) /* IGNORE NOT VERIFIED  MESSAGES */
+  SNDPGMMSG  MSG('PTF''s Downloaded and loded to image +
+             catalog ' || &imgclg *bcat '(' || &ldir *tcat ')')                    
+                                                                                
+   END:                                                                         
+        ENDPGM                                                                  
