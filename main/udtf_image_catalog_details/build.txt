@@ -1,0 +1,8 @@
+name:
+	SQL UDTF Image Catalog Details
+version:
+	1
+build:
+	CRTRPGMOD MODULE(&INTOLIB/IMGCATDET) SRCSTMF('&DIR/imgcatdet.rpgle')
+	CRTSRVPGM SRVPGM(&INTOLIB/IMGCATDET) EXPORT(*ALL) TEXT('Image Catalog Details UDTF')
+	RUNSQLSTM SRCSTMF('&DIR/udtf_Image_Catalog_Details.sql') DFTRDBCOL(&INTOLIB)

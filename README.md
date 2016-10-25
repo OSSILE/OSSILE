@@ -16,17 +16,24 @@ Welcome to the OSSILE project. This project is to serve two purposes:
   * ``cd OSSILE-master/main && ./setup``
 To exclude an item from building, remove it from buildlist.txt
 
+#### Installing via Relic Package Manager
+Each directory in `/main/` is a seperate item, each are installable seperatly with Relic. The base command is `RELICGET PLOC('https://github.com/OSSILE/OSSILE/archive/master.zip') PDIR('OSSILE-master/main/<ITEM>') PNAME(OSSILE)`, where `<ITEM>` is one of those directories. For example:
+
+* `PDIR('OSSILE-master/main/crtfrmstmf')`
+* `PDIR('OSSILE-master/main/udtf_image_catalog_details')`
 
 # OSSILE directory structure
-There are two main directories within OSSILE:
+There are three main directories within OSSILE:
 ## ``main/``
  This directory houses complete, buildable code. 
- Each sub-directory represents a separate buildable item. 
-## ``examples/``
- This directory houses examples of how to accomplish various tasks in ILE. They do not need to be working, compilable examples (though that is preferred)
+ Each subdirectory represents a separate buildable item. 
+## ``clle_examples/``
+ This directory houses examples of how to accomplish various tasks in ILE CL. They do not need to be working, compilable examples (though that is preferred).
+## ``rpg_examples/``
+ This directory houses examples of how to accomplish various tasks in ILE RPG. They do not need to be working, compilable examples (though that is preferred).
 
 # Adding a new item to OSSILE
-1. Create a new sub-directory within the "main" directory with a logical name for your build item. By convention, use all lower case
+1. Create a new subdirectory within the "main" directory with a logical name for your build item. By convention, use all lowercase
 2. Drop the code into this new directory
 3. In this new directory, create a file called "setup". 
 4. Put all the build/compilation steps necessary in the "setup" file. It will be invoked as a script. Start with a '#!' line. **The script should build your ILE code into the OSSILE library on IBM i!**

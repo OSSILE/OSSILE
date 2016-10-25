@@ -1,0 +1,8 @@
+name:
+	SQL UDTF Machine Attributes
+version:
+	1
+build:
+	CRTRPGMOD MODULE(&INTOLIB/MACHATTR) SRCSTMF('&DIR/machattr.rpgle')
+	CRTSRVPGM SRVPGM(&INTOLIB/MACHATTR) EXPORT(*ALL) TEXT('Machine attributes UDTF')
+	RUNSQLSTM SRCSTMF('&DIR/udtf_Machine_Attributes.sql') DFTRDBCOL(&INTOLIB)
