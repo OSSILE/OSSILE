@@ -56,7 +56,7 @@ A SQL user defined table function to get the details for cartridges in a tape li
     or with selection on cartridge ID and category and category system: 
 
         select * from table(qgpl.cartridge_info( 'TAPMLB01', 'ABC*', '*NOSHARE', 'SYSNAME' )) x
-```
+
 
 ### Documentation ###
 
