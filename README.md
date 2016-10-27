@@ -7,13 +7,14 @@ Welcome to the OSSILE project. This project is to serve two purposes:
 ## Currently included in OSSILE
   - Useful UDTF's originally sourced from https://bitbucket.org/christianjorgensen/
   - CRTFRMSTMF originally sourced from https://bitbucket.org/BrianGarland/
+  - GETIPTF, originally sourced from http://bryandietz.us/getiptf.html
 
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
 2. Install 5733OPS PTF SI61064 (or latest supercede)
 3. From a PASE-capable shell (ssh client, QP2term, etc), run:
   * ``/QOpenSys/QIBM/ProdData/OPS/tools/bin/unzip OSSILE-master.zip``
-  * ``cd OSSILE-master/main && ./setup``
+  * ``cd OSSILE-master/main && chmod +x ./setup && ./setup``
 To exclude an item from building, remove it from buildlist.txt
 
 #### Installing via Relic Package Manager
@@ -37,5 +38,8 @@ There are three main directories within OSSILE:
 2. Drop the code into this new directory
 3. In this new directory, create a file called "setup". 
 4. Put all the build/compilation steps necessary in the "setup" file. It will be invoked as a script. Start with a '#!' line. **The script should build your ILE code into the OSSILE library on IBM i!**
+  Please have your script obey the following rules:
+    * Write useful information to standard out in cases of build failure (for instance, dependencies missing, etc)
+    * Explicitly check that all operations finished successfully. If the build failed, exit with a nonzero return code
 5. Update the buildlist.txt file (in the main/ directory) to include your new subdirectory name
 6. Test and commit your changes!
