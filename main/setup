@@ -5,7 +5,7 @@ if [ ! -e /qsys.lib/ossile.lib ] ; then
 fi
 export WORKDIR=$(pwd)/$(dirname $0)
 
-ITEMS=$(tr '\n' ' ' < $WORKDIR/buildlist.txt)
+ITEMS=$(tr '\n' ' ' < $WORKDIR/buildlist.txt | grep -v '#')
 
 export FAILURE_ITEMS=""
 export SUCCESS_ITEMS=""
