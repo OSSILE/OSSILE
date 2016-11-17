@@ -2,6 +2,8 @@
 
 CRTFRMSTMF is a wrapper over the IBM i CRTxxx compile commands that do not allow a stream file.
 
+![CRTFRMSTMF](http://i.imgur.com/fgC7oTG.png)
+
 ###How do I get it setup?
 
 * Build with Relic or run the setup script.
