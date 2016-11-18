@@ -56,6 +56,6 @@ select * from table(qgpl.image_catalog_details()) icd
 ```
 
 
-### Documentation ###
+### API Documentation ###
 
 [Retrieve Image Catalog Details (QVOIRCLD) API](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i_71/apis/qvoircld.htm)
