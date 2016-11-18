@@ -2,7 +2,7 @@
 
 A SQL user defined table function to get the details for an image catalog.
 
-### What is this repository for? ###
+### What does this UDTF do? ###
 
 * This SQL function will return details of a specified image catalog.
 
@@ -47,17 +47,10 @@ Tap_Allocated_volume_size_MB                         | null          | Value    
 
 ### How do I get set up? ###
 
-* Clone this git repository to a local directory in the IFS, e.g. in your home directory.
-* Compile the source using the following CL commands (objects will be placed in the QGPL library):
+For build and setup instructions, refer to the [README.md](../../README.md) for the OSSILE project
 
-```
 
-CRTRPGMOD MODULE(QGPL/IMGCATDET) SRCSTMF('imgcatdet.rpgle')
-CRTSRVPGM SRVPGM(QGPL/IMGCATDET) EXPORT(*ALL) TEXT('Image Catalog Details UDTF')
-RUNSQLSTM SRCSTMF('udtf_Image_Catalog_Details.sql') DFTRDBCOL(QGPL)
-
-```
-* Call the SQL function like the following
+### Usage example ###
 ```
 select * from table(qgpl.image_catalog_details()) icd
 ```
