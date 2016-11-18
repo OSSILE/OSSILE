@@ -48,7 +48,7 @@ There are three main directories within OSSILE:
  This directory houses examples of how to accomplish various tasks using SQL scripts. 
 
 # Adding a new item to OSSILE
-1. Create a new branch for your contributions (preferred but optional)
+1. Create a new branch fork for your contributions, use that fork for the following steps. 
 2. Create a new subdirectory within the "main" directory with a logical name for your build item. By convention, use all lowercase
 3. Drop the code into this new directory
 4. In this new directory, create a file called "setup". 
