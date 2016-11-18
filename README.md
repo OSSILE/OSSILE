@@ -6,15 +6,20 @@ Welcome to the OSSILE project. This project is to serve two purposes:
 
 ## Currently included in OSSILE
   - Useful UDTF's originally sourced from https://bitbucket.org/christianjorgensen/
+    
     Documentation:
       - [CARTRIDGE_INFO](main/udtf_cartridge_info/README.md)
       - [IMAGE_CATALOG_DETAILS](main/udtf_image_catalog_details/README.md)
       - [MACHINE_ATTRIBUTES](main/udtf_machine_attrs/README.md)
   - CRTFRMSTMF originally sourced from https://bitbucket.org/BrianGarland/
+    
     Documentation:
       - [CRTFRMSTMF](main/crtfrmstmf/README.md)
   
   - GETIPTF, originally sourced from http://bryandietz.us/getiptf.html
+    
+    Documentation:
+      - [GETIPTF](main/getiptf/README.md)
 
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
