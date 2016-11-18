@@ -30,7 +30,7 @@ There are no special processes. Just fork the project, make your changes, test t
 8. Test and commit your changes, send us a pull request!
 
 
-# Contributing a new example to OSSILE
+# Contributing a new example (code snippet) to OSSILE
 1. As is standard, start by creating new fork for your contributions, use that fork for the following steps. 
 2. Create a new file in the "xxx_examples" directory (where 'xxx' is the programming language of interest, in all lowercase)
 3. Test and commit your changes, send us a pull request!
