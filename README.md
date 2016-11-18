@@ -44,7 +44,7 @@ There are three main directories within OSSILE:
  This directory houses examples of how to accomplish various tasks in ILE CL. They do not need to be working, compilable examples (though that is preferred).
 ## ``rpg_examples/``
  This directory houses examples of how to accomplish various tasks in ILE RPG. They do not need to be working, compilable examples (though that is preferred).
- ## ``sql_examples/``
+## ``sql_examples/``
  This directory houses examples of how to accomplish various tasks using SQL scripts. 
 
 # Contributing 
