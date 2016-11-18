@@ -2,7 +2,7 @@
 
 A SQL user defined table function to get the details for cartridges in a tape library.
 
-### What is this repository for? ###
+### Does this UDTF do? ###
 
 * This SQL function will return details of the cartridges in a tape library.
 
@@ -34,12 +34,10 @@ A SQL user defined table function to get the details for cartridges in a tape li
 
 ### How do I get set up? ###
 
-* Clone this git repository to a local directory in the IFS, e.g. in your home directory.
-* Compile the source using the following CL commands (objects will be placed in the QGPL library):
 
-        CRTRPGMOD MODULE(QGPL/CARTINFO) SRCSTMF('cartinfo.rpgle')
-        CRTSRVPGM SRVPGM(QGPL/CARTINFO) EXPORT(*ALL) TEXT('Cartridge Info UDTF')
-        RUNSQLSTM SRCSTMF('udtf_Cartridge_Info.sql') DFTRDBCOL(QGPL)
+For build and setup instructions, refer to the [README.md](../../README.md) for the OSSILE project
+
+### Usage examples ###
 
 * Call the SQL function like the following
 
@@ -58,6 +56,6 @@ A SQL user defined table function to get the details for cartridges in a tape li
         select * from table(qgpl.cartridge_info( 'TAPMLB01', 'ABC*', '*NOSHARE', 'SYSNAME' )) x
 
 
-### Documentation ###
+### API Documentation ###
 
 [Retrieve Cartridge Information (QTARCTGI) API](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i_71/apis/qtarctgi.htm)

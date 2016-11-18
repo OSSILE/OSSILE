@@ -6,8 +6,20 @@ Welcome to the OSSILE project. This project is to serve two purposes:
 
 ## Currently included in OSSILE
   - Useful UDTF's originally sourced from https://bitbucket.org/christianjorgensen/
+    
+    Documentation:
+      - [CARTRIDGE_INFO](main/udtf_cartridge_info/README.md)
+      - [IMAGE_CATALOG_DETAILS](main/udtf_image_catalog_details/README.md)
+      - [MACHINE_ATTRIBUTES](main/udtf_machine_attrs/README.md)
   - CRTFRMSTMF originally sourced from https://bitbucket.org/BrianGarland/
+    
+    Documentation:
+      - [CRTFRMSTMF](main/crtfrmstmf/README.md)
+  
   - GETIPTF, originally sourced from http://bryandietz.us/getiptf.html
+    
+    Documentation:
+      - [GETIPTF](main/getiptf/README.md)
 
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
@@ -35,8 +47,13 @@ There are three main directories within OSSILE:
  ## ``sql_examples/``
  This directory houses examples of how to accomplish various tasks using SQL scripts. 
 
-# Adding a new item to OSSILE
-1. Create a new branch for your contributions (preferred but optional)
+# Contributing changes to OSSILE
+1. Create a new branch fork for your contributions
+2. Test and commit your changes, send us a pull request!
+
+
+# Contributing a new item to OSSILE
+1. Create a new branch fork for your contributions, use that fork for the following steps. 
 2. Create a new subdirectory within the "main" directory with a logical name for your build item. By convention, use all lowercase
 3. Drop the code into this new directory
 4. In this new directory, create a file called "setup". 

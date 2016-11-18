@@ -18,22 +18,15 @@ A SQL user defined table function to get machine attributes like system type, sy
 
 ### How do I get set up? ###
 
-* Clone this git repository to a local directory in the IFS, e.g. in your home directory.
-* Compile the source using the following CL commands (objects will be placed in the QGPL library):
+For build and setup instructions, refer to the [README.md](../../README.md) for the OSSILE project
 
-```
-
-CRTRPGMOD MODULE(QGPL/MACHATTR) SRCSTMF('machattr.rpgle')
-CRTSRVPGM SRVPGM(QGPL/MACHATTR) EXPORT(*ALL) TEXT('Machine attributes UDTF')
-RUNSQLSTM SRCSTMF('udtf_Machine_Attributes.sql') DFTRDBCOL(QGPL)
-
-```
+### Usage Example ###
 * Call the SQL function like the following
 ```
 select * from table(qgpl.machine_attributes()) ma
 ```
 
 
-### Documentation ###
+### API Documentation ###
 
 [ MI API Materialize Machine Attributes (MATMATR)](http://www.ibm.com/support/knowledgecenter/en/ssw_ibm_i_71/rzatk/MATMATR.htm)
