@@ -48,12 +48,12 @@ There are three main directories within OSSILE:
  This directory houses examples of how to accomplish various tasks using SQL scripts. 
 
 # Contributing changes to OSSILE
-1. Create a new branch fork for your contributions
+1. Create a new branch for your contributions
 2. Test and commit your changes, send us a pull request!
 
 
 # Contributing a new item to OSSILE
-1. Create a new branch fork for your contributions, use that fork for the following steps. 
+1. Create a new branch for your contributions, use that fork for the following steps. 
 2. Create a new subdirectory within the "main" directory with a logical name for your build item. By convention, use all lowercase
 3. Drop the code into this new directory
 4. In this new directory, create a file called "setup". 
