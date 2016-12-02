@@ -8,6 +8,7 @@ Contributions to OSSILE will be accepted if the following conditions are met:
  * Processes on this page have been followed
  * Code quality is believed to be acceptable by the maintainers of the project
  * The code contributes sufficient value and is aligned with the spirit of the project
+ * The submitter has joined the OSSILE project (to allow any issues to be routed to that person)
 
 ## Contributing changes to existing OSSILE parts
 There are no special processes. Just fork the project, make your changes, test them, and send us a pull request!
