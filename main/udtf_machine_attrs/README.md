@@ -23,7 +23,7 @@ For build and setup instructions, refer to the [README.md](../../README.md) for 
 ### Usage Example ###
 * Call the SQL function like the following
 ```
-select * from table(qgpl.machine_attributes()) ma
+select * from table(ossile.machine_attributes()) ma
 ```
 
 
