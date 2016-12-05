@@ -52,7 +52,7 @@ For build and setup instructions, refer to the [README.md](../../README.md) for 
 
 ### Usage example ###
 ```
-select * from table(qgpl.image_catalog_details()) icd
+select * from table(ossile.image_catalog_details()) icd
 ```
 
 
