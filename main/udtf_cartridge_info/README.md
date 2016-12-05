@@ -41,19 +41,19 @@ For build and setup instructions, refer to the [README.md](../../README.md) for 
 
 * Call the SQL function like the following
 
-        select * from table(qgpl.cartridge_info( 'TAPMLB01' )) x
+        select * from table(ossile.cartridge_info( 'TAPMLB01' )) x
 
     or with selection on cartridge ID: 
 
-        select * from table(qgpl.cartridge_info( 'TAPMLB01', 'ABC*' )) x
+        select * from table(ossile.cartridge_info( 'TAPMLB01', 'ABC*' )) x
 
     or with selection on cartridge ID and category: 
 
-        select * from table(qgpl.cartridge_info( 'TAPMLB01', 'ABC*', '*INSERT' )) x
+        select * from table(ossile.cartridge_info( 'TAPMLB01', 'ABC*', '*INSERT' )) x
 
     or with selection on cartridge ID and category and category system: 
 
-        select * from table(qgpl.cartridge_info( 'TAPMLB01', 'ABC*', '*NOSHARE', 'SYSNAME' )) x
+        select * from table(ossile.cartridge_info( 'TAPMLB01', 'ABC*', '*NOSHARE', 'SYSNAME' )) x
 
 
 ### API Documentation ###
