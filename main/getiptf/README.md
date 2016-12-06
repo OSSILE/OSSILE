@@ -21,7 +21,9 @@ multiple GETiPTF jobs to download the files in "parallel"
 
 this version will not work on versions previous to V6.1
 
+<img src="http://bryandietz.us/images/getiptf.png">
+
 http://bryandietz.us/getiptf.html   (V5r2+ version) 
 
-### Documentation ###
 
+For build and setup instructions, refer to the [README.md](../../README.md) for the OSSILE project
