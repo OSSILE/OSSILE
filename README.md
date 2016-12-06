@@ -40,6 +40,8 @@ There are three main directories within OSSILE:
 ## ``main/``
  This directory houses complete, buildable code. 
  Each subdirectory represents a separate buildable item. 
+ ## ``c_examples/``
+ This directory houses examples of how to accomplish various tasks in ILE C. They do not need to be working, compilable examples (though that is preferred).
 ## ``clle_examples/``
  This directory houses examples of how to accomplish various tasks in ILE CL. They do not need to be working, compilable examples (though that is preferred).
 ## ``rpg_examples/``
