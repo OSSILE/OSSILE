@@ -9,6 +9,7 @@ Contributions to OSSILE will be accepted if the following conditions are met:
  * Code quality is believed to be acceptable by the maintainers of the project
  * The code contributes sufficient value and is aligned with the spirit of the project
  * The submitter has joined the OSSILE project (to allow any issues to be routed to that person)
+ * Any copyright declarations follow the requirements in the "[copyright, ownership, and license](#copyright-licensing)" section of this document
 
 ## Contributing changes to existing OSSILE parts
 There are no special processes. Just fork the project, make your changes, test them, and send us a pull request!
@@ -35,3 +36,17 @@ There are no special processes. Just fork the project, make your changes, test t
 1. As is standard, start by creating new fork for your contributions, use that fork for the following steps. 
 2. Create a new file in the "xxx_examples" directory (where 'xxx' is the programming language of interest, in all lowercase)
 3. Test and commit your changes, send us a pull request!
+
+
+## [Copyright, ownership, and license of code you contribute](#copyright-licensing)
+ * As is standard, you retain ownership and copyright of any code that you created (whether you explicitly claim it or not)
+ * All contributed code is to be available under the terms of ([the OSSILE project license](LICENSE)) (MIT)
+ * If you'd like to explicitly claim copyright for a piece of code, do so in the header or prolog of your code. It must be in the following format:
+ 
+   `Copyright (C) [years] [name] - Made available under the terms of the license of the containing project`
+ 
+   For instance: 
+ 
+   `Copyright (C) 2015-2016 John Doe - Made available under the terms of the license of the containing project`
+
+
