@@ -38,7 +38,7 @@ There are no special processes. Just fork the project, make your changes, test t
 3. Test and commit your changes, send us a pull request!
 
 
-## [Copyright, ownership, and license of code you contribute](#copyright-licensing)
+## Copyright, ownership, and license of code you contribute
  * As is standard, you retain ownership and copyright of any code that you created (whether you explicitly claim it or not)
  * All contributed code is to be available under the terms of ([the OSSILE project license](LICENSE)) (MIT)
  * If you'd like to explicitly claim copyright for a piece of code, do so in the header or prolog of your code. It must be in the following format:
