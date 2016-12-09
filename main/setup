@@ -5,7 +5,7 @@ if [ ! -e /qsys.lib/ossile.lib ] ; then
 fi
 export WORKDIR=$(pwd)/$(dirname $0)
 
-ITEMS=$(tr '\n' ' ' < $WORKDIR/buildlist.txt)
+ITEMS=$(tr '\n' ' ' < $WORKDIR/buildlist.txt | grep -v '#')
 
 export FAILURE_ITEMS=""
 export SUCCESS_ITEMS=""
@@ -13,12 +13,12 @@ export SUCCESS_ITEMS=""
 
 for ITEM in $ITEMS
 do
- cd $WORKDIR/$ITEM && setup
+ cd $WORKDIR/$ITEM && chmod +x setup && setup >> build_log.txt 2>&1
  if [ $? -eq 0 ] ; then
   echo item $ITEM built successfully
   SUCCESS_ITEMS="$SUCCESS_ITEMS $ITEM"
  else
-  echo item $ITEM failed to build
+  echo item $ITEM failed to build. See $WORKDIR/$ITEM/build_log.txt for details
   FAILURE_ITEMS="$FAILURE_ITEMS $ITEM"
  fi
 done
@@ -43,7 +43,7 @@ echo " "
 echo "The following has failed to build:"
 for ITEM in $FAILURE_ITEMS
 do
- echo "   $ITEM"
+ echo "   $ITEM" " (See $WORKDIR/$ITEM/build_log.txt for details)"
 done
 echo " "
 exit 5
