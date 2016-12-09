@@ -58,6 +58,9 @@ The CRTLF compile command is executed.
 :pt.:pk.CRTPF:epk.
 :pd.
 The CRTPF compile command is executed.
+:pt.:pk.CRTMNU:epk.
+:pd.
+The CRTMNU compile command is executed.
 :pt.:pk.CRTPNLGRP:epk.
 :pd.
 The CRTPNLGRP compile command is executed.

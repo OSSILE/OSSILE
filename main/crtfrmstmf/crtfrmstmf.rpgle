@@ -46,6 +46,15 @@ DCL-PR ProcessCommand EXTPGM('QCAPCMD');
     ErrorCode     CHAR(32767) OPTIONS(*VARSIZE);
 END-PR;
 
+DCL-PR moveProgramMessages EXTPGM('QMHMOVPM');
+    messageKey         char(4) const;
+    messageTypes       char(40) const;
+    messageTypesCount  int(10) const;
+    toCallStackEntry   char(10) const;
+    toCallStackCounter int(10) const;
+    error              char(1) options(*varsize) const;
+END-PR;
+
 DCL-DS OptCtlBlk QUALIFIED;
     Type   INT(10) INZ(0);
     DBCS   CHAR(1) INZ('0');
@@ -56,7 +65,7 @@ DCL-DS OptCtlBlk QUALIFIED;
 END-DS;
 
 DCL-DS APIError QUALIFIED;
-    Provided INT(10) INZ(272);
+    Provided INT(10) INZ(%size(APIError));
     Avail    INT(10) INZ(0);
     MsgID    CHAR(7);
     Rsvd     CHAR(1);
@@ -111,9 +120,10 @@ DCL-DS CommandsDS;
     *n CHAR(10) INZ('CRTPRTF');
     *n CHAR(10) INZ('CRTLF');
     *n CHAR(10) INZ('CRTPF');
+	*n CHAR(10) INZ('CRTMNU');
     *n CHAR(10) INZ('CRTPNLGRP');
     *n CHAR(10) INZ('CRTSRVPGM');
-    Commands CHAR(10) DIM(9) POS(1);
+    Commands CHAR(10) DIM(10) POS(1);
 END-DS;
 
 DCL-DS ObjTypesDS;
@@ -124,9 +134,10 @@ DCL-DS ObjTypesDS;
     *n CHAR(10) INZ('FILE');
     *n CHAR(10) INZ('FILE');
     *n CHAR(10) INZ('FILE');
+	*n CHAR(10) INZ('MENU');
     *n CHAR(10) INZ('PNLGRP');
     *n CHAR(10) INZ('SRVPGM');
-    ObjTypes CHAR(10) DIM(9) POS(1);
+    ObjTypes CHAR(10) DIM(10) POS(1);
 END-DS;
 
 
@@ -173,6 +184,12 @@ CALLP ProcessCommand(CommandString:%SIZE(CommandString):OptCtlBlk:%SIZE(OptCtlBl
 
 // If an error occurred then fail the command
 IF APIError.Avail > 0;
+    // Forward messages to caller
+    APIError.Avail = 0;
+    callp(e) moveProgramMessages(' ': '*COMP     *DIAG     *INFO     *ESCAPE': 4:
+                                 '*PGMBDY': 1: APIError);
+
+    // Send escape message
     ErrorText = %TRIMR(Cmd) + ' failed with message id ' + APIError.MsgID;
     SendProgramMessage('CPF9898':'QCPFMSG   QSYS':ErrorText:%LEN(%TRIMR(ErrorText)):
                        '*ESCAPE':'*':2:MsgKey:APIError);
