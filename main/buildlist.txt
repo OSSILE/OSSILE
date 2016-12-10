@@ -1,4 +1,5 @@
 udtf_cartridge_info
+udtf_history_log_info
 udtf_image_catalog_details
 udtf_machine_attrs
 crtfrmstmf

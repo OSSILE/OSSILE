@@ -1,0 +1,6 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+system -kpieb "CRTRPGMOD MODULE(OSSILE/HSTLOGINF) SRCSTMF('$PWD/hstloginf.rpgle')"
+system -kpieb "CRTSRVPGM SRVPGM(OSSILE/HSTLOGINF) EXPORT(*ALL) TEXT('History Log Info UDTF')"
+system -kpieb "DLTMOD MODULE(OSSILE/HSTLOGINF)"
+exec system -kpieb "RUNSQLSTM SRCSTMF('$PWD/udtf_History_Log_Info.sql') DFTRDBCOL(OSSILE)"

@@ -9,6 +9,7 @@ Welcome to the OSSILE project. This project is to serve two purposes:
     
     Documentation:
       - [CARTRIDGE_INFO](main/udtf_cartridge_info/README.md)
+      - [HISTORY_LOG_INFO](main/udtf_history_log_info/README.md)
       - [IMAGE_CATALOG_DETAILS](main/udtf_image_catalog_details/README.md)
       - [MACHINE_ATTRIBUTES](main/udtf_machine_attrs/README.md)
   - CRTFRMSTMF originally sourced from https://bitbucket.org/BrianGarland/
