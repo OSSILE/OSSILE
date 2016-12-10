@@ -1,0 +1,8 @@
+name:
+	SQL UDTF History Log Info (OSSILE)
+version:
+	1
+build:
+	CRTRPGMOD MODULE(&INTOLIB/HSTLOGINF) SRCSTMF('&DIR/hstloginf.rpgle')
+	CRTSRVPGM SRVPGM(&INTOLIB/HSTLOGINF) EXPORT(*ALL) TEXT('History Log Info UDTF')
+	RUNSQLSTM SRCSTMF('&DIR/udtf_History_Log_Info.sql') DFTRDBCOL(&INTOLIB)
