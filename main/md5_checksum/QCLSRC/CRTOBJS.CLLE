@@ -1,0 +1,93 @@
+/* This file is part of MD5 Build tool for IBM i                                 */
+/*                                                                               */
+/* Copyright (c) 2016 Chris Hird                                                 */
+/* All rights reserved.                                                          */
+/*                                                                               */
+/* Redistribution and use in source and binary forms, with or without            */
+/* modification, are permitted provided that the following conditions            */
+/* are met:                                                                      */
+/* 1. Redistributions of source code must retain the above copyright             */
+/*    notice, this list of conditions and the following disclaimer.              */
+/* 2. Redistributions in binary form must reproduce the above copyright          */
+/*    notice, this list of conditions and the following disclaimer in the        */
+/*    documentation and/or other materials provided with the distribution.       */
+/*                                                                               */
+/* FTP Client for IBM i is free software: you can redistribute it and/or modify  */
+/* it under the terms of the GNU General Public License as published by          */
+/* the Free Software Foundation, either version 3 of the License, or             */
+/* any later version.                                                            */
+/*                                                                               */
+/* Disclaimer :                                                                  */
+/* FTP Client for IBM i is distributed in the hope that it will be useful,       */
+/* but WITHOUT ANY WARRANTY; without even the implied warranty of                */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                 */
+/* GNU General Public License for more details.                                  */
+/*                                                                               */
+/* You should have received a copy of the GNU General Public License             */
+/* along with FTP Client for IBM i. If not, see <http://www.gnu.org/licenses/>.  */
+             PGM        PARM(&INSTLIB &SRCLIB &TGTRLS &DIR)
+             DCL        VAR(&INSTLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&SRCLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&TGTRLS) TYPE(*CHAR) LEN(8)
+             DCL        VAR(&DIR) TYPE(*CHAR) LEN(255)
+             DCL        VAR(&STMFPATH) TYPE(*CHAR) LEN(275)
+             DCL        VAR(&SRCMBR) TYPE(*CHAR) LEN(128)
+
+             /* create the source library for holding the binding directory and modules */
+             SNDMSG     MSG(&DIR) TOUSR(*REQUESTER)
+             ADDLIBLE   LIB(&SRCLIB)
+             MONMSG     MSGID(CPF2103)
+
+             CRTSRCPF   FILE(&SRCLIB/QUIMSRC) RCDLEN(150)
+             CRTSRCPF   FILE(&SRCLIB/QDDSSRC) RCDLEN(150)
+             CRTSRCPF   FILE(&SRCLIB/H) RCDLEN(150)
+             CRTSRCPF   FILE(&SRCLIB/QCSRC) RCDLEN(150)
+             /* Create the binding directory */
+             DLTBNDDIR  BNDDIR(&SRCLIB/MD5)
+             MONMSG     MSGID(CPF2105)
+             CRTBNDDIR  BNDDIR(&SRCLIB/MD5)
+             ADDBNDDIRE BNDDIR(&SRCLIB/MD5) OBJ((&SRCLIB/MD5FUNC *MODULE))
+             /* copy the file source */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/QDDSSRC/MD5DETS.PF')
+             ADDPFM     FILE(&SRCLIB/QDDSSRC) MBR(MD5DETS) SRCTYPE(PF)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QDDSSRC.FILE/MD5DETS.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* copy the header files */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/H/MD5.C')
+             ADDPFM     FILE(&SRCLIB/H) MBR(MD5) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/MD5.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/H/MD5FUNC.C')
+             ADDPFM     FILE(&SRCLIB/H) MBR(MD5FUNC) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/MD5FUNC.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* copy the c sources */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/QCSRC/CRTMD5.C')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(CRTMD5) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/CRTMD5.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/QCSRC/MD5FUNC.C')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(MD5FUNC) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/MD5FUNC.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* create the modules */
+             CRTCMOD    MODULE(&SRCLIB/CRTMD5) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             CRTCMOD    MODULE(&SRCLIB/MD5FUNC) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             /* create the program */
+             CRTPGM     PGM(&INSTLIB/CRTMD5) MODULE(&SRCLIB/CRTMD5) TEXT('') BNDDIR(&SRCLIB/MD5) TGTRLS(&TGTRLS)
+             /* create the Command help panel group */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/QUIMSRC/CMDHLP.PNLGRP')
+             ADDPFM     FILE(&SRCLIB/QUIMSRC) MBR(CMDHLP) SRCTYPE(PNLGRP)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QUIMSRC.FILE/CMDHLP.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* create the panel groups */
+             CRTPNLGRP  PNLGRP(&INSTLIB/CMDHLP) SRCFILE(&SRCLIB/QUIMSRC)
+             /* create the command */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/QCMDSRC/CRTMD5.CMD')
+             ADDPFM     FILE(&SRCLIB/QCMDSRC) MBR(CRTMD5) SRCTYPE(CMD)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCMDSRC.FILE/CRTMD5.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CRTCMD     CMD(&INSTLIB/CRTMD5) PGM(CRTMD5) SRCFILE(&SRCLIB/QCMDSRC)
+             /* remove library list */
+             RMVLIBLE   LIB(&SRCLIB)
+             ENDPGM
