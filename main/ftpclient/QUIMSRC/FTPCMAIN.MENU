@@ -1,0 +1,321 @@
+.* This file is part of FTP Client for IBM i.
+.*
+.* Copyright (c) 2016 Chris Hird
+.* All rights reserved.
+.*
+.* Redistribution and use in source and binary forms, with or without
+.* modification, are permitted provided that the following conditions
+.* are met:
+.* 1. Redistributions of source code must retain the above copyright
+.*    notice, this list of conditions and the following disclaimer.
+.* 2. Redistributions in binary form must reproduce the above copyright
+.*    notice, this list of conditions and the following disclaimer in the
+.*    documentation and/or other materials provided with the distribution.
+.*
+.* FTP Client for IBM i is free software: you can redistribute it and/or modify
+.* it under the terms of the GNU General Public License as published by
+.* the Free Software Foundation, either version 3 of the License, or
+.* any later version.
+.*
+.* Disclaimer :
+.* FTP Client for IBM i is distributed in the hope that it will be useful,
+.* but WITHOUT ANY WARRANTY; without even the implied warranty of
+.* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.* GNU General Public License for more details.
+.*
+.* You should have received a copy of the GNU General Public License
+.* along with FTP Client for IBM i. If not, see <http://www.gnu.org/licenses/>.
+.* -----------------------------------------------------------------
+.*
+.* Beginning of menu source.
+.*
+.* Enable access to OS/400 index search when help is displayed for
+.* this menu.
+.* -----------------------------------------------------------------
+:PNLGRP   HLPSHELF=list
+          DFTMSGF=ftpcmsgf
+          SUBMSGF=ftpcmsgf.
+.*
+.* -----------------------------------------------------------------
+.* Copyright statement appears when the menu is initially displayed.
+.* -----------------------------------------------------------------
+:COPYR.
+(c) Copyright Shield Advanced Solutions (Canada) Ltd. 1998-2010
+.*
+.* -----------------------------------------------------------------
+.* UIM Z-variable to be used as the panel identifier
+.* -----------------------------------------------------------------
+:VAR      NAME=ZMENU.
+.*
+.* -----------------------------------------------------------------
+.* Define keys for the menu
+.* -----------------------------------------------------------------
+:KEYL     NAME=menukeys
+          HELP=keyl.
+:KEYI     KEY=F1
+          HELP=helpf1
+          ACTION=HELP.
+:KEYI     KEY=F3
+          HELP=exit
+          ACTION='EXIT SET'
+          VARUPD=NO.
+F3=Exit
+:KEYI     KEY=F4
+          HELP=prompt
+          ACTION=PROMPT.
+F4=Prompt
+:KEYI     KEY=F9
+          HELP=retrieve
+          ACTION=RETRIEVE.
+F9=Retrieve
+:KEYI     KEY=F12
+          HELP=cancel
+          ACTION='CANCEL SET'
+          VARUPD=NO.
+F12=Cancel
+:KEYI     KEY=F24
+          HELP=morekeys
+          ACTION=MOREKEYS.
+F24=More keys
+:KEYI     KEY=PAGEDOWN
+          HELP=pagedown
+          ACTION=PAGEDOWN.
+:KEYI     KEY=PAGEUP
+          HELP=pageup
+          ACTION=PAGEUP.
+:KEYI     KEY=ENTER
+          HELP=enter
+          ACTION=ENTER.
+:KEYI     KEY=HELP
+          HELP=help
+          ACTION=HELP.
+:KEYI     KEY=HOME
+          HELP=home
+          ACTION=HOME.
+:KEYI     KEY=PRINT
+          HELP=print
+          ACTION=PRINT.
+:EKEYL.
+.*
+.* -----------------------------------------------------------------
+.* Define Menu panel
+.* -----------------------------------------------------------------
+:PANEL    NAME=ftpcmain
+          HELP='menu/help'
+          KEYL=menukeys
+          ENTER='MSG CPD9817 QCPFMSG'
+          PANELID=ZMENU
+          ENBGUI=YES
+          TOPSEP=SYSNAM.
+FTP Client Main Menu
+.*
+.* -------------------------------------
+.* Define the menu area
+.* -------------------------------------
+:MENU     DEPTH='*'
+          SCROLL=YES
+          BOTSEP=SPACE.
+:TOPINST.Select one of the following:
+.*
+.* -------------------------------------
+.* Specify the action to be taken for each option
+.* -------------------------------------
+.*
+:MENUI    OPTION=2
+          ACTION='CMD ?WRKFTPCCFG'
+          HELP='menu/option2'.
+Configure FTP Client
+.*
+:MENUI    OPTION=4
+          ACTION='CMD CALL FTP801P'
+          HELP='menu/option4'.
+FTP Client
+.*
+:MENUI    OPTION=20
+          ACTION='CMD DSPMSG FTPCMSGQ'
+          HELP='menu/option20'.
+FTP Client Messages
+.*
+:MENUI    OPTION=90
+          ACTION='CMD SIGNOFF'
+          HELP='menu/option90'.
+Signoff
+.*
+:EMENU.
+.*
+.* -------------------------------------
+.* Use a command line and allow commands and option numbers
+.* -------------------------------------
+:CMDLINE  SIZE=LONG.
+Selection or command
+.*
+:EPANEL.
+.*
+.*
+.* -----------------------------------------------------------------
+.* Define help modules for the menu panel
+.* -----------------------------------------------------------------
+:HELP     NAME=keyl.
+Function Keys - Help
+:XH3.Function keys
+:EHELP.
+.*
+:HELP     NAME=helpf1.
+:PARML.
+:PT.F1=Help
+:PD.
+Provides additional information about using the display or a
+specific field on the display.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=exit.
+:PARML.
+:PT.F3=Exit
+:PD.
+Ends the current task and returns to the display from which the
+task was started.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=prompt.
+:PARML.
+:PT.F4=Prompt
+:PD.
+Provides assistance in entering or selecting a command.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=retrieve.
+:PARML.
+:PT.F9=Retrieve
+:PD.
+Displays the last command you entered on the command line and
+any parameters you included.  Pressing this key once, shows the
+last command you ran.  Pressing this key twice, shows the
+command you ran before that and so on.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=cancel.
+:PARML.
+:PT.F12=Cancel
+:PD.
+Returns to the previous menu or display.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=morekeys.
+:PARML.
+:PT.F24=More keys
+:PD.
+Shows additional function keys.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=enter.
+:PARML.
+:PT.Enter
+:PD.
+Submits information on the display for processing.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=pageup.
+:PARML.
+:PT.Pageup
+:PD.
+Scrolls the page up.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=pagedown.
+:PARML.
+:PT.Pagedown
+:PD.
+Scrolls the page down.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=help.
+:PARML.
+:PT.Help
+:PD.
+Provides additional information about using the display.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=home.
+:PARML.
+:PT.Home
+:PD.
+Goes to the menu that was shown after you signed on the system.
+This menu is either the initial menu defined in your user
+profile or the menu you requested from the Sign-On display.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME=print.
+:PARML.
+:PT.Print
+:PD.
+Prints information currently shown on the display.
+:EPARML.
+:EHELP.
+.*
+:HELP     NAME='menu/help'.
+FTP Manager Main Menu - Help
+:P.
+This menu is the starting point for all operations.
+:XH3.
+How to Use a Menu
+:P.
+To select a menu option, type the option number and press Enter.
+:P.
+To run a command, type the command and press Enter.  For assistance
+in selecting a command, press F4 (Prompt) without typing anything.
+For assistance in entering a command, type the command and press F4
+(Prompt).  To see a previous command you entered, press F9
+(Retrieve).
+:P.
+To go to another menu, use the Go to Menu (GO) command. Type GO
+followed by the menu ID, then press the Enter key.
+The menu ID is shown in the upper left corner of the menu.
+For assistance in entering the GO command, type GO and press F4
+(Prompt).  If you do not know the entire menu name you can use a
+generic name.
+ 
+:EHELP.
+.*
+:HELP     NAME='menu/option2'.
+Option 2 - Help
+:XH3.Option 2. Configure FTP Client
+:P.
+This option displays the FTP Client configuration panel.
+:EHELP.
+.*
+:HELP     NAME='menu/option4'.
+Option 4 - Help
+:XH3.Option 4. FTP Client
+:P.
+This option displays the FTP Client.
+:EHELP.
+.*
+:HELP     NAME='menu/option20'.
+Option 20 - Help
+:XH3.Option 20. Display FTP Client Mesages
+:P.
+Take this option to display the messages logged within FTP Client.
+:EHELP.
+.*
+:HELP     NAME='menu/option90'.
+Option 90 - Help
+:XH3.Option 90. Signoff
+:P.
+Take this option to signoff the current session.
+:EHELP.
+.*
+.* -----------------------------------------------------------------
+.* End of menu source
+.* -----------------------------------------------------------------
+:EPNLGRP.
