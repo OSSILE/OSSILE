@@ -9,6 +9,7 @@ Contributions to OSSILE will be accepted if the following conditions are met:
  * Code quality is believed to be acceptable by the maintainers of the project
  * The code contributes sufficient value and is aligned with the spirit of the project
  * The submitter has joined the OSSILE project (to allow any issues to be routed to that person)
+ * The code can be licensed under the terms of ([the OSSILE project license](LICENSE)) (MIT), or can be licensed under a secondary license for the project. The feasibility of a secondary license will be evaluated on a case-by-case basis, but will not be allowed for non-permissive licenses such as the GNU GPL license. 
  * Any copyright declarations follow the requirements in the "[copyright, ownership, and license](#user-content-copyright-ownership-and-license-of-code-you-contribute)" section of this document
 
 ## Contributing changes to existing OSSILE parts
