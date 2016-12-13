@@ -9,6 +9,7 @@ Welcome to the OSSILE project. This project is to serve two purposes:
     
     Documentation:
       - [CARTRIDGE_INFO](main/udtf_cartridge_info/README.md)
+      - [HISTORY_LOG_INFO](main/udtf_history_log_info/README.md)
       - [IMAGE_CATALOG_DETAILS](main/udtf_image_catalog_details/README.md)
       - [MACHINE_ATTRIBUTES](main/udtf_machine_attrs/README.md)
   - CRTFRMSTMF originally sourced from https://bitbucket.org/BrianGarland/
@@ -36,7 +37,7 @@ Each directory in `/main/` is a seperate item, each are installable seperatly wi
 * `PDIR('OSSILE-master/main/udtf_image_catalog_details')`
 
 # OSSILE directory structure
-There are three main directories within OSSILE:
+These are the main directories within OSSILE:
 ## ``main/``
  This directory houses complete, buildable code. 
  Each subdirectory represents a separate buildable item. 
