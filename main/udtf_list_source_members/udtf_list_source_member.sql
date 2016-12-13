@@ -43,7 +43,7 @@ Create or Replace function OSSILE/LIST_SOURCE_MEMBERS (
                  srcDATCHG DATE, 
                  srcTEXT char(50)
                 )
-specific list_src_mbr_all
+specific list_src_mbr_libl
 language SQL
 modifies SQL data
 not fenced
