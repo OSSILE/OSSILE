@@ -99,7 +99,7 @@ if call_type < 0 ;
            'Liste des membres': '*YES' : errcodeDS);
   Monitor;
     QUSLMBR(usrspc: 'MBRL0200': INfile + INlib
-            : INmbr: *OFF);
+            : INmbr: *ON);
   on-error;
     SQLSTATE = '38I00';
     diag_msg = 'unable to generate list';
