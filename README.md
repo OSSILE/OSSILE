@@ -37,7 +37,7 @@ Each directory in `/main/` is a seperate item, each are installable seperatly wi
 * `PDIR('OSSILE-master/main/udtf_image_catalog_details')`
 
 # OSSILE directory structure
-There are three main directories within OSSILE:
+These are the main directories within OSSILE:
 ## ``main/``
  This directory houses complete, buildable code. 
  Each subdirectory represents a separate buildable item. 
