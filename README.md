@@ -22,6 +22,11 @@ Welcome to the OSSILE project. This project is to serve two purposes:
     Documentation:
       - [GETIPTF](main/getiptf/README.md)
 
+ - UDTF list_source_members originally sourced from http://www.volubis.fr/freeware/SQLUDTF.html
+    
+    Documentation:
+      - [LIST_SOURCE_MEMBERS](main/udtf_list_source_members/README.md)
+      
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
 2. Install 5733OPS PTF SI61064 (or latest supercede)
