@@ -12,6 +12,8 @@ Welcome to the OSSILE project. This project is to serve two purposes:
       - [HISTORY_LOG_INFO](main/udtf_history_log_info/README.md)
       - [IMAGE_CATALOG_DETAILS](main/udtf_image_catalog_details/README.md)
       - [MACHINE_ATTRIBUTES](main/udtf_machine_attrs/README.md)
+
+    
   - CRTFRMSTMF originally sourced from https://bitbucket.org/BrianGarland/
     
     Documentation:
@@ -22,10 +24,11 @@ Welcome to the OSSILE project. This project is to serve two purposes:
     Documentation:
       - [GETIPTF](main/getiptf/README.md)
 
+      
  - UDTF list_source_members originally sourced from http://www.volubis.fr/freeware/SQLUDTF.html
     
     Documentation:
-      - [LIST_SOURCE_MEMBERS](main/udtf_list_source_members/README.md)
+      - [LIST_SOURCE_MEMBERS](main/udtf_list_source_members/readme.md)
       
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
