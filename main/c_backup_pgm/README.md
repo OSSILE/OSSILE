@@ -10,10 +10,10 @@ the save to only take up as much DASD as you need. It is important atht the Volu
 
 ###Sample Commands to create above
 ```CRTDEVTAP DEVD(VRTTAP01) RSRCNAME(*VRT) ASSIGN(*YES) 
- CRTIMGCLG IMGCLG(MYBACKUP) DIR('/mybackup') TYPE(*TAP) 
- ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(daya01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(DAYA01)  
- ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(weka01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(WEKA01)   
- ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(mtha01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(MTHA01)``` 
+CRTIMGCLG IMGCLG(MYBACKUP) DIR('/mybackup') TYPE(*TAP) 
+ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(daya01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(DAYA01)  
+ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(weka01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(WEKA01)   
+ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(mtha01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(MTHA01)``` 
 
 ## Setup the backup
 Before you run the program you will need to set up your BACKUP settings via menu **BACKUP** (GO BACKUP) option 10. This program will use the settings 
