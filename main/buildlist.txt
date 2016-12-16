@@ -7,3 +7,10 @@ crtfrmstmf
 getiptf
 sha256
 c_backup_pgm
+c_check_rcvr_delete
+c_chk_os_lvl
+c_display_constraints
+c_display_triggers
+c_list_dbr
+c_list_jrn_obj
+c_signature_verification
