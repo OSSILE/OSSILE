@@ -5,8 +5,8 @@
  * to look through all of the objects in a library and confirm no
  * signature violations exist.
  * @parms
- *      first parameter is the Server Program
- *      second parameter is the program which uses the service program
+ *      Server Program character 20 'PgmName   Library   '
+ *      Program which uses the service program character 20 'PgmName   Library   '
  */
 #include <qbnlpgmi.h>                       // ILE pgm info
 #include <qbnlspgm.h>                       // Srv pgm info
@@ -27,6 +27,8 @@ typedef struct  EC_x {
 #define _1KB 1024
 #define _1MB _1KB * _1KB
 #define _4MB _1MB * 4
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
  
 /*
  * function Dump_Hex_Output()

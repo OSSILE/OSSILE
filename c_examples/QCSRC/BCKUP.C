@@ -2,7 +2,7 @@
  * save objects to an image catalog and then copy that image catalog to a
  * remote file server. It can be used via the jobscheduler shipped with every
  * IBM i system to create a back up process that will run automatically every
- * night and carry out the required save process. We have set up the backup
+ * night and carry out the required save process (*use *SCHED). We have set up the backup
  * settings via the menu options available from menu BACKUP (GO BACKUP) option 10.
  * It will use the settings to carry out the backup to a virtual tape Image Catalog.
  * Setting up the image catalog is required but the subsequent entries are created
@@ -15,11 +15,16 @@
  * It is provided as a basis for developing your own specific back up process and may not work
  * as it is defined here. Setting up the NAS was carried out using NFS but can be any file system
  * mount that your desire.
+ * @parms
+ *      Backup type *SCHED,*DAILY,*WEEKLY,*MONTHLY (*SCHED uses the current date to determine type)
  */
 #include<stdio.h>
 #include<string.h>
 #include <stdlib.h>
 #include<time.h>
+ 
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
  
 int main(int argc, char **argv) {
 int dom[12] = {31,28,31,30,31,30,31,31,30,31,30,31}; // days in month

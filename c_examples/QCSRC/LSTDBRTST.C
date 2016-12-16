@@ -1,3 +1,10 @@
+/* the purpose of this program is to list the Database relationships attached to
+ * the file passed. It demonstrates the use of API's and pinters to access the required
+ * information.
+ * @parms
+ *      File Name 20 character 'FileName  Library   '
+ */
+ 
 #include <stdio.h>                          // standard io
 #include <stdlib.h>                         // standard lib
 #include <string.h>                         // string funcs
@@ -13,6 +20,8 @@ typedef _Packed struct  EC_x {
                         char Exception_Data[1024];
                         } EC_t;
 #define _1MB 1024*1024
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
  
 /*
  * function Crt_Usr_Spc()

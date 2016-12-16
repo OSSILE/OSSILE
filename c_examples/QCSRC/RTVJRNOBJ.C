@@ -1,4 +1,9 @@
-// take 2 parameters, first is a 20 character journal name second is object type (*ALL)
+/* The sample code shows how to extract the journalled objects from a journal.
+ * @parms
+ *      Journal Name character 20 'JrnName   Library   '
+ *      Object types to display *ALL,*FILE,*STMF,*DTAARA,*DTAQ,*LIB
+ */
+ 
 #include <stdio.h>                          // standard I/O */
 #include <stdlib.h>                         // standard I/O */
 #include <string.h>                         // memory and string*/
@@ -29,6 +34,8 @@ typedef _Packed struct  EC_x {
 #define _ERR_REC sizeof(struct EC_x);
 #define _DFT_MSGQ "*REQUESTER*LIBL     "
 #define _DFT_MSGF "QCPFMSG   *LIBL     "
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
  
 /*
  * function snd_error_msg()

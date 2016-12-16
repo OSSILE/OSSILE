@@ -1,3 +1,9 @@
+/* purpose of this program is to extract information about the system such as
+ * memory utilization and DASD utilization. It shows how to call the various API's
+ * required to carry out the task.
+ * @parms
+ *      *NONE
+ */
 #include <stdio.h>                          // Standard I/O
 #include <stdlib.h>                         // Standard Lib
 #include <recio.h>                          // File Record level access
@@ -18,6 +24,8 @@ typedef struct EC_x {
 #define _64K _1KB * 64
 #define _1MB _1KB * _1KB
 #define _1GB ((long)_1MB * _1KB)
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
  
 int main(int argc, char **argv) {
 int List_Info_Len = sizeof(List_Info);      // list info len

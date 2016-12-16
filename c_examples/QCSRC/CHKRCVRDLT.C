@@ -1,3 +1,12 @@
+/* The purpose of this program is to read through the journal receivers
+ * attached to a journal and show the receivers which are x days old or greater.
+ * The program can be adpoted to delete the journal receivers that are identified
+ * to help reduce DASD utilisation by *JRNRCV objects.
+ * @parms
+ *      Journal Name 20 character 'JrnName   Library   '
+ *      Days to flag int
+ */
+ 
 #include <stdio.h>                          // standard I/O
 #include <stdlib.h>                         // standard Lib
 #include <string.h>                         // memory and string
@@ -13,6 +22,8 @@
 #define _1KB 1024
 #define _1MB _1KB * 1024
 #define _SECSPERDAY (24 * 60 * 60)
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
  
 typedef struct EC_x {
                Qus_EC_t EC;
@@ -130,10 +141,10 @@ for(i = 0; i < Num_Rcvrs; i++) {
    strncpy(D_Date,Rcvr_Output.Detach_Date_Time,7);
    if((atoi(R_Date) > atoi(D_Date)) &&
       (memcmp(Rcvr_Output.Detach_Date_Time,"0000000000000",13) != 0)) {
-      printf("Would delete receiver %.20s\n",Rcvr_Output.Jrn_Rcv_Name);
+      printf("Receiver %.20s is %d days old or greater\n",Rcvr_Output.Jrn_Rcv_Name,Num_Days);
       }
    else
-      printf("Would not delete receiver %.20s\n",Rcvr_Output.Jrn_Rcv_Name);
+      printf("Receiver %.20s is less than %d days old\n",Rcvr_Output.Jrn_Rcv_Name,Num_Days);
    Rcvr_Dets_Ptr++;
    }
 return 1;

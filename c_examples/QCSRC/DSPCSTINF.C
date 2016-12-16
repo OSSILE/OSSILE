@@ -1,3 +1,9 @@
+/* the purpose of this program is to show the constraints attached to the file
+ * passed. Its hows how to use the API's required to gather this information and
+ * use pointers to address that information.
+ * @parms
+ *      File Name 20 character 'FileName  Library   '
+ */
 #include <stdio.h>                          // standard I/O
 #include <stdlib.h>                         // standard I/O
 #include <string.h>                         // memory and string
@@ -26,6 +32,8 @@ typedef _Packed struct  EC_x {
 #define _4MB _1MB * 4
 #define _16MB 16773120
 #define MAX_MSG 2048
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
  
 /*
  * function snd_error_msg()

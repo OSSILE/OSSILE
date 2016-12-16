@@ -1,3 +1,8 @@
+/* program to print out a list of jobs on the system and their attributes.
+ * @parms
+ *      *NONE
+ */
+ 
 #include <stdio.h>                          // standard I/O
 #include <stdlib.h>                         // standard I/O
 #include <string.h>                         // memory and string
@@ -53,6 +58,8 @@ typedef _Packed struct  EC_x {
 #define _64K _1KB * 64
 #define _1MB _1KB * _1KB
 #define _16MB 16773120
+#define _CPYRGHT "Copyright (c) Chris Hird 2016 Made available under the terms of the license of the containing project"
+#pragma comment(copyright,_CPYRGHT)
 // function pre declarations
 int Build_Job_Dta(Qus_Generic_Header_0100_t *, char *);
 int Crt_Usr_Spc(char *, int);
