@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<itemlist>
+   <items>
+      <item>
+         <description>CTP 7.0", 2D Multi-Touch, FocalTech</description>
+         <id>EP0700M06</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>26</quantity>
+      </item>
+      <item>
+         <description>TFT 2.4" QVGA, 350cd/m² LED MCU interface</description>
+         <id>ET024012DMA</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>338</quantity>
+      </item>
+      <item>
+         <description>TFT 10.1" WXGA, 800 cd/m² LED, IPS, LVDS, Glyn specified PCB</description>
+         <id>ET1010G0DSA</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>412</quantity>
+      </item>
+      <item>
+         <description>TFT 10.1" WXGA, 680 cd/m² LED, IPS, LVDS, cap. Touch</description>
+         <id>ETML101001DKA</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>14</quantity>
+      </item>
+      <item>
+         <description>TFT 10.1" WXGA, 680 cd/m² LED, IPS, LVDS, cap. Touch, Glyn specified PCB</description>
+         <id>ETML1010G0DKA</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>2</quantity>
+      </item>
+      <item>
+         <description>LCD 128 x 64, STN blue, white LED</description>
+         <id>EW13B36BMW</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>11</quantity>
+      </item>
+      <item>
+         <description>LCD 128 x 64, FSTN positive, white LED</description>
+         <id>EW13B36FLW</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>154</quantity>
+      </item>
+      <item>
+         <description>LCD 16 x 2, STN green, yel/green LED</description>
+         <id>EW16290YLY</id>
+         <manufacturer>EDT</manufacturer>
+         <quantity>13</quantity>
+      </item>
+   </items>
+</itemlist>
