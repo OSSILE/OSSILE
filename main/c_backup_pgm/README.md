@@ -9,11 +9,11 @@ sufficient size to contain the backups you will capture. The IMGSIZE parameter w
 the save to only take up as much DASD as you need. It is important atht the Volume Names match those set up in the BACKUP options.
 
 ###Sample Commands to create above
-**CRTDEVTAP DEVD(VRTTAP01) RSRCNAME(*VRT) ASSIGN(*YES)**
-**CRTIMGCLG IMGCLG(MYBACKUP) DIR('/mybackup') TYPE(*TAP)**
-**ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(daya01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(DAYA01)**  
-**ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(weka01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(WEKA01)**  
-**ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(mtha01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(MTHA01)** 
+CRTDEVTAP DEVD(VRTTAP01) RSRCNAME(*VRT) ASSIGN(*YES)
+CRTIMGCLG IMGCLG(MYBACKUP) DIR('/mybackup') TYPE(*TAP)
+ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(daya01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(DAYA01)  
+ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(weka01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(WEKA01)  
+ADDIMGCLGE IMGCLG(MYBACKUP) FROMFILE(*new) TOFILE(mtha01) IMGSIZ(10000) TEXT('Daily save') VOLNAM(MTHA01) 
 
 ## Setup the backup
 Before you run the program you will need to set up your BACKUP settings via menu **BACKUP** (GO BACKUP) option 10. This program will use the settings 
@@ -28,8 +28,8 @@ It is provided as a basis for developing your own specific back up process and m
 using NFS but can be any file system mount that you desire.
 
 ## Parameters
-Backup type '*SCHED,*DAILY,*WEEKLY,*MONTHLY' 
-'*SCHED' uses the current date to determine type, it is what should be used when using via the job scheduler. The other parameters allow you to call
+Backup type *SCHED,*DAILY,*WEEKLY,*MONTHLY 
+*SCHED uses the current date to determine type, it is what should be used when using via the job scheduler. The other parameters allow you to call
 the program from a command line and automatically start a backup of the desired type.
 
 ##Tests
