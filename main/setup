@@ -3,7 +3,12 @@ export TGTLIB=OSSILE
 if [ ! -e /qsys.lib/ossile.lib ] ; then
   system "crtlib $TGTLIB"
 fi
-export WORKDIR=$(pwd)/$(dirname $0)
+if [[ $0 = /* ]]
+then
+    export WORKDIR=$(dirname $0)
+else
+    export WORKDIR=$(pwd)/$(dirname $0)
+fi
 
 ITEMS=$(tr '\n' ' ' < $WORKDIR/buildlist.txt | grep -v '#')
 
