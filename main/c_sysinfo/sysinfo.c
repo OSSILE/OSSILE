@@ -22,7 +22,7 @@ typedef struct EC_x {
 #pragma comment(copyright,_CPYRGHT)
 
 int main(int argc, char **argv) {
-int List_Info_Len = sizeof(List_Info);      // list info len
+int List_Info_Len = 0;                      // list info len
 float pct_avail;                            // available percent
 float dasd_avail;                           // dasd available
 char Reset[10] = "*NO       ";              // reset info
@@ -31,6 +31,7 @@ Qwc_SSTS0200_t List_Info;                   // list info struct
 EC_t Error_Code = {0};                      // error struct
 
 Error_Code.EC.Bytes_Provided = sizeof(Error_Code);
+List_Info_Len = sizeof(List_Info);
 QWCRSSTS(&List_Info,
          List_Info_Len,
          Fmt_Name,
