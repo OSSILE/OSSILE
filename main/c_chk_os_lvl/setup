@@ -1,3 +1,4 @@
+#!/QOpenSys/usr/bin/sh
 export PWD=$(pwd)
 system -kpieb "CRTCMOD MODULE(OSSILE/CHKOSLVL) SRCSTMF('$PWD/chkoslvl.c') REPLACE(*YES)"
 exec system -kpieb "CRTPGM PGM(OSSILE/CHKOSLVL) MODULE(OSSILE/CHKOSLVL)"

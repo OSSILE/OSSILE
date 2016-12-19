@@ -1,4 +1,4 @@
 #!/QOpenSys/usr/bin/sh
 export PWD=$(pwd)
-exec system -kpieb "CRTBNDRPG PGM(OSSILE/LISTMEMBER) SRCSTMF('$PWD/listmember.rpgle') TEXT('List source file members') "
-exec system -kpieb "RUNSQLSTM SRCSTMF('$PWD/udtf_list_source_members.sql') DFTRDBCOL(OSSILE) "
+system -kpieb "CRTBNDRPG PGM(OSSILE/LISTMEMBER) SRCSTMF('$PWD/listmember.rpgle') TEXT('List source file members') "
+exec system -kpieb "RUNSQLSTM SRCSTMF('$PWD/udtf_list_source_member.sql') DFTRDBCOL(OSSILE) "
