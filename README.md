@@ -25,7 +25,7 @@ Welcome to the OSSILE project. This project is to serve two purposes:
   - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
     a re-implementation of SHA256 in C.
     Documentation:
-      - [README](main/sha256/README.md)
+      - [README](main/sha256/readme.md)
 
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
