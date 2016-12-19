@@ -14,3 +14,5 @@ c_display_triggers
 c_list_dbr
 c_list_jrn_obj
 c_signature_verification
+c_sysinfo
+c_joblist
