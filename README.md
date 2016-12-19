@@ -1,26 +1,53 @@
 # OSSILE
 
 Welcome to the OSSILE project. This project is to serve two purposes:
-  1. This project is to provide, via the open source community, a wide set of utilities for IBM i. They will get built into the OSSILE library. 
+  1. This project is to provide, via the open source community, a wide set of utilities for IBM i. They will get built into the OSSILE library.
   2. This project is to provide working examples of various things in ILE languages (RPG, C, C++)
 
 ## Currently included in OSSILE
   - Useful UDTF's originally sourced from https://bitbucket.org/christianjorgensen/
-    
+
     Documentation:
       - [CARTRIDGE_INFO](main/udtf_cartridge_info/README.md)
       - [HISTORY_LOG_INFO](main/udtf_history_log_info/README.md)
       - [IMAGE_CATALOG_DETAILS](main/udtf_image_catalog_details/README.md)
       - [MACHINE_ATTRIBUTES](main/udtf_machine_attrs/README.md)
   - CRTFRMSTMF originally sourced from https://bitbucket.org/BrianGarland/
-    
+
     Documentation:
       - [CRTFRMSTMF](main/crtfrmstmf/README.md)
-  
+
   - GETIPTF, originally sourced from http://bryandietz.us/getiptf.html
-    
+
     Documentation:
       - [GETIPTF](main/getiptf/README.md)
+      
+  - C program samples originally sourced from [ChrisHird/OSSILE](https://github.com/ChrisHird/OSSILE)
+
+    - BACKUP Program to run backups using BACKUP options and Image Catalogs and copy to remote file server.
+    - CHKRCVRDLT Program to clean up receivers based on days since detatched.
+    - CHKOSLVL Program to display the current OS level.
+    - DSPCSTINF Program to display the constraints attached to a file.
+    - DSPTRGINF Program to display the triggers attached to a file.
+    - JOBLIST Program to display the currently active jobs and some of their attributes.
+    - LSTDBRTST Program to display the database relationships for a file.
+    - RTVJRNOBJ Program to display the objects currently journalled to a journal.
+    - RTVDIRSZ Program to log the content and sizes of a directory plus calculate the total size.
+    - SRVPGMCHK Program to check the signatures of a service program and a program to ensure the program can call the Service program.
+    - SYSINFO Program to retrieve and display system status.
+
+    Documentation
+       - [BACKUP](main/c_backup_pgm/README.md)
+       - [CHKRCVRDLT](main/c_check_recvr_delete/README.md)
+       - [CHKOSLVL](main/c_chk_os_lvl/README.md)
+       - [DSPCSTINF](main/c_display_constraints/README.md)
+       - [DSPTRGINF](main/c_display_triggers/README.md)
+       - [JOBLIST](main/c_joblist/README.md)
+       - [LSTDBRTST](main/c_list_dbr/README.md)
+       - [RTVJRNOBJ](main/c_list_jrn_obj/README.md)
+       - [RTVDIRSZ](main/c_rtvdirsz/README.md)
+       - [SRVPGMCHK](main/c_signature_vreification/README.md)
+       - [SYSINFO](main/c_sysinfo/README.md)
       
   - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
     a re-implementation of SHA256 in C.
@@ -44,8 +71,8 @@ Each directory in `/main/` is a seperate item, each are installable seperatly wi
 # OSSILE directory structure
 These are the main directories within OSSILE:
 ## ``main/``
- This directory houses complete, buildable code. 
- Each subdirectory represents a separate buildable item. 
+ This directory houses complete, buildable code.
+ Each subdirectory represents a separate buildable item.
 ## ``c_examples/``
  This directory houses examples of how to accomplish various tasks in ILE C. They do not need to be working, compilable examples (though that is preferred).
 ## ``clle_examples/``
@@ -53,7 +80,7 @@ These are the main directories within OSSILE:
 ## ``rpg_examples/``
  This directory houses examples of how to accomplish various tasks in ILE RPG. They do not need to be working, compilable examples (though that is preferred).
 ## ``sql_examples/``
- This directory houses examples of how to accomplish various tasks using SQL scripts. 
+ This directory houses examples of how to accomplish various tasks using SQL scripts.
 
-# Contributing 
+# Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
