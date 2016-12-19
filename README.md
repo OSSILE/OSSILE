@@ -21,6 +21,7 @@ Welcome to the OSSILE project. This project is to serve two purposes:
 
     Documentation:
       - [GETIPTF](main/getiptf/README.md)
+      
   - C program samples originally sourced from [ChrisHird/OSSILE](https://github.com/ChrisHird/OSSILE)
 
     - BACKUP Program to run backups using BACKUP options and Image Catalogs and copy to remote file server.
@@ -47,6 +48,11 @@ Welcome to the OSSILE project. This project is to serve two purposes:
        - [RTVDIRSZ](main/c_rtvdirsz/README.md)
        - [SRVPGMCHK](main/c_signature_vreification/README.md)
        - [SYSINFO](main/c_sysinfo/README.md)
+      
+  - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
+    a re-implementation of SHA256 in C.
+    Documentation:
+      - [README](main/sha256/readme.md)
 
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
