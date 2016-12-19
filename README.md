@@ -21,6 +21,11 @@ Welcome to the OSSILE project. This project is to serve two purposes:
     
     Documentation:
       - [GETIPTF](main/getiptf/README.md)
+      
+  - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
+    a re-implementation of SHA256 in C.
+    Documentation:
+      - [README](main/getiptf/README.md)
 
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
