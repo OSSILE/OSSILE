@@ -60,7 +60,7 @@ Welcome to the OSSILE project. This project is to serve two purposes:
 3. From a PASE-capable shell (ssh client, QP2term, etc), run:
   * ``/QOpenSys/QIBM/ProdData/OPS/tools/bin/unzip OSSILE-master.zip``
   * ``cd OSSILE-master/main && chmod +x ./setup && ./setup``
-To exclude an item from building, remove it from buildlist.txt
+To exclude an item from building, remove it from buildlist.txt or comment it out with a preceding '#'
 
 #### Installing via Relic Package Manager
 Each directory in `/main/` is a seperate item, each are installable seperatly with Relic. The base command is `RELICGET PLOC('https://github.com/OSSILE/OSSILE/archive/master.zip') PDIR('OSSILE-master/main/<ITEM>') PNAME(OSSILE)`, where `<ITEM>` is one of those directories. For example:
