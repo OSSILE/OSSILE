@@ -2,50 +2,62 @@
 
 ## RPG Examples
 
-- BBCNEWS 
+- __BBCNEWS__
 
-- CALCWEEK --- Calculate Weekend- and Start
+- __CALCWEEK : Calculate Weekend- and start__
+
   The start and end date of the week is calculated via the CEE API. Either the 
-  current week is used for calculation or a date can be passed to the program in ISO0   format (`yyyyMMdd`).
+  current week is used for calculation or a date can be passed to the program in
+  ISO0 format (`yyyyMMdd`).
 
-- COMPTIMARR --- Compile Time Arrays
+- __COMPTIMARR : Compile Time Arrays__
+
   Arrays of type character and (unsigned) integer are fill with values at compile
   time.
 
-- DSPMEMUSG --- Display Memory Usage
+- __DSPMEMUSG : Display Memory Usage__
+
   The used memory grouped by activiation group is displayed. The data is retrieved
   by querying the activation groups via operating system API.
 
-- DTAARA --- Work with Data Areas
+- __DTAARA - Work with Data Areas__
+
   A data area is read and filled. The data area will be created if it does not exist.
 
-- DYNMEM --- Dynamic Memory Management
+- __DYNMEM : Dynamic Memory Management__
+
   Memory is dynamically allocated, reallocated and deallocated. The default heap
   storage is used.
 
-- DYNMEMCEE 
-  This example performs the same functionality as the example `DYNMEM` but uses a
+- __DYNMEMCEE : Dynamic Memory Management using user-created Heap Storage__
+
+  This example performs the same functionality as the example _DYNMEM_ but uses a
   user-created heap for storage allocation. The CEE API is used to work with the 
   user-created heap.
 
-- DYNDSARR
-- 
-- hello --- Hello World
+- __DYNDSARR__
+
+- __hello : Hello World__
+
   A typical hello world program.
 
-- HTTPGETBLOB
+- __HTTPGETBLOB__
 
-- interfaces --- Interfaces in RPG
+- __interfaces : Interfaces in RPG__
+
   This example show how to decouple the caller from an API implementation and thus
   making it possible to switch or add more API implementations without touching the
   calling program.
 
-- interoperability --- Language Interoperability
+- __interoperability : Language Interoperability__
+
   A C function is called from and RPG program.
 
-- INTTOHEX --- Integer to Hex
+- __INTTOHEX : Integer to Hex__
+
   The hex representation of an integer is calculated via the `_itoa` C function.
 
-- SOAPREQUEST
+- __SOAPREQUEST__
 
-- POSKEYWORD
+- __POSKEYWORD__
+
