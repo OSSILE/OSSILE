@@ -4,7 +4,7 @@
 
 - __BBCNEWS__
 
-- __CALCWEEK : Calculate Weekend- and start__
+- __CALCWEEK : Calculate Weekend and -start__
 
   The start and end date of the week is calculated via the CEE API. Either the 
   current week is used for calculation or a date can be passed to the program in
