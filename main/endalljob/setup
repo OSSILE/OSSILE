@@ -6,3 +6,6 @@ system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/endalljob.cmd') TOMBR('/QSYS.lib/OSSILE
 system -kpieb "CRTCLPGM PGM(OSSILE/ENDALLJOBC) SRCFILE(OSSILE/ENDALLJOB) SRCMBR(ENDALLJOBC) REPLACE(*YES) TEXT('ENDALLJOB Program')"
 system -kpieb "CRTCMD CMD(OSSILE/ENDALLJOB) PGM(OSSILE/ENDALLJOBC) SRCFILE(OSSILE/ENDALLJOB) SRCMBR(ENDALLJOB) TEXT('End All jobs with same name') REPLACE(*YES)"
 system -kpieb "DLTOBJ OBJ(OSSILE/ENDALLJOB) OBJTYPE(*FILE)"
+if [ ! -e /qsys.lib/ossile.lib/endalljob.cmd ] ; then
+  exit 5
+fi
