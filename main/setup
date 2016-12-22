@@ -18,7 +18,7 @@ export SUCCESS_ITEMS=""
 
 for ITEM in $ITEMS
 do
- cd $WORKDIR/$ITEM && chmod +x setup && /QOpenSys/usr/bin/sh -c setup >> build_log.txt 2>&1
+ cd $WORKDIR/$ITEM && mv setup setup2 && tr -d '\r' < setup2 > setup && rm -f setup2 && chmod +x setup && /QOpenSys/usr/bin/sh -c setup >> build_log.txt 2>&1
  if [ $? -eq 0 ] ; then
   echo item $ITEM built successfully
   SUCCESS_ITEMS="$SUCCESS_ITEMS $ITEM"
