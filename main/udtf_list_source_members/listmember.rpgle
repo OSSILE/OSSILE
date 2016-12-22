@@ -98,8 +98,9 @@ if call_type < 0 ;
   QUSCRTUS(usrspc: *Blanks: 1024: x'00': '*USE':
            'Liste des membres': '*YES' : errcodeDS);
   Monitor;
+    // list the source file members, accept OVRDBF
     QUSLMBR(usrspc: 'MBRL0200': INfile + INlib
-            : INmbr: *OFF);
+            : INmbr: *ON);
   on-error;
     SQLSTATE = '38I00';
     diag_msg = 'unable to generate list';
