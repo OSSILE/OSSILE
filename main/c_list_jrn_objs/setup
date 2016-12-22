@@ -1,0 +1,4 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+system -kpieb "CRTCMOD MODULE(OSSILE/RTVJRNOBJ) SRCSTMF('$PWD/rtvjrnobj.c') REPLACE(*YES)"
+exec system -kpieb "CRTPGM PGM(OSSILE/RTVJRNOBJ) MODULE(OSSILE/RTVJRNOBJ)"
