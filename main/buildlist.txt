@@ -17,3 +17,4 @@ c_signature_verification
 c_sysinfo
 c_joblist
 c_rtvdirsz
+endalljob
