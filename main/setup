@@ -28,6 +28,7 @@ do
   FAILURE_ITEMS="$FAILURE_ITEMS $ITEM"
  fi
 done
+rm -f /qsys.lib/$TGTLIB.lib/*.MODULE
 echo " "
 echo "========================================"
 echo " "
