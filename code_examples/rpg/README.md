@@ -4,6 +4,8 @@
 
 - __BBCNEWS__
 
+  Fetch news stories (UK edition) from BBC using SYSTOOLS.HTTPGETCLOB 
+
 - __CALCWEEK : Calculate Weekend and -start__
 
   The start and end date of the week is calculated via the CEE API. Either the 
