@@ -15,6 +15,12 @@
   Arrays of type character and (unsigned) integer are fill with values at compile
   time.
 
+- __CONVCASE : Convert Case__
+
+  Converts the case of a string of characters to upper-/lowercase using the C 
+  function _QlgConvertCase_. This function also converts language specific 
+  characters like German Umlaute.
+  
 - __DSPMEMUSG : Display Memory Usage__
 
   The used memory grouped by activiation group is displayed. The data is retrieved
@@ -58,6 +64,15 @@
   The hex representation of an integer is calculated via the `_itoa` C function.
 
 - __SOAPREQUEST__
+
+- __SORTARRAY : Sort Array on Substring of Array Entry__
+
+  An array of postalcodes and city names is sorted by the postalcodes by using
+  the feature to sort on a substring of an array entry.
+
+- __TMPNAM : Generate Temporary File Names__
+
+  Temporary file names are generated for the QSYS.LIB file system and the IFS.
 
 - __POSKEYWORD__
 
