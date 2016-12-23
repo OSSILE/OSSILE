@@ -1,8 +1,9 @@
 # OSSILE
 
-Welcome to the OSSILE project. This project is to serve two purposes:
+Welcome to the OSSILE project. This project is to serve three purposes:
   1. This project is to provide, via the open source community, a wide set of utilities for IBM i. They will get built into the OSSILE library.
   2. This project is to provide working examples of various things in ILE languages (RPG, C, C++)
+  3. This project is to provide working examples of SQL (while not technically ILE, the examples are included here due to strong affinity and usefulness)
 
 ## Currently included in OSSILE
   - Useful UDTF's originally sourced from https://bitbucket.org/christianjorgensen/
@@ -71,14 +72,11 @@ Each directory in `/main/` is a seperate item, each are installable seperatly wi
 # OSSILE directory structure
 These are the main directories within OSSILE:
 ## ``main/``
- This directory houses complete, buildable code.
+ This directory houses complete, buildable code. In other words, it contains all the tools and utilities we list above as "included in OSSILE". 
  Each subdirectory represents a separate buildable item.
-## ``c_examples/``
- This directory houses examples of how to accomplish various tasks in ILE C. They do not need to be working, compilable examples (though that is preferred).
-## ``clle_examples/``
- This directory houses examples of how to accomplish various tasks in ILE CL. They do not need to be working, compilable examples (though that is preferred).
-## ``rpg_examples/``
- This directory houses examples of how to accomplish various tasks in ILE RPG. They do not need to be working, compilable examples (though that is preferred).
+## ``code_examples/``
+ This is where one can find examples of how to accomplish various tasks in ILE languages. They do not need to be working, compilable examples, though that is preferred. 
+ Inside this directory, there are subdirectories for the various ILE languages. The code examples are located in the appropriate lanuage directory. 
 ## ``sql_examples/``
  This directory houses examples of how to accomplish various tasks using SQL scripts.
 
