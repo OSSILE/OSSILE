@@ -18,7 +18,8 @@ export SUCCESS_ITEMS=""
 
 for ITEM in $ITEMS
 do
- cd $WORKDIR/$ITEM && rm -f setup2 && tr -d '\r' < setup > setup2 && chmod +x setup2 && /QOpenSys/usr/bin/sh -c setup2 && rm -f setup2 >> build_log.txt 2>&1
+ cd $WORKDIR/$ITEM && rm -f setup2 && tr -d '\r' < setup > setup2 && chmod +x setup2 && /QOpenSys/usr/bin/sh -c setup2 >> build_log.txt 2>&1
+ rm -f setup2
  if [ $? -eq 0 ] ; then
   echo item $ITEM built successfully
   SUCCESS_ITEMS="$SUCCESS_ITEMS $ITEM"
@@ -27,6 +28,7 @@ do
   FAILURE_ITEMS="$FAILURE_ITEMS $ITEM"
  fi
 done
+rm -f /qsys.lib/$TGTLIB.lib/*.MODULE
 echo " "
 echo "========================================"
 echo " "
