@@ -1,8 +1,9 @@
 # OSSILE
 
-Welcome to the OSSILE project. This project is to serve two purposes:
+Welcome to the OSSILE project. This project is to serve three purposes:
   1. This project is to provide, via the open source community, a wide set of utilities for IBM i. They will get built into the OSSILE library.
   2. This project is to provide working examples of various things in ILE languages (RPG, C, C++)
+  3. This project is to provide working examples of SQL (while not technically ILE, the examples are included here due to strong affinity and usefulness)
 
 ## Currently included in OSSILE
   - Useful UDTF's originally sourced from https://bitbucket.org/christianjorgensen/
