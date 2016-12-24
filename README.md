@@ -55,6 +55,15 @@ Welcome to the OSSILE project. This project is to serve three purposes:
     Documentation:
       - [README](main/sha256/readme.md)
 
+  - ArrayList, originally sourced from [RPG Next Gen](http://rpgnextgen.com).
+    An ArrayList is a one-dimensional array. It is also a dynamic array which 
+    means that the size is not set at compile time but at runtime and it can 
+    grow if required. 
+    
+    Documentation:
+      - [README](main/arraylist/README.md)
+      - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/SCHMIDTM.LIB/QRPGLESRC.FILE/ARRAYLIST.MBR) at [ILEDocs at Sourceforge.net](http://iledocs.sourceforge.net)
+
 # Installing OSSILE on your IBM i
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
 2. Install 5733OPS PTF SI61064 (or latest supercede)
