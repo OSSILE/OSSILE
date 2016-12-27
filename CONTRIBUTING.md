@@ -42,12 +42,15 @@ There are no special processes. Just fork the project, make your changes, test t
 ## Copyright, ownership, and license of code you contribute
  * As is standard, you retain ownership and copyright of any code that you created (whether you explicitly claim it or not)
  * All contributed code is to be available under the terms of ([the OSSILE project license](LICENSE)) (MIT)
- * If you'd like to explicitly claim copyright for a piece of code, do so in the header or prolog of your code. It must be in the following format:
+ * If you'd like to explicitly claim copyright for a piece of code, do so in the header or prolog of your code, there are two ways you can do so:
  
-   `Copyright (C) [years] [name] - Made available under the terms of the license of the containing project`
+     1). Include a copyright declaration in the header or prolog of your code. It must be in the following format:
  
-   For instance: 
+       `Copyright (C) [years] [name] - Made available under the terms of the license of the containing project`
  
-   `Copyright (C) 2015-2016 John Doe - Made available under the terms of the license of the containing project`
+       For instance: 
+ 
+       `Copyright (C) 2015-2016 John Doe - Made available under the terms of the license of the containing project`
 
-
+     2) Precede your code with a copy of the MIT license, unmodified, declaring copyright as needed
+ 
