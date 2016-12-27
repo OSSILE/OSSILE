@@ -19,3 +19,4 @@ c_joblist
 c_rtvdirsz
 endalljob
 arraylist
+nstat
