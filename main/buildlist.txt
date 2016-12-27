@@ -18,4 +18,5 @@ c_sysinfo
 c_joblist
 c_rtvdirsz
 endalljob
+arraylist
 nstat

@@ -1,0 +1,74 @@
+     /*
+      *                          The MIT License (MIT)
+      *
+      * Copyright (c) 2016 Mihael Schmidt
+      *
+      * Permission is hereby granted, free of charge, to any person obtaining a copy 
+      * of this software and associated documentation files (the "Software"), to deal 
+      * in the Software without restriction, including without limitation the rights 
+      * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+      * copies of the Software, and to permit persons to whom the Software is 
+      * furnished to do so, subject to the following conditions:
+      * 
+      * The above copyright notice and this permission notice shall be included in 
+      * all copies or substantial portions of the Software.
+      *
+      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+      * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+      * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+      * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+      * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+      * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+      * SOFTWARE.
+      */
+
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('ARRAYLIST 1.0.0')
+
+    EXPORT SYMBOL('arraylist_create')
+    EXPORT SYMBOL('arraylist_dispose')
+    EXPORT SYMBOL('arraylist_add')
+    EXPORT SYMBOL('arraylist_addFirst')
+    EXPORT SYMBOL('arraylist_addLast')
+    EXPORT SYMBOL('arraylist_get')
+    EXPORT SYMBOL('arraylist_getFirst')
+    EXPORT SYMBOL('arraylist_getLast')
+    EXPORT SYMBOL('arraylist_isEmpty')
+    EXPORT SYMBOL('arraylist_getSize')
+    EXPORT SYMBOL('arraylist_getCapacity')
+    EXPORT SYMBOL('arraylist_clear')
+    EXPORT SYMBOL('arraylist_remove')
+    EXPORT SYMBOL('arraylist_removeFirst')
+    EXPORT SYMBOL('arraylist_removeLast')
+    EXPORT SYMBOL('arraylist_removeRange')
+    EXPORT SYMBOL('arraylist_contains')
+    EXPORT SYMBOL('arraylist_indexOf')
+    EXPORT SYMBOL('arraylist_lastIndexOf')
+    EXPORT SYMBOL('arraylist_frequency')
+    EXPORT SYMBOL('arraylist_replace')
+    EXPORT SYMBOL('arraylist_copy')
+    EXPORT SYMBOL('arraylist_addAll')
+    EXPORT SYMBOL('arraylist_addInteger')
+    EXPORT SYMBOL('arraylist_addShort')
+    EXPORT SYMBOL('arraylist_addLong')
+    EXPORT SYMBOL('arraylist_addDecimal')
+    EXPORT SYMBOL('arraylist_addFloat')
+    EXPORT SYMBOL('arraylist_addDouble')
+    EXPORT SYMBOL('arraylist_addDate')
+    EXPORT SYMBOL('arraylist_addBoolean')
+    EXPORT SYMBOL('arraylist_addString')
+    EXPORT SYMBOL('arraylist_getInteger')
+    EXPORT SYMBOL('arraylist_getShort')
+    EXPORT SYMBOL('arraylist_getLong')
+    EXPORT SYMBOL('arraylist_getDecimal')
+    EXPORT SYMBOL('arraylist_getFloat')
+    EXPORT SYMBOL('arraylist_getDouble')
+    EXPORT SYMBOL('arraylist_getDate')
+    EXPORT SYMBOL('arraylist_getBoolean')
+    EXPORT SYMBOL('arraylist_getString')
+    EXPORT SYMBOL('arraylist_foreach')
+    EXPORT SYMBOL('arraylist_toCharArray')
+    EXPORT SYMBOL('arraylist_reverse')
+    EXPORT SYMBOL('arraylist_split')
+    EXPORT SYMBOL('arraylist_toString')
+    
+ENDPGMEXP

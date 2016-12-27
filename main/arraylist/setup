@@ -1,0 +1,26 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+
+if [ -e /qsys.lib/ossile.lib/arraylist.file ] ; then
+  system -kpieb "DLTOBJ OBJ(OSSILE/ARRAYLIST) OBJTYPE(*FILE)"
+fi
+system -kpieb "CRTSRCPF FILE(OSSILE/ARRAYLIST) RCDLEN(112)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/arraylist.bnd') TOMBR('/QSYS.LIB/OSSILE.LIB/ARRAYLIST.FILE/ARRAYLIST.MBR') MBROPT(*REPLACE)"
+
+if [ -e /qsys.lib/ossile.lib/arraylist.module ] ; then
+  system -kpieb "DLTOBJ OBJ(OSSILE/ARRAYLIST) OBJTYPE(*MODULE)"
+fi
+system -kpieb "CRTRPGMOD OSSILE/ARRAYLIST SRCSTMF('arraylist.rpgle') OPTION(*SRCSTMT) DBGVIEW(*LIST) OPTIMIZE(*BASIC) STGMDL(*INHERIT)"
+
+if [ -e /qsys.lib/ossile.lib/arraylist.srvpgm ] ; then
+  system -kpieb "DLTOBJ OBJ(OSSILE/ARRAYLIST) OBJTYPE(*SRVPGM)"
+fi
+system -kpieb "CRTSRVPGM OSSILE/ARRAYLIST MODULE(OSSILE/ARRAYLIST) STGMDL(*INHERIT) EXPORT(*SRCFILE) SRCFILE(OSSILE/ALISTSRV) TEXT('Arraylist')"
+
+# cleanup
+system -kpieb "DLTOBJ OBJ(OSSILE/ARRAYLIST) OBJTYPE(*FILE)"
+system -kpieb "DLTOBJ OBJ(OSSILE/ARRAYLIST) OBJTYPE(*MODULE)"
+
+if [ ! -e /qsys.lib/ossile.lib/arraylist.srvpgm ] ; then
+  exit 5
+fi
