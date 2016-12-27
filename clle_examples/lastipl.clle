@@ -1,0 +1,27 @@
+/*    Here is a quick way to see when the system was last IPL'd     */                
+/*    Since the SCPF job is the first job in the system this will   */                
+/*    return the date and time the job entered the system.          */                
+/*                                                                  */                
+             PGM                                                                      
+             DCLPRCOPT  ALWRTVSRC(*YES)                                               
+             DCL        VAR(&DLEN) TYPE(*int) LEN(4) VALUE(150)                       
+             DCL    VAR(&DATA) TYPE(*CHAR) LEN(150)                               
+             DCL        VAR(&CEN) TYPE(*CHAR) LEN(1)  STG(*DEFINED) DEFVAR(&DATA 63)  
+             DCL        VAR(&YY)  TYPE(*CHAR) LEN(2)  STG(*DEFINED) DEFVAR(&DATA 64)  
+             DCL        VAR(&MM)  TYPE(*CHAR) LEN(2)  STG(*DEFINED) DEFVAR(&DATA 66)  
+             DCL        VAR(&DD)  TYPE(*CHAR) LEN(2)  STG(*DEFINED) DEFVAR(&DATA 68)  
+             DCL        VAR(&HH)  TYPE(*CHAR) LEN(2)  STG(*DEFINED) DEFVAR(&DATA 70)  
+             DCL        VAR(&M)   TYPE(*CHAR) LEN(2)  STG(*DEFINED) DEFVAR(&DATA 72)  
+             DCL        VAR(&SS)  TYPE(*CHAR) LEN(2)  STG(*DEFINED) DEFVAR(&DATA 74)  
+             DCL        VAR(&cymd) TYPE(*CHAR) LEN(7)  STG(*DEFINED) DEFVAR(&DATA 63) 
+             DCL        VAR(&ISODATE) TYPE(*CHAR) LEN(10)                             
+             DCL        VAR(&FMT) TYPE(*CHAR) LEN(8) VALUE('JOBI0400')                
+            DCL        VAR(&JOB) TYPE(*CHAR) LEN(26) +                                
+                         VALUE('SCPF      QSYS      000000')                  
+            DCL        VAR(&JOBI) TYPE(*CHAR) LEN(16)                         
+            CALL       PGM(QUSRJOBI) PARM(&DATA &DLEN &FMT &JOB &JOBI)        
+             CVTDAT     DATE(&CYMD) TOVAR(&ISODATE) FROMFMT(*CYMD) TOFMT(*ISO)
+             SNDPGMMSG  MSG('The system was last IPL''d on ' || +             
+                          &ISODATE || ' at ' || &HH || ':' || &M || +         
+                          ':' || &SS || '.')                                  
+END:        ENDPGM                                                            

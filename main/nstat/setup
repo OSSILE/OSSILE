@@ -1,0 +1,12 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+system -kpieb "CRTSRCPF FILE(OSSILE/NSTATSF) RCDLEN(112)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/nstat.cmd') TOMBR('/QSYS.lib/OSSILE.lib/NSTATSF.file/NSTAT.mbr') MBROPT(*REPLACE)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/NSTATR.sqlrpgle') TOMBR('/QSYS.lib/OSSILE.lib/NSTATSF.file/NSTATR.mbr') MBROPT(*REPLACE)"
+system -kpieb "CRTSQLRPGI OBJ(OSSILE/NSTATR) SRCFILE(OSSILE/NSTATSF) SRCMBR(NSTATR) REPLACE(*YES) TEXT('Output for Netstat')"
+system -kpieb "CRTCMD CMD(OSSILE/NSTAT) PGM(OSSILE/NSTATR) SRCFILE(OSSILE/NSTATSF) SRCMBR(NSTAT) PRDLIB(OSSILE) REPLACE(*YES) TEXT('Output for NetStat')"
+system -kpieb "DLTOBJ OBJ(OSSILE/NSTATSF) OBJTYPE(*FILE)"
+
+if [ ! -e /qsys.lib/ossile.lib/nstat.cmd ] ; then
+  exit 5
+fi
