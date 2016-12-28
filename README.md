@@ -65,14 +65,21 @@ Welcome to the OSSILE project. This project is to serve three purposes:
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/SCHMIDTM.LIB/QRPGLESRC.FILE/ARRAYLIST.MBR) at [ILEDocs at Sourceforge.net](http://iledocs.sourceforge.net)
 
 # Installing OSSILE on your IBM i
+#### Method 1: download the .zip file and compile
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
-2. Install 5733OPS PTF SI61064 (or latest supercede)
-3. From a PASE-capable shell (ssh client, QP2term, etc), run:
-  * ``/QOpenSys/QIBM/ProdData/OPS/tools/bin/unzip OSSILE-master.zip``
+2. From a PASE-capable shell (ssh client, QP2term, etc), run:
+  * ``jar xvf OSSILE-master.zip``
   * ``cd OSSILE-master/main && chmod +x ./setup && ./setup``
-To exclude an item from building, remove it from buildlist.txt or comment it out with a preceding '#'
 
-#### Installing via Relic Package Manager
+    To exclude an item from building, remove it from buildlist.txt or comment it out with a preceding '#'
+
+#### Method 2: Download *SAVF
+1. Create a save file object on IBM i.
+2. Download https://github.com/OSSILE/OSSILE/blob/master/ossile.savfsrc and upload it to the IBM i, replacing the contents of the save file you've created
+2. Use the RSTLIB command to restore the OSSILE library from the save file. For example:
+  * ``RSTLIB SAVLIB(OSSILE) DEV(*SAVF) SAVF(MYLIB/MYSAVF)``
+
+#### Method 3: Installing via Relic Package Manager
 Each directory in `/main/` is a seperate item, each are installable seperatly with Relic. The base command is `RELICGET PLOC('https://github.com/OSSILE/OSSILE/archive/master.zip') PDIR('OSSILE-master/main/<ITEM>') PNAME(OSSILE)`, where `<ITEM>` is one of those directories. For example:
 
 * `PDIR('OSSILE-master/main/crtfrmstmf')`
