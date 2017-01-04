@@ -17,7 +17,7 @@ struct tm *ts;                              // time struct GMTIME
 int LY;                                     // Leap year flag
 
 // copy in the base path where the images are to be copied
-sprintf(Path,"/mnt/shieldnas/");
+sprintf(Path,"/mnt");
 // get the time structure filled with current time
 if(time(&lt) == -1) {
    printf("Error with Time calculation\n");
@@ -42,7 +42,7 @@ if(memcmp(argv[1],"*SCHED",6) == 0) {
       system("LODIMGCLG IMGCLG(BACKUP) DEV(VRTTAP01)");
       system("RUNBCKUP BCKUPOPT(*MONTHLY) DEV(VRTTAP01)");
       // create the path variable
-      sprintf(Path,"/mnt/shieldnas1/Monthly");
+      sprintf(Path,"/mnt/Monthly");
       // move the IMGCLGE object to the NAS
       sprintf(Cmd,"CPY OBJ('/backup/MTHA01') TODIR('%s') TOCCSID(*CALC) REPLACE(*YES)",Path);
       }
@@ -54,7 +54,7 @@ if(memcmp(argv[1],"*SCHED",6) == 0) {
       system("LODIMGCLG IMGCLG(BACKUP) DEV(VRTTAP01)");
       system("RUNBCKUP BCKUPOPT(*WEEKLY) DEV(VRTTAP01)");
       // create the path
-      sprintf(Path,"/mnt/shieldnas1/Weekly");
+      sprintf(Path,"/mnt/Weekly");
       // move the IMGCLGE object to the NAS
       sprintf(Cmd,"CPY OBJ('/backup/WEKA01') TODIR('%s') TOCCSID(*CALC) REPLACE(*YES)",Path);
       }
@@ -65,7 +65,7 @@ if(memcmp(argv[1],"*SCHED",6) == 0) {
       system("ADDIMGCLGE IMGCLG(BACKUP) FROMFILE(*NEW) TOFILE(DAYA01) VOLNAM(DAYA01) IMGSIZ(10000)");
       system("LODIMGCLG IMGCLG(BACKUP) DEV(VRTTAP01)");
       system("RUNBCKUP BCKUPOPT(*DAILY) DEV(VRTTAP01)");
-      sprintf(Path,"/mnt/shieldnas1/Daily/%.3s",wday[ts->tm_wday]);
+      sprintf(Path,"/mnt/Daily/%.3s",wday[ts->tm_wday]);
       // move the IMGCLGE object to the NAS
       sprintf(Cmd,"CPY OBJ('/backup/DAYA01') TODIR('%s') TOCCSID(*CALC) REPLACE(*YES)",Path);
       }
@@ -77,7 +77,7 @@ else if(memcmp(argv[1],"*DAILY",6) == 0) {
    system("ADDIMGCLGE IMGCLG(BACKUP) FROMFILE(*NEW) TOFILE(DAYA01) VOLNAM(DAYA01) IMGSIZ(10000)");
    system("LODIMGCLG IMGCLG(BACKUP) DEV(VRTTAP01)");
    system("RUNBCKUP BCKUPOPT(*DAILY) DEV(VRTTAP01)");
-   sprintf(Path,"/mnt/shieldnas1/Daily/%.3s",wday[ts->tm_wday]);
+   sprintf(Path,"/mnt/Daily/%.3s",wday[ts->tm_wday]);
    // move the IMGCLGE object to the NAS
    sprintf(Cmd,"CPY OBJ('/backup/DAYA01') TODIR('%s') TOCCSID(*CALC) REPLACE(*YES)",Path);
    }
@@ -88,7 +88,7 @@ else if(memcmp(argv[1],"*WEEKLY",7) == 0) {
    system("ADDIMGCLGE IMGCLG(BACKUP) FROMFILE(*NEW) TOFILE(WEKA01) VOLNAM(WEKA01) IMGSIZ(50000)");
    system("LODIMGCLG IMGCLG(BACKUP) DEV(VRTTAP01)");
    system("RUNBCKUP BCKUPOPT(*WEEKLY) DEV(VRTTAP01)");
-   sprintf(Path,"/mnt/shieldnas1/Weekly");
+   sprintf(Path,"/mnt/Weekly");
    sprintf(Cmd,"CPY OBJ('/backup/WEKA01') TODIR('%s') TOCCSID(*CALC) REPLACE(*YES)",Path);
    }
 else if(memcmp(argv[1],"*MONTHLY",8) == 0) {
@@ -98,7 +98,7 @@ else if(memcmp(argv[1],"*MONTHLY",8) == 0) {
       system("ADDIMGCLGE IMGCLG(BACKUP) FROMFILE(*NEW) TOFILE(MTHA01) VOLNAM(MTHA01) IMGSIZ(50000)");
       system("LODIMGCLG IMGCLG(BACKUP) DEV(VRTTAP01)");
       system("RUNBCKUP BCKUPOPT(*MONTHLY) DEV(VRTTAP01)");
-      sprintf(Path,"/mnt/shieldnas1/Monthly");
+      sprintf(Path,"/mn/Monthly");
       sprintf(Cmd,"CPY OBJ('/backup/MTHA01') TODIR('%s') TOCCSID(*CALC) REPLACE(*YES)",Path);
    }
 if(system(Cmd) != 0)
