@@ -1,0 +1,11 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+system -kpieb "CRTSRCPF FILE(OSSILE/ENDALLJOB)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/endalljobc.clp') TOMBR('/QSYS.lib/OSSILE.lib/ENDALLJOB.file/ENDALLJOBC.mbr') MBROPT(*REPLACE)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/endalljob.cmd') TOMBR('/QSYS.lib/OSSILE.lib/ENDALLJOB.file/ENDALLJOB.mbr') MBROPT(*REPLACE)"
+system -kpieb "CRTCLPGM PGM(OSSILE/ENDALLJOBC) SRCFILE(OSSILE/ENDALLJOB) SRCMBR(ENDALLJOBC) REPLACE(*YES) TEXT('ENDALLJOB Program')"
+system -kpieb "CRTCMD CMD(OSSILE/ENDALLJOB) PGM(OSSILE/ENDALLJOBC) SRCFILE(OSSILE/ENDALLJOB) SRCMBR(ENDALLJOB) TEXT('End All jobs with same name') REPLACE(*YES)"
+system -kpieb "DLTOBJ OBJ(OSSILE/ENDALLJOB) OBJTYPE(*FILE)"
+if [ ! -e /qsys.lib/ossile.lib/endalljob.cmd ] ; then
+  exit 5
+fi
