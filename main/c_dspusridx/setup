@@ -1,0 +1,4 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+system -kpieb "CRTCMOD MODULE(OSSILE/DSPUSRIDX) SRCSTMF('$PWD/dspusridx.c') REPLACE(*YES)"
+exec system -kpieb "CRTPGM PGM(OSSILE/DSPUSRIDX) MODULE(OSSILE/DSPUSRIDX)"

@@ -29,7 +29,9 @@ Welcome to the OSSILE project. This project is to serve three purposes:
     - CHKRCVRDLT Program to clean up receivers based on days since detatched.
     - CHKOSLVL Program to display the current OS level.
     - DSPCSTINF Program to display the constraints attached to a file.
+    - DSPDQINF Prgram to display a data queue attributes
     - DSPTRGINF Program to display the triggers attached to a file.
+    - DSPUSRIDX Program to display a User Index attributes plus the content (text only).
     - JOBLIST Program to display the currently active jobs and some of their attributes.
     - LSTDBRTST Program to display the database relationships for a file.
     - RTVJRNOBJ Program to display the objects currently journalled to a journal.
@@ -42,7 +44,9 @@ Welcome to the OSSILE project. This project is to serve three purposes:
        - [CHKRCVRDLT](main/c_check_recvr_delete/README.md)
        - [CHKOSLVL](main/c_chk_os_lvl/README.md)
        - [DSPCSTINF](main/c_display_constraints/README.md)
+       - [DSPDQINF](main/c_dspdqinf/README.md)
        - [DSPTRGINF](main/c_display_triggers/README.md)
+       - [DSPUSRIDX](main/c_dspusridx/README.md)
        - [JOBLIST](main/c_joblist/README.md)
        - [LSTDBRTST](main/c_list_dbr/README.md)
        - [RTVJRNOBJ](main/c_list_jrn_obj/README.md)
