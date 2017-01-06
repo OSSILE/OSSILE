@@ -17,3 +17,5 @@ c_signature_verification
 #c_sysinfo
 c_joblist
 c_rtvdirsz
+c_dspusridx
+c_dspdqinf

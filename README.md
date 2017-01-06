@@ -21,14 +21,16 @@ Welcome to the OSSILE project. This project is to serve two purposes:
 
     Documentation:
       - [GETIPTF](main/getiptf/README.md)
-      
+
   - C program samples originally sourced from [ChrisHird/OSSILE](https://github.com/ChrisHird/OSSILE)
 
     - BACKUP Program to run backups using BACKUP options and Image Catalogs and copy to remote file server.
     - CHKRCVRDLT Program to clean up receivers based on days since detatched.
     - CHKOSLVL Program to display the current OS level.
     - DSPCSTINF Program to display the constraints attached to a file.
+    - DSPDQINF Prgram to display a data queue attributes
     - DSPTRGINF Program to display the triggers attached to a file.
+    - DSPUSRIDX Program to display a User Index attributes plus the content (text only).
     - JOBLIST Program to display the currently active jobs and some of their attributes.
     - LSTDBRTST Program to display the database relationships for a file.
     - RTVJRNOBJ Program to display the objects currently journalled to a journal.
@@ -48,7 +50,7 @@ Welcome to the OSSILE project. This project is to serve two purposes:
        - [RTVDIRSZ](main/c_rtvdirsz/README.md)
        - [SRVPGMCHK](main/c_signature_vreification/README.md)
        - [SYSINFO](main/c_sysinfo/README.md)
-      
+
   - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
     a re-implementation of SHA256 in C.
     Documentation:
