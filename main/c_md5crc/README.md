@@ -18,7 +18,7 @@ Add the OSSILE library to the library list and run the command entering the info
 * output in MD5DETS 'EMPLOYEE  CORPDATA  EMPLOYEE  772dea81fc50683b758158a7e546756941e66735' 
 
 ##Documentation
-See [IBM Knowledge Center](http://http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
+See [IBM Knowledge Center](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
 
 ##Contributors
 Provided by Chris Hird. You can contact me via Ryver or Linked in should it be necessary.

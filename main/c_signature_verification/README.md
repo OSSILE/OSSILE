@@ -3,7 +3,7 @@ A program which shows the signatures of a service program and then verifies that
 in a program. This ensures that a call to a function from the program to the service program will work.
 
 ##Purpose
-Verifies taht the program will be able to call the service program functions without a signature violation.
+Verifies that the program will be able to call the service program functions without a signature violation.
 
 ## Parameters
 * Service Program Name 20 character 'SrvPgm    Library   '

@@ -11,7 +11,7 @@ Demostrates how to retrieve a list of jobs and display the information about eac
 Test using the command line and entering `CALL OSSILE/JOBLIST`.
 
 ##Documentation
-See [IBM Knowledge Center](http://http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
+See [IBM Knowledge Center](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
 
 ##Contributors
 Provided by Chris Hird. You can contact me via Ryver or Linked in should it be necessary.
