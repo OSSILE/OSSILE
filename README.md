@@ -22,7 +22,7 @@ Welcome to the OSSILE project. This project is to serve three purposes:
 
     Documentation:
       - [GETIPTF](main/getiptf/README.md)
-      
+
   - C program samples originally sourced from [ChrisHird/OSSILE](https://github.com/ChrisHird/OSSILE)
 
     - BACKUP Program to run backups using BACKUP options and Image Catalogs and copy to remote file server.
@@ -34,6 +34,7 @@ Welcome to the OSSILE project. This project is to serve three purposes:
     - DSPUSRIDX Program to display a User Index attributes plus the content (text only).
     - JOBLIST Program to display the currently active jobs and some of their attributes.
     - LSTDBRTST Program to display the database relationships for a file.
+    - MD5CRC Program to generate a CRC for the content of a DB file.
     - RTVJRNOBJ Program to display the objects currently journalled to a journal.
     - RTVDIRSZ Program to log the content and sizes of a directory plus calculate the total size.
     - SRVPGMCHK Program to check the signatures of a service program and a program to ensure the program can call the Service program.
@@ -49,21 +50,22 @@ Welcome to the OSSILE project. This project is to serve three purposes:
        - [DSPUSRIDX](main/c_dspusridx/README.md)
        - [JOBLIST](main/c_joblist/README.md)
        - [LSTDBRTST](main/c_list_dbr/README.md)
+       - [MD5CRC](main/c_md5crc/README.md)
        - [RTVJRNOBJ](main/c_list_jrn_obj/README.md)
        - [RTVDIRSZ](main/c_rtvdirsz/README.md)
-       - [SRVPGMCHK](main/c_signature_vreification/README.md)
+       - [SRVPGMCHK](main/c_signature_verification/README.md)
        - [SYSINFO](main/c_sysinfo/README.md)
-      
+
   - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
     a re-implementation of SHA256 in C.
     Documentation:
       - [README](main/sha256/readme.md)
 
   - ArrayList, originally sourced from [RPG Next Gen](http://rpgnextgen.com).
-    An ArrayList is a one-dimensional array. It is also a dynamic array which 
-    means that the size is not set at compile time but at runtime and it can 
-    grow if required. 
-    
+    An ArrayList is a one-dimensional array. It is also a dynamic array which
+    means that the size is not set at compile time but at runtime and it can
+    grow if required.
+
     Documentation:
       - [README](main/arraylist/README.md)
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/SCHMIDTM.LIB/QRPGLESRC.FILE/ARRAYLIST.MBR) at [ILEDocs at Sourceforge.net](http://iledocs.sourceforge.net)
@@ -92,11 +94,11 @@ Each directory in `/main/` is a seperate item, each are installable seperatly wi
 # OSSILE directory structure
 These are the main directories within OSSILE:
 ## ``main/``
- This directory houses complete, buildable code. In other words, it contains all the tools and utilities we list above as "included in OSSILE". 
+ This directory houses complete, buildable code. In other words, it contains all the tools and utilities we list above as "included in OSSILE".
  Each subdirectory represents a separate buildable item.
 ## ``code_examples/``
- This is where one can find examples of how to accomplish various tasks in ILE languages. They do not need to be working, compilable examples, though that is preferred. 
- Inside this directory, there are subdirectories for the various ILE languages. The code examples are located in the appropriate lanuage directory. 
+ This is where one can find examples of how to accomplish various tasks in ILE languages. They do not need to be working, compilable examples, though that is preferred.
+ Inside this directory, there are subdirectories for the various ILE languages. The code examples are located in the appropriate lanuage directory.
 ## ``sql_examples/``
  This directory houses examples of how to accomplish various tasks using SQL scripts.
 
