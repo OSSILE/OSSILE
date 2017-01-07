@@ -1,0 +1,329 @@
+/* This file is part of FTP Client for IBM i.                                    */
+/*                                                                               */
+/* Copyright (c) 2017 Chris Hird                                                 */
+/* All rights reserved.                                                          */
+/*                                                                               */
+/* Redistribution and use in source and binary forms, with or without            */
+/* modification, are permitted provided that the following conditions            */
+/* are met:                                                                      */
+/* 1. Redistributions of source code must retain the above copyright             */
+/*    notice, this list of conditions and the following disclaimer.              */
+/* 2. Redistributions in binary form must reproduce the above copyright          */
+/*    notice, this list of conditions and the following disclaimer in the        */
+/*    documentation and/or other materials provided with the distribution.       */
+/*                                                                               */
+/*                                                                               */
+/* Disclaimer :                                                                  */
+/* FTP Client for IBM i is distributed in the hope that it will be useful,       */
+/* but WITHOUT ANY WARRANTY; without even the implied warranty of                */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                          */
+
+
+             PGM        PARM(&INSTLIB &SRCLIB &TGTRLS &DIR)
+             DCL        VAR(&INSTLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&SRCLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&TGTRLS) TYPE(*CHAR) LEN(8)
+             DCL        VAR(&DIR) TYPE(*CHAR) LEN(255)
+             DCL        VAR(&STMFPATH) TYPE(*CHAR) LEN(275)
+             DCL        VAR(&SRCMBR) TYPE(*CHAR) LEN(128)
+
+             /* create the source library for holding the binding directory and modules */
+             SNDMSG     MSG(&DIR) TOUSR(*REQUESTER)
+             ADDLIBLE   LIB(&SRCLIB)
+             MONMSG     MSGID(CPF2103)
+             /* Create the Print file */
+             CRTPRTF    FILE(&INSTLIB/FTPPRTF) DEV(*JOB) DEVTYPE(*SCS)
+             /* create the JOBD */
+             CRTJOBD    JOBD(&INSTLIB/FTPUSRJOBD) INLLIBL(&INSTLIB)
+             /* create the message queue */
+             CRTMSGQ    MSGQ(&INSTLIB/FTPCMSGQ)
+             /* create the message file */
+             CRTMSGF    MSGF(&INSTLIB/FTPCMSGF)
+             /* create the message ID's */
+             ADDMSGD    MSGID(API0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Error occured during running of API &1.') SECLVL('An +
+                          Error occured during the running of API &1 which has caused the process to stop.  Determine +
+                          the reason for the failure and retry. Contact support for further information.') SEV(30) +
+                          FMT((*CHAR      10) )
+             ADDMSGD    MSGID(CRT0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Error occured while trying to set autoextend +
+                          parameter of USRSPC &1 in Library &2.') SECLVL('The program tried to set the autoextend +
+                          attribute for USRSPC &1 in Library &2 which failed.  Determine the reason for the +
+                          failure and retry. Contact support for further information.') SEV(30) FMT((*CHAR      +
+                          10) (*CHAR      10) )
+             ADDMSGD    MSGID(CRT0002) MSGF(&INSTLIB/FTPCMSGF) MSG('Error occured while trying to create a USRSPC &1 in +
+                          Library &2.') SECLVL('The program tried to create a USRSPC &1 in Library &2 which failed.  +
+                          Determine the reason for the failure and retry. Contact support for further information.') +
+                          SEV(30) FMT((*CHAR      10) (*CHAR      10) )
+             ADDMSGD    MSGID(CWD0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Cannot proceed beyond the Root directory ''/'' +
+                          request ignored.') SECLVL('You cannot progrees beyond the root directory of the file system. +
+                          The request has been ignored.') SEV(0)
+             ADDMSGD    MSGID(CWD0002) MSGF(&INSTLIB/FTPCMSGF) MSG('Cannot edit a Directory Object') SECLVL('You cannot +
+                          edit the object selected.') SEV(0)
+             ADDMSGD    MSGID(CWD0003) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to extract the current working +
+                          directory.') SECLVL('*NONE') SEV(0)
+             ADDMSGD    MSGID(CWD0004) MSGF(&INSTLIB/FTPCMSGF) MSG('Cannot delete this type of object.') SECLVL('FTP +
+                          Manager will not allow the deletion of this type of list entry. It is not a physical object +
+                          but a link to the previous directory.') SEV(0)
+             ADDMSGD    MSGID(CWD0005) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to delete the object.') SECLVL('FTP is +
+                          unable to delete this object type.') SEV(0)
+             ADDMSGD    MSGID(CWD0006) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to get the information on the object +
+                          selected') SECLVL('*NONE') SEV(0)
+             ADDMSGD    MSGID(CWD0007) MSGF(&INSTLIB/FTPCMSGF) MSG('The selected object is not a directory.') +
+                          SECLVL('You cannot change directory to the selected object. The object is not a +
+                          directory object.') SEV(30)
+             ADDMSGD    MSGID(CWD0008) MSGF(&INSTLIB/FTPCMSGF) MSG('Path exceeds maximum allowed.') SECLVL('The path is +
+                          greater than that supported by the product. A maximum of 254 characters is allowed for a path +
+                          name.') SEV(0)
+             ADDMSGD    MSGID(ERR0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Error found while writing data to the IFS.') +
+                          SECLVL('An Error was reported by the program while writing the Stream Files.  Check the +
+                          joblog for further messages and correct before running the command again.') SEV(40)
+             ADDMSGD    MSGID(ERR0003) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to perform requested option') SECLVL('*NONE') +
+                          SEV(30)
+             ADDMSGD    MSGID(ERR0005) MSGF(&INSTLIB/FTPCMSGF) MSG('Incorrect value entered.') SECLVL('Check the +
+                          help text for the range of values.') SEV(10)
+             ADDMSGD    MSGID(FTP9901) MSGF(&INSTLIB/FTPCMSGF) MSG('Error in the Default Settings, cannot load the +
+                          profiles selected.') SECLVL('The Default settings are invalid. The Directory &1 does not exist +
+                          inthe IFS.  Correct the default settings and try the request again.') SEV(30) FMT((*CHAR 79) )
+             ADDMSGD    MSGID(FTP9902) MSGF(&INSTLIB/FTPCMSGF) MSG('The directory &1 does not exist on the IFS. +
+                          User not added') SECLVL('The directory &1 does not exist onthe IFS. Change the entry to +
+                          reflect the correct path. The path should be an absolute path name with a leading +
+                          ''/''.') SEV(30) FMT((*CHAR      79) )
+             ADDMSGD    MSGID(F000001) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to open File &1.  Contact support.') +
+                          SECLVL('The program could not open the file and has stopped processing.  Contact support to +
+                          resolve this problem before trying the command again.') SEV(40) FMT((*CHAR      10) )
+             ADDMSGD    MSGID(F000002) MSGF(&INSTLIB/FTPCMSGF) MSG('No records exist in File &1.') SECLVL('No +
+                          records are available to process in the file.  This may be an error with the file or no +
+                          data is available to process.') SEV(40) FMT((*CHAR      10) )
+             ADDMSGD    MSGID(F000003) MSGF(&INSTLIB/FTPCMSGF) MSG('No Configuration Data is Available in File &1') +
+                          SECLVL('No configuration data is available in the configuration file. This data has to be +
+                          updated before you can continue with the process.  Contact support for details of the data +
+                          required.') SEV(40) FMT((*CHAR      10) )
+             ADDMSGD    MSGID(F000008) MSGF(&INSTLIB/FTPCMSGF) MSG('Error updating record in file &1.') SECLVL('An +
+                          Error occured while trying to update and entry in file &1.  Determine the reason for the +
+                          failure and retry. Contact support for further information.') SEV(30) FMT((*CHAR      +
+                          10) )
+             ADDMSGD    MSGID(F000009) MSGF(&INSTLIB/FTPCMSGF) MSG('Error adding record to file &1.') SECLVL('An Error +
+                          occured while trying to add a record in file &1.  Determine the reason for the failure and +
+                          retry. Contact support for further information.') SEV(30) FMT((*CHAR 10) )
+             ADDMSGD    MSGID(F000010) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to read from file &1. RRN &2 +
+                          incorrect.') SECLVL('An attempt was made to read the file &1 using the RRN &2 which +
+                          ended in error. Contact support for further assistance.') SEV(30) FMT((*CHAR      10) +
+                          (*CHAR      10) )
+             ADDMSGD    MSGID(GEN0001) MSGF(&INSTLIB/FTPCMSGF) MSG('&1') SECLVL('No further Help defined') SEV(40) +
+                          FMT((*CHAR      512) )
+             ADDMSGD    MSGID(GEN0002) MSGF(&INSTLIB/FTPCMSGF) MSG('parameter passed &1') SECLVL('*NONE') SEV(0) +
+                          FMT((*CHAR      2) )
+             ADDMSGD    MSGID(IP00001) MSGF(&INSTLIB/FTPCMSGF) MSG('The address length must be greater than 7 +
+                          characters.') SECLVL('Enter a valid IP address') SEV(30)
+             ADDMSGD    MSGID(IP00002) MSGF(&INSTLIB/FTPCMSGF) MSG('The IP address entered "*" can only be entered +
+                          once.') SECLVL('You have tried to enter the address * but it is already contained in the +
+                          other precessing scheme. If this is the reject processing scheme either remove it from +
+                          the accept processing scheme and re-enter here or vice versa.') SEV(30)
+             ADDMSGD    MSGID(IP00003) MSGF(&INSTLIB/FTPCMSGF) MSG('The address format is incorrect. Request to add IP +
+                          Address &1 rejected.') SECLVL('The format of a subnet mask is ''.*'' the address entered does +
+                          not follow this format. If this is the first part of the IP Address it must be an ''*'' not +
+                          ''.*''. Please renter the correct format and try your request again.') SEV(30) FMT((*CHAR 15) )
+             ADDMSGD    MSGID(LIC0010) MSGF(&INSTLIB/FTPCMSGF) MSG('FTP Client Trial already installed previously.  +
+                          New Key Required &1.') SECLVL('You have already installed the FTP Client previously and +
+                          used the 30 day trial period key.  If you do not have a key please contact Shield +
+                          Advanced Solutions for a new key.') SEV(0) FMT((*CHAR      7) )
+             ADDMSGD    MSGID(LIC0011) MSGF(&INSTLIB/FTPCMSGF) MSG('30 Day trial key for product &1 sucessfully +
+                          installed. 5 concurrent users allowed') SECLVL('You have sucessfully installed the 30 Day +
+                          trial key, this will allow the product to work for a period of 30 days from today.  After this +
+                          time the product will fail to function.  You may have upto 5 active users active at any one +
+                          time.') SEV(0) FMT((*CHAR      7) )
+             ADDMSGD    MSGID(LST0001) MSGF(&INSTLIB/FTPCMSGF) MSG('No List entries for this directory.') +
+                          SECLVL('*NONE') SEV(0)
+             ADDMSGD    MSGID(MOD0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Transfer Mode must be BINARY for a Save File +
+                          Transfer.') SECLVL('You need to set the transfer mode to BINARY when transfering save Files. +
+                          It has been set to BINARY for you for the duration of this transfer') SEV(30)
+             ADDMSGD    MSGID(MSG0002) MSGF(&INSTLIB/FTPCMSGF) MSG('FTP Client for IBM i') SECLVL('*NONE') SEV(0)
+             ADDMSGD    MSGID(PWD0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Password not accepted') SECLVL('The password was +
+                          rejected by the remote system.') SEV(0)
+             ADDMSGD    MSGID(SEC0000) MSGF(&INSTLIB/FTPCMSGF) MSG('Not Licensed to run FTP Client.') SECLVL('You +
+                          have attempted to use the FTP Client before installing the security code.  Please +
+                          install the security code before continuing.') SEV(40)
+             ADDMSGD    MSGID(SEC0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Updates not allowed. You have to be signed on as +
+                          QSECOFR to update the configurations') SECLVL('The Configuration files can only be updated by +
+                          QSECOFR. Sign on as QSECOFR to carry out these tasks.') SEV(40)
+             ADDMSGD    MSGID(SEC0002) MSGF(&INSTLIB/FTPCMSGF) MSG('FTP Client attempted to perform a &1 but the +
+                          request was rejected.') SECLVL('FTP Client uses the security settings within FTP +
+                          Security Manager. Your request was checked and was rejected by the software. You will +
+                          need to have your profile added to the FTP Client Profiles within FTP Security Manager +
+                          before you retry the request.') SEV(40) FMT((*CHAR      25) )
+             ADDMSGD    MSGID(SF00001) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to open File &1') SECLVL('Cannot open the +
+                          stream file &1. Contact support.') SEV(40) FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00002) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to open the Stream file &1') +
+                          SECLVL('Unable to open the stream file &1 for updating with the map info.  Contact +
+                          support') SEV(40) FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00003) MSGF(&INSTLIB/FTPCMSGF) MSG('Error reading from file &1;') SECLVL('The Program +
+                          encountered a problem reading from the stream file, Contact support.') SEV(40) FMT((*CHAR 50) )
+             ADDMSGD    MSGID(SF00004) MSGF(&INSTLIB/FTPCMSGF) MSG('Error writing to stream file &1') SECLVL('The +
+                          program encountered a problem writing to the stream file. Contact support.') SEV(40) +
+                          FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00005) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to extract file details for File &1.') +
+                          SECLVL('The program could not extract the file details for File &1. Contact support') SEV(40) +
+                          FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00006) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to create the directory &1') SECLVL('An +
+                          attempt to create the directory &1 failed due to errors,  check the job log for further +
+                          information and contact support.') SEV(40) FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00007) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to make directory &1 the current directory.') +
+                          SECLVL('An attempt was made to make directory &1 the current directory,  this has caused the +
+                          program to fail, before you restart the program check the joblog and message files to +
+                          determine the reason for the failure, correct the problems and restart the program.') SEV(40) +
+                          FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00008) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to create file &1') SECLVL('An attempt +
+                          was made to create &1 File in the IFS.  Check the joblog and messages for the reason +
+                          why, correct and run the program again.') SEV(40) FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00009) MSGF(&INSTLIB/FTPCMSGF) MSG('File &1 already exists.') SECLVL('File &1 already +
+                          exists.  The file will be cleared and the new data written as part of the update process. This +
+                          is not necessarily and error but should be checked for clarity.') SEV(10) FMT((*CHAR      50) )
+             ADDMSGD    MSGID(SF00011) MSGF(&INSTLIB/FTPCMSGF) MSG('Incorrect File Type,File &1 Library &2 +
+                          Attribute &3') SECLVL('The File entered is not a Save File!') SEV(0) FMT((*CHAR      10) +
+                          (*CHAR      10) (*CHAR      10) )
+             ADDMSGD    MSGID(SF00013) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to create Save File &1.') SECLVL('The program +
+                          was unable to create the save file &1 due to errors, correct the errors and try again!') +
+                          SEV(40) FMT((*CHAR      21) )
+             ADDMSGD    MSGID(SPC0001) MSGF(&INSTLIB/FTPCMSGF) MSG('Unable to add the Handle Data to USRSPC &1 in +
+                          library &2.') SECLVL('The program failed to add the data to the USRSPC &1 in Library &2. +
+                          Check the joblog for any errors, correct the errors and try the request again') SEV(30) +
+                          FMT((*CHAR      10) (*CHAR      10) )
+             ADDMSGD    MSGID(STS0001) MSGF(&INSTLIB/FTPCMSGF) MSG('The selected entry is not a directory. Request +
+                          ignored.') SECLVL('You can only change directory to a directory entry.') SEV(30)
+             ADDMSGD    MSGID(USR0301) MSGF(&INSTLIB/FTPCMSGF) MSG('Entry must be Y or N') SECLVL('The valid values +
+                          for this field are Y,N. re-enter with the correct value.') SEV(30)
+             ADDMSGD    MSGID(USR0302) MSGF(&INSTLIB/FTPCMSGF) MSG('Invalid entry, enter *LIB or *PATH.') SECLVL('The +
+                          valid values for this parameter are *LIB,*PATH. please enter the correct value.') SEV(30)
+             ADDMSGD    MSGID(USR0303) MSGF(&INSTLIB/FTPCMSGF) MSG('The entry must be  ''Y'', ''N'',''P''.') +
+                          SECLVL('Enter the correct value.') SEV(40)
+             ADDMSGD    MSGID(USR0304) MSGF(&INSTLIB/FTPCMSGF) MSG('Invalid Entry, use either *UNIX or *DFT') +
+                          SECLVL('Enter *UNIX or *DFT') SEV(40)
+             /* DDS,CL,CMD,menus and panel groups cannot use IFS source so need to copy back to source files */
+             CRTSRCPF   FILE(&SRCLIB/QUIMSRC) RCDLEN(150)
+             CRTSRCPF   FILE(&SRCLIB/QDDSSRC) RCDLEN(150)
+             CRTSRCPF   FILE(&SRCLIB/H) RCDLEN(150)
+             CRTSRCPF   FILE(&SRCLIB/QCSRC) RCDLEN(150)
+             /* Create the binding directory */
+             DLTBNDDIR  BNDDIR(&SRCLIB/FTPCLNT)
+             MONMSG     MSGID(CPF2105)
+             CRTBNDDIR  BNDDIR(&SRCLIB/FTPCLNT)
+             ADDBNDDIRE BNDDIR(&SRCLIB/FTPCLNT) OBJ((&SRCLIB/MSGFUNC *MODULE) (&SRCLIB/AES *MODULE) (&SRCLIB/A_E_CCSID +
+                          *MODULE) (&SRCLIB/FTPCON *MODULE) (&SRCLIB/FTPCFUNCS *MODULE))
+             /* copy the file source */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qddssrc/ftpcfg.pf')
+             ADDPFM     FILE(&SRCLIB/QDDSSRC) MBR(FTPCFG) SRCTYPE(PF)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QDDSSRC.FILE/FTPCFG.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qddssrc/ftpsite.pf')
+             ADDPFM     FILE(&SRCLIB/QDDSSRC) MBR(FTPSITE) SRCTYPE(PF)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QDDSSRC.FILE/FTPSITE.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* create the Physical Files */
+             CRTPF      FILE(&INSTLIB/FTPCFG) SRCFILE(&SRCLIB/QDDSSRC)
+             CRTPF      FILE(&SRCLIB/FTPCFG) SRCFILE(&SRCLIB/QDDSSRC)
+             CHGPF      FILE(&INSTLIB/FTPCFG) SIZE(1 0 0)
+             CRTPF      FILE(&INSTLIB/FTPSITE) SRCFILE(&SRCLIB/QDDSSRC)
+             CRTPF      FILE(&SRCLIB/FTPSITE) SRCFILE(&SRCLIB/QDDSSRC)
+             /* copy the header file source */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/h/common.h')
+             ADDPFM     FILE(&SRCLIB/H) MBR(COMMON) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/COMMON.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/h/a_e_ccsid.h')
+             ADDPFM     FILE(&SRCLIB/H) MBR(A_E_CCSID) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/A_E_CCSID.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/h/ftpcfuncs.h')
+             ADDPFM     FILE(&SRCLIB/H) MBR(FTPCFUNCS) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/FTPCFUNCS.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/h/ftpcon.h')
+             ADDPFM     FILE(&SRCLIB/H) MBR(FTPCON) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/FTPCON.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/h/msgfunc.h')
+             ADDPFM     FILE(&SRCLIB/H) MBR(MSGFUNC) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/MSGFUNC.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/h/uimopt.h')
+             ADDPFM     FILE(&SRCLIB/H) MBR(UIMOPT) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/H.FILE/UIMOPT.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* copy the c source to the files */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcsrc/a_e_ccsid.c')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(A_E_CCSID) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/A_E_CCSID.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcsrc/aes.c')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(AES) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/AES.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcsrc/ftp11p.c')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(FTP11P) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/FTP11P.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcsrc/ftp801p.c')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(FTP801P) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/FTP801P.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcsrc/ftpcfuncs.c')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(FTPCFUNCS) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/FTPCFUNCS.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcsrc/ftpcon.c')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(FTPCON) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/FTPCON.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcsrc/msgfunc.c')
+             ADDPFM     FILE(&SRCLIB/QCSRC) MBR(MSGFUNC) SRCTYPE(C)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCSRC.FILE/MSGFUNC.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* create the modules from Source */
+             CRTCMOD    MODULE(&SRCLIB/AES) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             CRTCMOD    MODULE(&SRCLIB/A_E_CCSID) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             CRTCMOD    MODULE(&SRCLIB/FTPCON) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             CRTCMOD    MODULE(&SRCLIB/FTPCFUNCS) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             CRTCMOD    MODULE(&SRCLIB/FTP11P) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             CRTCMOD    MODULE(&SRCLIB/FTP801P) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             CRTCMOD    MODULE(&SRCLIB/MSGFUNC) SRCFILE(&SRCLIB/QCSRC) TEXT(*NONE) OUTPUT(*PRINT) TGTRLS(&TGTRLS)
+             /* create the programs */
+             CRTPGM     PGM(&INSTLIB/FTP11P) MODULE(&SRCLIB/FTP11P) TEXT('') BNDDIR(&SRCLIB/FTPCLNT) TGTRLS(&TGTRLS)
+             CRTPGM     PGM(&INSTLIB/FTP801P) MODULE(&SRCLIB/FTP801P) TEXT('') BNDDIR(&SRCLIB/FTPCLNT) ACTGRP(*CALLER) +
+                          TGTRLS(&TGTRLS)
+             /* copy the menu source */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/quimsrc/ftpcmain.menu')
+             ADDPFM     FILE(&SRCLIB/QUIMSRC) MBR(FTPCMAIN) SRCTYPE(MENU)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QUIMSRC.FILE/FTPCMAIN.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* create the menus */
+             CRTMNU     MENU(&INSTLIB/FTPCMAIN) TYPE(*UIM) SRCFILE(&SRCLIB/QUIMSRC)
+             /* copy the panel group source */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/quimsrc/ftp801pg.pnlgrp')
+             ADDPFM     FILE(&SRCLIB/QUIMSRC) MBR(FTP801PG) SRCTYPE(PNLGRP)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QUIMSRC.FILE/FTP801PG.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/quimsrc/ftp11pg.pnlgrp')
+             ADDPFM     FILE(&SRCLIB/QUIMSRC) MBR(FTP11PG) SRCTYPE(PNLGRP)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QUIMSRC.FILE/FTP11PG.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/quimsrc/ftphlp.pnlgrp')
+             ADDPFM     FILE(&SRCLIB/QUIMSRC) MBR(FTPHLP) SRCTYPE(PNLGRP)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QUIMSRC.FILE/FTPHLP.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             /* create the panel groups */
+             CRTPNLGRP  PNLGRP(&INSTLIB/FTPHLP) SRCFILE(&SRCLIB/QUIMSRC)
+             CRTPNLGRP  PNLGRP(&INSTLIB/FTP11PG) SRCFILE(&SRCLIB/QUIMSRC)
+             CRTPNLGRP  PNLGRP(&INSTLIB/FTP801PG) SRCFILE(&SRCLIB/QUIMSRC)
+             /* copy the command source */
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcmdsrc/ftpclient.cmd')
+             ADDPFM     FILE(&SRCLIB/QCMDSRC) MBR(FTPCLIENT) SRCTYPE(CMD)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCMDSRC.FILE/FTPCLIENT.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CRTCMD     CMD(&INSTLIB/FTPCLIENT) PGM(FTP801P) SRCFILE(&SRCLIB/QCMDSRC)
+             CHGVAR     VAR(&STMFPATH) VALUE(&DIR *TCAT '/qcmdsrc/wrkftpccfg.cmd')
+             ADDPFM     FILE(&SRCLIB/QCMDSRC) MBR(WRKFTPCCFG) SRCTYPE(CMD)
+             CHGVAR     VAR(&SRCMBR) VALUE('/QSYS.LIB/' *TCAT &SRCLIB *TCAT '.LIB/QCMDSRC.FILE/WRKFTPCCFG.MBR')
+             CPYFRMSTMF FROMSTMF(&STMFPATH) TOMBR(&SRCMBR) MBROPT(*REPLACE)
+             CRTCMD     CMD(&INSTLIB/WRKFTPCCFG) PGM(FTP11P) SRCFILE(&SRCLIB/QCMDSRC)
+             /* remove library list */
+             RMVLIBLE   LIB(&SRCLIB)
+             ENDPGM

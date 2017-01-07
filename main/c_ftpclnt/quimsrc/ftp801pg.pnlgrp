@@ -1,0 +1,1432 @@
+.* This file is part of FTP Client for IBM i.
+.*
+.* Copyright (c) 2017 Chris Hird
+.* All rights reserved.
+.*
+.* Redistribution and use in source and binary forms, with or without
+.* modification, are permitted provided that the following conditions
+.* are met:
+.* 1. Redistributions of source code must retain the above copyright
+.*    notice, this list of conditions and the following disclaimer.
+.* 2. Redistributions in binary form must reproduce the above copyright
+.*    notice, this list of conditions and the following disclaimer in the
+.*    documentation and/or other materials provided with the distribution.
+.*
+.* Disclaimer :
+.* FTP Client for IBM i is distributed in the hope that it will be useful,
+.* but WITHOUT ANY WARRANTY; without even the implied warranty of
+.* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.* -----------------------------------------------------------------
+:PNLGRP   HLPSHELF=list
+          DFTMSGF=ftpcmsgf.
+
+:COPYR.
+(c) Copyright Chris Hird 2016
+
+:IMPORT  NAME='*'  PNLGRP=ftphlp.
+
+.* -------------------------------------------------------------------
+.* Variable classes
+.*
+
+:CLASS   NAME=actcls    BASETYPE='ACTION'.
+:ECLASS.
+
+:CLASS   NAME=chr1cls  BASETYPE='CHAR 1'.
+:ECLASS.
+
+:CLASS   NAME=cnncls  BASETYPE='CHAR 1'
+WIDTH=13.
+:TL.
+:TI  VALUE='"N"'.Not Connected
+:TI  VALUE='"Y"'.Connected
+:ETL.
+:CHECK VALUES='"N" "Y"' MSGID=ERR0001 MSGF=FTPCMSGF.
+:ECLASS.
+
+:CLASS   NAME=sitecls  BASETYPE='CHAR 1'
+WIDTH=6.
+:TL.
+:TI  VALUE='"0"'.Local
+:TI  VALUE='"1"'.Remote
+:ETL.
+:CHECK VALUES='"0" "1"' MSGID=ERR0001 MSGF=FTPCMSGF.
+:ECLASS.
+
+:CLASS   NAME=modcls  BASETYPE='CHAR 1'
+WIDTH=6.
+:TL.
+:TI  VALUE='"a"'.ASCII
+:TI  VALUE='"A"'.ASCII
+:TI  VALUE='"b"'.BINARY
+:TI  VALUE='"B"'.BINARY
+:TI  VALUE='"e"'.EBCDIC
+:TI  VALUE='"E"'.EBCDIC
+:ETL.
+:CHECK VALUES='"a" "A" "b" "B" "e" "E"'
+      MSGID=ERR0001 MSGF=FTPCMSGF.
+:ECLASS.
+
+:CLASS   NAME=chr5cls  BASETYPE='CHAR 5'.
+:ECLASS.
+
+:CLASS   NAME=chr6cls  BASETYPE='CHAR 6'.
+:ECLASS.
+
+:CLASS   NAME=chr10cls  BASETYPE='CHAR 10'.
+:ECLASS.
+
+:CLASS   NAME=chr10clsu  BASETYPE='CHAR 10' CASE=UPPER.
+:ECLASS.
+
+:CLASS   NAME=chr13cls  BASETYPE='CHAR 13'.
+:ECLASS.
+
+:CLASS   NAME=chr20cls  BASETYPE='CHAR 20'.
+:ECLASS.
+
+:CLASS   NAME=chr25cls  BASETYPE='CHAR 25'.
+:ECLASS.
+
+:CLASS   NAME=chr26cls  BASETYPE='CHAR 26'.
+:ECLASS.
+
+:CLASS   NAME=chr50cls  BASETYPE='CHAR 50'.
+:ECLASS.
+
+:CLASS   NAME=chr55cls  BASETYPE='CHAR 55'.
+:ECLASS.
+
+:CLASS   NAME=chr60cls  BASETYPE='CHAR 60'.
+:ECLASS.
+
+:CLASS   NAME=chr255cls  BASETYPE='CHAR 255'.
+:ECLASS.
+
+:CLASS   NAME=vwnumcl    BASETYPE='BIN 15'.
+:ECLASS.
+
+:CLASS   NAME=pkd30cls   BASETYPE='PACKED 3 0'.
+:ECLASS.
+
+:CLASS   NAME=pkd50cls   BASETYPE='PACKED 5 0'.
+:ECLASS.
+
+.* -----------------------------------------------------------------
+.* Dialog variables
+.*
+
+:VAR  NAME=atr       CLASS=chr10cls.
+:VAR  NAME=links     CLASS=chr5cls.
+:VAR  NAME=owner     CLASS=chr25cls.
+:VAR  NAME=grpid     CLASS=chr5cls.
+:VAR  NAME=size      CLASS=chr20cls.
+:VAR  NAME=date      CLASS=chr13cls.
+:VAR  NAME=objnam    CLASS=chr60cls.
+:VAR  NAME=cdate     CLASS=chr26cls.
+:VAR  NAME=name      CLASS=chr60cls.
+:VAR  NAME=lname     CLASS=chr255cls.
+:VAR  NAME=rename    CLASS=chr255cls.
+:VAR  NAME=dir       CLASS=chr60cls.
+:VAR  NAME=connf     CLASS=cnncls.
+:VAR  NAME=sitelbl   CLASS=chr25cls.
+:VAR  NAME=hostadr   CLASS=chr55cls.
+:VAR  NAME=userid    CLASS=chr25cls.
+:VAR  NAME=pwd       CLASS=chr25cls.
+:VAR  NAME=rmtdir    CLASS=chr60cls.
+:VAR  NAME=lcldir    CLASS=chr60cls.
+:VAR  NAME=transtyp  CLASS=modcls.
+:VAR  NAME=csrvar    CLASS=chr10cls.
+:VAR  NAME=lcluser   CLASS=chr10clsu.
+:VAR  NAME=type      CLASS=chr10clsu.
+:VAR  NAME=expgm     CLASS=chr20cls.
+:VAR  NAME=opt       CLASS=actcls.
+:VAR  NAME=opt2      CLASS=actcls.
+:VAR  NAME=listview  CLASS=vwnumcl.
+:VAR  NAME=listview1 CLASS=vwnumcl.
+:VAR  NAME=listview2 CLASS=vwnumcl.
+:VAR  NAME=parms     CLASS=chr255cls.
+:VAR  NAME=lpath     CLASS=chr60cls.
+:VAR  NAME=rpath     CLASS=chr60cls.
+:VAR  NAME=nlpath    CLASS=chr255cls.
+:VAR  NAME=nrpath    CLASS=chr255cls.
+:VAR  NAME=llpath    CLASS=chr255cls.
+:VAR  NAME=rlpath    CLASS=chr255cls.
+:VAR  NAME=dftcntl   CLASS=pkd50cls.
+:VAR  NAME=dftdta    CLASS=pkd50cls.
+:VAR  NAME=rmtport   CLASS=pkd50cls.
+:VAR  NAME=cnnrty    CLASS=pkd30cls.
+:VAR  NAME=cnndly    CLASS=pkd30cls.
+:VAR  NAME=rrn       CLASS=chr6cls.
+:VAR  NAME=sitetype  CLASS=sitecls.
+:VAR  NAME=ZUSER.
+:VAR  NAME=ZCANCEL.
+
+.* -----------------------------------------------------------------
+.* Variable records
+.*
+
+:VARRCD  NAME=pnlusr
+         VARS='ZUSER'.
+
+:VARRCD  NAME=newdir
+         VARS='dir'.
+
+:VARRCD  NAME=mode
+         VARS='transtyp'.
+
+:VARRCD  NAME=cancel
+         VARS='ZCANCEL'.
+
+:VARRCD  NAME=viewtype
+         VARS='sitetype'.
+
+:VARRCD  NAME=connflag
+         VARS='connf'.
+
+:VARRCD  NAME=pwdrec
+         VARS='pwd'.
+
+:VARRCD  NAME=cursor    VARS='csrvar'.
+
+:VARRCD  NAME=optclr    VARS='opt'.
+
+:VARRCD  NAME=optclr2   VARS='opt2'.
+
+:VARRCD  NAME=exitpgm   VARS='expgm'.
+
+:VARRCD  NAME=secinf    VARS='ZUSER hostadr'.
+
+:VARRCD  NAME=pathrec   VARS='lpath llpath'.
+
+:VARRCD  NAME=rpathrec   VARS='rpath rlpath'.
+
+:VARRCD  NAME=npathrec  VARS='nlpath nrpath'.
+
+:VARRCD  NAME=newname   VARS='lname rename'.
+
+:VARRCD  NAME=xname   VARS='rename'.
+
+:VARRCD  NAME=cwdinf
+         VARS='name lname type'.
+
+:VARRCD  NAME=portinfo
+         VARS='dftcntl dftdta'.
+
+:VARRCD  NAME=siteinfo
+         VARS='rrn lcluser sitelbl hostadr userid pwd rmtdir lcldir'
+         VARS='transtyp rmtport cnnrty cnndly'.
+
+:VARRCD  NAME=buf
+         VARS='lcluser sitelbl hostadr userid pwd rmtdir lcldir'
+         VARS='transtyp'.
+
+:VARRCD  NAME=buf1
+         VARS='rmtport cnnrty cnndly'.
+
+:VARRCD  NAME=objinf
+         VARS='atr links owner grpid size date objnam'.
+
+.* --------------------------------------------------------------------
+.* List definitions
+.*
+
+:LISTDEF  NAME=cwdlst
+          MSGID=LST0001
+          MSGF='*LIBL/FTPCMSGF'
+          VARS='opt name lname type'.
+
+:LISTDEF  NAME=sitelst
+          MSGID=LST0001
+          MSGF='*LIBL/FTPCMSGF'
+          VARS='opt2 rrn lcluser sitelbl hostadr userid pwd rmtdir'
+          VARS='lcldir transtyp rmtport cnnrty cnndly'.
+
+:LISTDEF  NAME=dltlcllst
+          VARS='name lname type'.
+
+:LISTDEF  NAME=dltsitl
+          VARS='rrn lcluser sitelbl hostadr userid pwd rmtdir'
+          VARS='lcldir transtyp rmtport cnnrty cnndly'.
+
+.* --------------------------------------------------------------------
+.* Condition definitions
+.*
+
+:COND     NAME=lview1
+          EXPR='listview2=0'.
+
+:COND     NAME=lview2
+          EXPR='listview2=1'.
+
+:COND     NAME=lview3
+          EXPR='listview2=2'.
+
+:COND     NAME=lview4
+          EXPR='listview2=3'.
+
+:COND     NAME=lview5
+          EXPR='listview2=4'.
+
+:COND     NAME=connected
+          EXPR='(connf = "Y")'.
+
+:COND     NAME=noconnect
+          EXPR='(connf = "N")'.
+
+:COND     NAME=local
+          EXPR='(sitetype = "0")'.
+
+:COND     NAME=remote
+          EXPR='(sitetype = "1")'.
+
+.* --------------------------------------------------------------------
+.* Truth tables
+.*
+
+:TT       NAME=lsttt
+          CONDS='lview1  lview2  lview3 lview4 lview5'.
+:TTROW    VALUES='  1       0       0      0     0   '.
+:TTROW    VALUES='  0       1       0      0     0   '.
+:TTROW    VALUES='  0       0       1      0     0   '.
+:TTROW    VALUES='  0       0       0      1     0   '.
+:TTROW    VALUES='  0       0       0      0     1   '.
+:ETT.
+.*
+.* --------------------------------------------------------------------
+.* Lists of function keys
+.*
+.* --- Basic function keys -----------
+
+:KEYL  NAME=basickeys   HELP=fkeys.
+
+:KEYI  KEY=F1        HELP=helpf1
+       ACTION=HELP.
+
+:KEYI  KEY=F12       HELP=helpf12
+       ACTION='CANCEL SET'
+       VARUPD=NO.
+F12=Cancel
+
+:KEYI  KEY=ENTER     HELP=enter
+       ACTION=ENTER.
+
+:KEYI  KEY=HELP      HELP=help
+       ACTION=HELP.
+
+:KEYI  KEY=PAGEDOWN  HELP=pagedown
+       ACTION=PAGEDOWN.
+
+:KEYI  KEY=PAGEUP    HELP=pageup
+       ACTION=PAGEUP.
+
+:KEYI  KEY=PRINT     HELP=print
+       ACTION=PRINT.
+
+:EKEYL.
+
+.* --- Local directory listing keys -----------
+.*
+:KEYL  NAME=cwdkeys   HELP=fkeys.
+
+:KEYI  KEY=F1        HELP=helpf1
+       ACTION=HELP.
+
+:KEYI  KEY=F2        HELP=fksetdir
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F2=Set Directory
+
+:KEYI  KEY=F5        HELP=fkrefr
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F5=Refresh
+
+:KEYI  KEY=F6        HELP=fkaddir
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F6=Add Directory
+
+:KEYI  KEY=F8        HELP=fkrmtd
+       ACTION='CALL expgm'
+       COND=local
+       VARUPD=NO.
+F8=Display Remote Directory
+
+:KEYI  KEY=F7        HELP=fklcld
+       ACTION='CALL expgm'
+       COND=remote
+       VARUPD=YES.
+F7=Local Directory
+
+:KEYI  KEY=F10       HELP=fkdsplog
+       ACTION='CMD DSPMSG MSGQ(QTEMP/FTPCLOGQ)'
+       VARUPD=NO.
+F10=Display Log
+
+:KEYI  KEY=F12       HELP=helpf12
+       ACTION='CANCEL SET'
+       VARUPD=NO.
+F12=Cancel
+
+:KEYI  KEY=F14       HELP=helpf14
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F14=Set Transfer Mode
+
+:KEYI  KEY=F24       HELP=helpf24
+       ACTION=MOREKEYS.
+F24=More keys
+
+:KEYI  KEY=ENTER     HELP=enter
+       ACTION=ENTER.
+
+:KEYI  KEY=HELP      HELP=help
+       ACTION=HELP.
+
+:KEYI  KEY=PAGEDOWN  HELP=pagedown
+       ACTION=PAGEDOWN.
+
+:KEYI  KEY=PAGEUP    HELP=pageup
+       ACTION=PAGEUP.
+
+:KEYI  KEY=PRINT     HELP=print
+       ACTION=PRINT.
+
+:EKEYL.
+
+.* --- Remote directory listing keys -----------
+.*
+:KEYL  NAME=rcwdkeys   HELP=fkeys.
+
+:KEYI  KEY=F1        HELP=helpf1
+       ACTION=HELP.
+
+:KEYI  KEY=F2        HELP=fksetdir
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F2=Set Directory
+
+:KEYI  KEY=F5        HELP=fkrefr
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F5=Refresh
+
+:KEYI  KEY=F6        HELP=fkaddir
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F6=Add Directory
+
+:KEYI  KEY=F7        HELP=fklcld
+       ACTION='CALL expgm'
+       VARUPD=YES.
+F7=Local Directory
+
+:KEYI  KEY=F10       HELP=fkdsplog
+       ACTION='CMD DSPMSG MSGQ(QTEMP/FTPCLOGQ)'
+       VARUPD=NO.
+F10=Display Log
+
+:KEYI  KEY=F12       HELP=helpf12
+       ACTION='CANCEL SET'
+       VARUPD=NO.
+F12=Cancel
+
+:KEYI  KEY=F14       HELP=helpf14
+       ACTION='CALL expgm'
+       VARUPD=NO.
+F14=Set Transfer mode
+
+:KEYI  KEY=F24       HELP=helpf24
+       ACTION=MOREKEYS.
+F24=More keys
+
+:KEYI  KEY=ENTER     HELP=enter
+       ACTION=ENTER.
+
+:KEYI  KEY=HELP      HELP=help
+       ACTION=HELP.
+
+:KEYI  KEY=PAGEDOWN  HELP=pagedown
+       ACTION=PAGEDOWN.
+
+:KEYI  KEY=PAGEUP    HELP=pageup
+       ACTION=PAGEUP.
+
+:KEYI  KEY=PRINT     HELP=print
+       ACTION=PRINT.
+
+:EKEYL.
+
+.* --- Site List keys -----------
+.*
+:KEYL  NAME=sitelkeys   HELP=fkeys.
+
+:KEYI  KEY=F1        HELP=helpf1
+       ACTION=HELP.
+
+:KEYI  KEY=F3       HELP=helpf3
+       ACTION='EXIT SET'
+       COND=noconnect
+       VARUPD=NO.
+F3=Exit
+
+:KEYI  KEY=F5        HELP=fkrefr
+       ACTION='CALL expgm'
+       COND=noconnect
+       VARUPD=NO.
+F5=Refresh
+
+:KEYI  KEY=F6        HELP=fkaddsit
+       ACTION='CALL expgm'
+       COND=noconnect
+       VARUPD=NO.
+F6=Add
+
+:KEYI  KEY=F7        HELP=fklcld
+       ACTION='CALL expgm'
+       COND=connected
+       VARUPD=NO.
+F7=Local Directory
+
+:KEYI  KEY=F8        HELP=fkrmtd
+       ACTION='CALL expgm'
+       COND=connected
+       VARUPD=NO.
+F8=Remote Directory
+
+:KEYI  KEY=F10       HELP=fkdsplog
+       ACTION='CMD DSPMSG MSGQ(QTEMP/FTPCLOGQ)'
+       VARUPD=NO.
+F10=Display Log
+
+:KEYI  KEY=F11       HELP=helpf11
+       ACTION=CHGVIEW
+       PRIORITY=25
+       COND=lview1.
+F11=Display Host Address
+
+:KEYI  KEY=F11       HELP=helpf11
+       ACTION=CHGVIEW
+       PRIORITY=25
+       COND=lview2.
+F11=Display Connection Info
+
+:KEYI  KEY=F11       HELP=helpf11
+       ACTION=CHGVIEW
+       PRIORITY=25
+       COND=lview3.
+F11=Display Remote Directory Info
+
+:KEYI  KEY=F11       HELP=helpf11
+       ACTION=CHGVIEW
+       PRIORITY=25
+       COND=lview4.
+F11=Display Local Directory Info
+
+:KEYI  KEY=F11       HELP=helpf11
+       ACTION=CHGVIEW
+       PRIORITY=25
+       COND=lview5.
+F11=Display Site Info
+
+:KEYI  KEY=F12       HELP=helpf12
+       ACTION='CANCEL SET'
+       COND=noconnect
+       VARUPD=NO.
+F12=Cancel
+
+:KEYI  KEY=F14       HELP=helpf14
+       ACTION='CALL expgm'
+       COND=connected
+       VARUPD=NO.
+F14=Set Transfer mode
+
+:KEYI  KEY=F24       HELP=helpf24
+       ACTION=MOREKEYS.
+F24=More keys
+
+:KEYI  KEY=ENTER     HELP=enter
+       ACTION=ENTER.
+
+:KEYI  KEY=HELP      HELP=help
+       ACTION=HELP.
+
+:KEYI  KEY=PAGEDOWN  HELP=pagedown
+       ACTION=PAGEDOWN.
+
+:KEYI  KEY=PAGEUP    HELP=pageup
+       ACTION=PAGEUP.
+
+:KEYI  KEY=PRINT     HELP=print
+       ACTION=PRINT.
+
+:EKEYL.
+
+.* --- Config panel's function keys ----
+
+:KEYL  NAME=basekeys HELP=fkeys.
+
+:KEYI  KEY=F1        HELP=helpf1
+       ACTION=HELP.
+
+:KEYI  KEY=F3        HELP=helpf3
+       ACTION='EXIT SET'
+       VARUPD=NO.
+F3=Exit
+
+:KEYI  KEY=F12       HELP=helpf12
+       ACTION='CANCEL SET'
+       VARUPD=NO.
+F12=Cancel
+
+:KEYI  KEY=F24       HELP=helpf24
+       ACTION=MOREKEYS.
+F24=More keys
+
+:KEYI  KEY=ENTER     HELP=enter
+       ACTION=ENTER.
+
+:KEYI  KEY=HELP      HELP=help
+       ACTION=HELP.
+
+:KEYI  KEY=PRINT     HELP=print
+       ACTION=PRINT.
+
+:KEYI  KEY=PAGEDOWN  HELP=pagedown
+       ACTION=PAGEDOWN.
+
+:KEYI  KEY=PAGEUP    HELP=pageup
+       ACTION=PAGEUP.
+
+:EKEYL.
+
+.* --- Window function keys ----
+
+:KEYL  NAME=wkeys    HELP=fkeys.
+
+:KEYI  KEY=F1        HELP=helpf1
+       ACTION=HELP.
+
+:KEYI  KEY=F12       HELP=helpf12
+       ACTION='CANCEL SET'
+       VARUPD=NO.
+F12=Cancel
+
+:KEYI  KEY=ENTER     HELP=enter
+       ACTION=ENTER.
+
+:KEYI  KEY=HELP      HELP=help
+       ACTION=HELP.
+
+:EKEYL.
+
+.**********************************************************************
+.*           PANELS
+.*
+
+.* --------------------------------------------------------------------
+.*       Cwd Panel
+.* --------------------------------------------------------------------
+:PANEL  NAME=cwd HELP='cwdh'
+        KEYL=cwdkeys
+        CSRVAR=csrvar
+        ENBGUI=YES
+        TOPSEP=NONE.
+Directory Display
+
+:DATA     DEPTH=5
+          LAYOUT=1
+          BOTSEP=NONE
+          COMPACT.
+
+:DATACOL WIDTH=15.
+:DATACOL WIDTH='*'.
+
+:DATAI    VAR=sitetype
+          HELP='viewh'
+          USAGE=OUT.
+Site View
+
+:DATAI    VAR=lpath
+          HELP='lpathh'
+          COND=local
+          USAGE=OUT.
+Current path
+
+:DATAI    VAR=rpath
+          HELP='rpathh'
+          COND=remote
+          USAGE=OUT.
+Current path
+
+:DATAI    VAR=sitelbl
+          HELP='sitelblh'
+          USAGE=OUT.
+Connected to
+
+:DATAI    VAR=transtyp
+          HELP='ttyph'
+          COND=connected
+          USAGE=OUT.
+Transfer Type
+
+:EDATA.
+
+:LIST   DEPTH='*'     LISTDEF=cwdlst
+        ACTOR=UIM
+        MAXHEAD=2
+        PARMS=parms
+        SCROLL=YES
+        VIEW=listview
+        BOTSEP=NONE.
+
+:TOPINST.
+Type options, press Enter.
+
+.* List options ------------------
+
+:LISTACT  OPTION=1
+          HELP='putfh'
+          ENTER='CALL expgm'
+          COND=local
+          USREXIT='CALL expgm'.
+1=Put
+
+:LISTACT  OPTION=1
+          HELP='getfh'
+          ENTER='CALL expgm'
+          COND=remote
+          USREXIT='CALL expgm'.
+1=Get
+
+:LISTACT  OPTION=2
+          HELP='edtfh'
+          COND=local
+          ENTER='CALL expgm'
+          USREXIT='CALL expgm'.
+2=Edit
+
+:LISTACT  OPTION=4
+          HELP='dltfh'
+          ENTER='CALL expgm'
+          CONFIRM=DCNF
+          USREXIT='CALL expgm'.
+4=Delete
+
+:LISTACT  OPTION=5
+          HELP='nxtlvlh'
+          ENTER='CALL expgm'
+          USREXIT='CALL expgm'.
+5=View
+
+:LISTACT  OPTION=7
+          HELP='rnmobjh'
+          ENTER='CALL expgm'
+          USREXIT='CALL expgm'.
+7=Rename
+
+:LISTACT  OPTION=8
+          HELP='dspdeth'
+          ENTER='CALL expgm'
+          USREXIT='CALL expgm'.
+8=Attributes
+
+:LISTACT  OPTION=99
+          HELP='dspdeth'
+          ENTER='CALL expgm'
+          USREXIT='CALL expgm'.
+.* just for ensuring the option is 2 spaces wide.
+.* Columns and headings ----------
+
+:LISTCOL  VAR=opt          HELP='lclopth'
+          USAGE=INOUT
+          MAXWIDTH=3.
+Opt
+
+:LISTCOL  VAR=name       HELP='nameh'
+          USAGE=OUT
+          MAXWIDTH=60.
+Name
+
+:LISTCOL  VAR=lname       HELP='lnameh'
+          USAGE=OUT
+          MAXWIDTH=60.
+Long Name
+
+:LISTCOL  VAR=type       HELP='typeh'
+          USAGE=OUT
+          MAXWIDTH=10.
+Type
+
+:LISTVIEW  COLS='opt name type'.
+
+:ELIST.
+
+:EPANEL.
+
+
+.* --------------------------------------------------------------------
+.*      Delete Confirm
+.* --------------------------------------------------------------------
+:PANEL  NAME=dcnf HELP='dcnfh'
+        KEYL=basickeys
+        ENTER='RETURN 100'
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Confirm Delete
+
+:DATA     DEPTH=3
+          LAYOUT=1
+          BOTSEP=SPACE
+          COMPACT.
+
+:DATACOL  WIDTH=15.
+:DATACOL  WIDTH='*'.
+
+:DATAI    VAR=lpath
+          HELP='lpathh'
+          USAGE=OUT.
+Current path
+
+:DATAI    VAR=connf
+          HELP='connfh'
+          USAGE=OUT.
+Conn Status
+
+:EDATA.
+
+:LIST   DEPTH='*'     LISTDEF=dltlcllst
+        MAXHEAD=4
+        SCROLL=YES
+        VIEW=listview.
+
+:TOPINST.
+Press Enter to confirm your choices. The selected
+Entry will be deleted.
+
+.* Columns and headings ----------
+
+:LISTCOL  VAR=name       HELP='nameh'
+          USAGE=OUT
+          MAXWIDTH=60.
+Name
+
+:LISTCOL  VAR=lname       HELP='lnameh'
+          USAGE=OUT
+          MAXWIDTH=60.
+Long Name
+
+:LISTCOL  VAR=type       HELP='typeh'
+          USAGE=OUT
+          MAXWIDTH=10.
+Type
+
+:LISTVIEW  COLS='name type'.
+
+:ELIST.
+
+:EPANEL.
+
+.* --------------------------------------------------------------------
+.*       Site List Panel
+.* --------------------------------------------------------------------
+:PANEL  NAME=sitel  HELP='sitelh'
+        KEYL=sitelkeys
+        TT=lsttt
+        CSRVAR=csrvar
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Site List
+
+:DATA DEPTH=4
+      SCROLL=NO
+      LAYOUT=1
+      COMPACT
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=ZUSER
+          HELP='useridh'
+          USAGE=OUT.
+User
+
+:DATAI    VAR=connf
+          HELP='connfh'
+          USAGE=OUT.
+Conn Status
+
+:DATAI    VAR=transtyp
+          HELP='ttyph'
+          COND=connected
+          USAGE=OUT.
+Transfer Type
+
+:EDATA.
+
+:LIST   DEPTH='*'     LISTDEF=sitelst
+        ACTOR=UIM
+        MAXHEAD=1
+        PARMS=parms
+        SCROLL=YES
+        VIEW=listview2
+        BOTSEP=SPACE.
+
+:TOPINST.
+Type options, press Enter.
+
+.* List options ------------------
+
+:LISTACT  OPTION=1
+          HELP='cnnh'
+          ENTER='CALL expgm'
+          COND=noconnect
+          USREXIT='CALL expgm'.
+1=Connect
+
+:LISTACT  OPTION=2
+          HELP='chgenth'
+          ENTER='CALL expgm'
+          COND=noconnect
+          USREXIT='CALL expgm'.
+2=Change Entry
+
+:LISTACT  OPTION=3
+          HELP='endcnnh'
+          ENTER='CALL expgm'
+          COND=connected
+          USREXIT='CALL expgm'.
+3=Disconnect
+
+:LISTACT  OPTION=4
+          HELP='dltenth'
+          ENTER='CALL expgm'
+          COND=noconnect
+          USREXIT='CALL expgm'.
+4=Delete Entry
+
+:LISTACT  OPTION=99
+          HELP='dspdeth'
+          ENTER='CALL expgm'
+          USREXIT='CALL expgm'.
+.* just for ensuring the option is 2 spaces wide.
+
+.* Columns and headings ----------
+
+:LISTCOL  VAR=rrn           HELP='rrnh'
+          USAGE=OUT
+          MAXWIDTH=6.
+
+:LISTCOL  VAR=opt2          HELP='cnnopth'
+          USAGE=INOUT
+          MAXWIDTH=3.
+Opt
+
+:LISTCOL  VAR=sitelbl     HELP='sitelblh'
+          USAGE=OUT
+          MAXWIDTH=25.
+'Site Label'
+
+:LISTCOL  VAR=hostadr     HELP='hostadrh'
+          USAGE=OUT
+          MAXWIDTH=55.
+'Host Address'
+
+:LISTCOL  VAR=userid      HELP='useridh'
+          USAGE=OUT
+          MAXWIDTH=25.
+'User ID'
+
+:LISTCOL  VAR=pwd         HELP='pwdh'
+          USAGE=OUT
+          MAXWIDTH=25.
+
+:LISTCOL  VAR=rmtdir      HELP='rmtdirh'
+          USAGE=OUT
+          MAXWIDTH=60.
+'Initial Remote Directory'
+
+:LISTCOL  VAR=lcldir      HELP='lcldirh'
+          USAGE=OUT
+          MAXWIDTH=60.
+'Initial Local Directory'
+
+:LISTCOL  VAR=transtyp    HELP='ttyph'
+          USAGE=OUT
+          MAXWIDTH=5.
+TMode
+
+:LISTCOL  VAR=rmtport     HELP='rmtporth'
+          USAGE=OUT
+          MAXWIDTH=6.
+Port
+
+:LISTCOL  VAR=cnnrty      HELP='cnnrtyh'
+          USAGE=OUT
+          MAXWIDTH=6.
+Retry
+
+:LISTCOL  VAR=cnndly      HELP='cnndlyh'
+          USAGE=OUT
+          MAXWIDTH=11.
+'Retry Delay'
+
+:LISTVIEW  COLS='opt2 sitelbl userid'.
+:LISTVIEW  COLS='opt2 hostadr'.
+:LISTVIEW  COLS='opt2 transtyp rmtport cnnrty cnndly'.
+:LISTVIEW  COLS='opt2 rmtdir'.
+:LISTVIEW  COLS='opt2 lcldir'.
+
+:ELIST.
+
+:EPANEL.
+
+.* --------------------------------------------------------------------
+.*       Site List Panel Confirm Delete
+.* --------------------------------------------------------------------
+:PANEL  NAME=dcnfsit HELP='dcnfh'
+        KEYL=basickeys
+        ENTER='RETURN 100'
+        TT=lsttt
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Site List
+
+:DATA DEPTH=3
+      SCROLL=NO
+      LAYOUT=1
+      COMPACT
+      BOTSEP=RULE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=ZUSER
+          HELP='useridh'
+          USAGE=OUT.
+User
+
+:DATAI    VAR=connf
+          HELP='connfh'
+          USAGE=OUT.
+Conn Status
+
+:EDATA.
+
+:LIST   DEPTH='*'     LISTDEF=dltsitl
+        MAXHEAD=4
+        SCROLL=YES
+        VIEW=listview2.
+
+:TOPINST.
+Press Enter to confirm your choices. The selected
+Entry will be deleted.
+
+.* List options ------------------
+
+
+.* Columns and headings ----------
+
+:LISTCOL  VAR=rrn           HELP='rrnh'
+          USAGE=OUT
+          MAXWIDTH=6.
+
+:LISTCOL  VAR=sitelbl     HELP='sitlblh'
+          USAGE=OUT
+          MAXWIDTH=25.
+Site Label
+
+:LISTCOL  VAR=hostadr     HELP='hostadrh'
+          USAGE=OUT
+          MAXWIDTH=55.
+Host Address
+
+:LISTCOL  VAR=userid      HELP='useridh'
+          USAGE=OUT
+          MAXWIDTH=25.
+User ID
+
+:LISTCOL  VAR=pwd         HELP='pwdh'
+          USAGE=OUT
+          MAXWIDTH=25.
+
+:LISTCOL  VAR=rmtdir      HELP='rmtdirh'
+          USAGE=OUT
+          MAXWIDTH=60.
+Initial Remote Directory
+
+:LISTCOL  VAR=lcldir      HELP='lcldirh'
+          USAGE=OUT
+          MAXWIDTH=60.
+Initial Local Directory
+
+:LISTCOL  VAR=transtyp    HELP='transtyph'
+          USAGE=OUT
+          MAXWIDTH=5.
+TMode
+
+:LISTCOL  VAR=rmtport     HELP='rmtporth'
+          USAGE=OUT
+          MAXWIDTH=6.
+Port
+
+:LISTCOL  VAR=cnnrty      HELP='cnnrtyh'
+          USAGE=OUT
+          MAXWIDTH=6.
+Retry
+
+:LISTCOL  VAR=cnndly      HELP='cnndlyh'
+          USAGE=OUT
+          MAXWIDTH=6.
+Retry Delay
+
+:LISTVIEW  COLS='sitelbl userid'.
+:LISTVIEW  COLS='hostadr'.
+:LISTVIEW  COLS='transtyp rmtport cnnrty cnndly'.
+:LISTVIEW  COLS='rmtdir'.
+:LISTVIEW  COLS='lcldir'.
+
+:ELIST.
+
+:EPANEL.
+
+.* --------------------------------------------------------------------
+.*  Site Info
+.* --------------------------------------------------------------------
+:PANEL  NAME=SITEDET    HELP='SITEDET/'
+        KEYL=basickeys
+        CSRVAR=csrvar
+        ENTER='RETURN 500'
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Site Details
+
+:DATA DEPTH=3
+      SCROLL=NO
+      LAYOUT=1
+      COMPACT
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=ZUSER
+          HELP='useridh'
+          USAGE=OUT.
+User
+
+:DATAI    VAR=connf
+          HELP='connfh'
+          USAGE=OUT.
+Conn Status
+
+:EDATA.
+
+:DATA DEPTH='*'
+      SCROLL=YES
+      LAYOUT=1
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=20.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=sitelbl
+          HELP='sitlblh'
+          USAGE=INOUT.
+Site Label
+
+:DATAI    VAR=hostadr
+          HELP='hostadrh'
+          USAGE=INOUT.
+Host Address
+
+:DATAI    VAR=rmtport
+          HELP='rmtporth'
+          USAGE=INOUT.
+Remote Port
+
+:DATAI    VAR=userid
+          HELP='useridh'
+          USAGE=INOUT.
+User ID
+
+:DATAI    VAR=pwd
+          HELP='pwdh'
+          DISPLAY=NO
+          USAGE=INOUT.
+Password
+
+:DATAI    VAR=rmtdir
+          HELP='rmtdirh'
+          USAGE=INOUT.
+Remote Directory
+
+:DATAI    VAR=lcldir
+          HELP='lcldirh'
+          USAGE=INOUT.
+Local Directory
+
+:DATAI    VAR=transtyp
+          HELP='ttyph'
+          USAGE=INOUT.
+Transfer Type
+
+:DATAI    VAR=cnnrty
+          HELP='cnnrtyh'
+          USAGE=INOUT.
+Connection Retry
+
+:DATAI    VAR=cnndly
+          HELP='cnndlyh'
+          USAGE=INOUT.
+Connection Delay
+
+:EDATA.
+
+:EPANEL.
+
+.* --------------------------------------------------------------------
+.*  Object Detail Panel
+.* --------------------------------------------------------------------
+:PANEL  NAME=OBJDET     HELP='OBJDET/'
+        KEYL=basickeys
+        CSRVAR=csrvar
+        ENTER='RETURN 500'
+        ENBGUI=YES
+        TOPSEP=NONE.
+Object Details
+
+:DATA DEPTH=4
+      SCROLL=NO
+      LAYOUT=1
+      COMPACT
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=ZUSER
+          HELP='useridh'
+          USAGE=OUT.
+User
+
+:DATAI    VAR=sitetype
+          HELP='sitetypeh'
+          USAGE=OUT.
+Object View
+
+:DATAI    VAR=sitelbl
+          HELP='sitelblh'
+          USAGE=OUT.
+Connected to
+
+:EDATA.
+
+:DATA DEPTH='*'
+      SCROLL=YES
+      LAYOUT=1
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=20.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=atr
+          HELP='atrh'
+          USAGE=OUT.
+Attributes
+
+:DATAI    VAR=links
+          HELP='linksh'
+          USAGE=OUT.
+Links
+
+:DATAI    VAR=owner
+          HELP='ownerh'
+          USAGE=OUT.
+Object Owner
+
+:DATAI    VAR=grpid
+          HELP='grpidh'
+          USAGE=OUT.
+Group ID
+
+:DATAI    VAR=size
+          HELP='sizeh'
+          USAGE=OUT.
+Size
+
+:DATAI    VAR=date
+          HELP='cdateh'
+          USAGE=OUT.
+Date Changed
+
+:DATAI    VAR=objnam
+          HELP='nameh'
+          USAGE=OUT.
+Object Name
+
+:EDATA.
+
+:EPANEL.
+
+.* --------------------------------------------------------------------
+.*  Add Directory
+.* --------------------------------------------------------------------
+:PANEL  NAME=ADDDIRW    HELP='ADDDIRW/'
+        KEYL=wkeys
+        CSRVAR=csrvar
+        ENTER='RETURN 500'
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Add Directory
+
+:DATA DEPTH=6
+      SCROLL=NO
+      LAYOUT=1
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=connf
+          HELP='connfh'
+          USAGE=OUT.
+Conn Status
+
+:DATAI    VAR=dir
+          HELP='dirh'
+          USAGE=INOUT.
+Directory
+
+:EDATA.
+:EPANEL.
+.*
+.* --------------------------------------------------------------------
+.*  Set Directory
+.* --------------------------------------------------------------------
+:PANEL  NAME=SETDIRP    HELP='SETDIRP/'
+        KEYL=wkeys
+        CSRVAR=csrvar
+        ENTER='RETURN 500'
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Set Directory
+
+:DATA DEPTH='*'
+      SCROLL=YES
+      LAYOUT=1
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=connf
+          HELP='connfh'
+          USAGE=OUT.
+Conn Status
+
+:DATAI    VAR=nlpath
+          HELP='lpathh'
+          USAGE=INOUT.
+Local Directory
+
+:DATAI    VAR=nrpath
+          HELP='rpathh'
+          USAGE=INOUT.
+Remote Directory
+
+:EDATA.
+:EPANEL.
+.*
+.* --------------------------------------------------------------------
+.*  Rename File
+.* --------------------------------------------------------------------
+:PANEL  NAME=RENAMEF    HELP='RENAMEF/'
+        KEYL=wkeys
+        CSRVAR=csrvar
+        ENTER='RETURN 500'
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Rename Object
+
+:DATA DEPTH='*'
+      SCROLL=YES
+      LAYOUT=1
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=connf
+          HELP='connfh'
+          USAGE=OUT.
+Conn Status
+
+:DATAI    VAR=lname
+          HELP='nameh'
+          USAGE=OUT.
+Original Name
+
+:DATAI    VAR=rename
+          HELP='nameh'
+          USAGE=INOUT.
+New Name
+
+:EDATA.
+:EPANEL.
+.*
+.* --------------------------------------------------------------------
+.*  Change Transfer mode
+.* --------------------------------------------------------------------
+:PANEL  NAME=CHGTTYP    HELP='CHGTTYP/'
+        KEYL=wkeys
+        CSRVAR=csrvar
+        ENTER='RETURN 500'
+        ENBGUI=YES
+        TOPSEP=SYSNAM.
+Change Transfer Mode
+
+:DATA DEPTH=6
+      SCROLL=NO
+      LAYOUT=1
+      BOTSEP=SPACE.
+
+:DATACOL   WIDTH=15.
+:DATACOL   WIDTH='*'.
+
+:DATAI    VAR=transtyp
+          HELP='ttyph'
+          USAGE=INOUT.
+Transfer Type
+
+:EDATA.
+:EPANEL.
+.* --------------------------------------------------------------------
+.*     Print Header panel
+.* --------------------------------------------------------------------
+
+:PRTHEAD  NAME=header
+          WIDTH=132.
+FTP Configuration Listing
+
+:PRTTRAIL.
+E N D   O F   L I S T I N G
+
+:EPRTHEAD.
+
+
+.* --------------------------------------------------------------------
+.*     Print panel
+.* --------------------------------------------------------------------
+
+:PRTPNL   NAME=ftpprint
+          WIDTH=132.
+
+.* --- Data presentation areas for detail fields ---
+
+
+:EPRTPNL.
+
+:EPNLGRP.

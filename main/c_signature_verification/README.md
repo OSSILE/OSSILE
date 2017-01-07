@@ -13,7 +13,7 @@ Verifies that the program will be able to call the service program functions wit
 call from command line using the format CALL OSSILE/SRVPGMCHK 'SrvPgm    Library' 'PgmName   Library   '
 
 ##Documentation
-See [IBM Knowledge Center](http://http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
+See [IBM Knowledge Center](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
 
 ##Contributors
 Provided by Chris Hird. You can contact me via Ryver or Linked in should it be necessary.
