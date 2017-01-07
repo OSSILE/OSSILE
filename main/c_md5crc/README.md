@@ -1,9 +1,9 @@
 ##Synopsis
-A sample solution which readds the content of a file and generates a CRC for the entire content at either the file level or the memeber level. the user
+A sample solution which reads the content of a file and generates a CRC for the entire content at either the file level or the memeber level. The user
 can determine which type of CRC is generated using an option in the command. Help is provided via a *PNLGRP for the command.
 
 ##Purpose
-Allows the user to generate a CRC for a file and compare that CRC with a copy of the same object to ensure they are the same. The programs demonstrate how to
+Allows the user to generate a CRC for a file and compare that CRC with a copy of the object to ensure they are the same. The programs demonstrate how to
 create a ILE program and command using a Binding Directory to bind the module at compile time to the program object.
 
 ## Parameters (via the command)
