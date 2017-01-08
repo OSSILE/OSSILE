@@ -21,6 +21,7 @@ c_md5crc
 c_rtvdirsz
 c_signature_verification
 c_sysinfo
+c_zlib
 endalljob
 arraylist
 nstat

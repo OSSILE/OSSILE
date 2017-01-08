@@ -40,6 +40,7 @@ Welcome to the OSSILE project. This project is to serve three purposes:
     - RTVDIRSZ Program to log the content and sizes of a directory plus calculate the total size.
     - SRVPGMCHK Program to check the signatures of a service program and a program to ensure the program can call the Service program.
     - SYSINFO Program to retrieve and display system status.
+    - ZLIB ZLIB Open Source for IBM i.
 
     Documentation
        - [BACKUP](main/c_backup_pgm/README.md)
@@ -58,6 +59,7 @@ Welcome to the OSSILE project. This project is to serve three purposes:
        - [RTVDIRSZ](main/c_rtvdirsz/README.md)
        - [SRVPGMCHK](main/c_signature_verification/README.md)
        - [SYSINFO](main/c_sysinfo/README.md)
+       - [ZLIB] (main/c_zlib/README.md)
 
   - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
     a re-implementation of SHA256 in C.
