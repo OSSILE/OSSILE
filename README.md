@@ -29,13 +29,14 @@ Welcome to the OSSILE project. This project is to serve three purposes:
     - CHKRCVRDLT Program to clean up receivers based on days since detatched.
     - CHKOSLVL Program to display the current OS level.
     - DSPCSTINF Program to display the constraints attached to a file.
-    - DSPDQINF Prgram to display a data queue attributes
     - DSPTRGINF Program to display the triggers attached to a file.
+    - DSPDQINF Prgram to display a data queue attributes
     - DSPUSRIDX Program to display a User Index attributes plus the content (text only).
+    - FTPCLNT an alternative FTP Client to the OS command line.
     - JOBLIST Program to display the currently active jobs and some of their attributes.
     - LSTDBRTST Program to display the database relationships for a file.
-    - MD5CRC Program to generate a CRC for the content of a DB file.
     - RTVJRNOBJ Program to display the objects currently journalled to a journal.
+    - MD5CRC Program to generate a CRC for the content of a DB file.
     - RTVDIRSZ Program to log the content and sizes of a directory plus calculate the total size.
     - SRVPGMCHK Program to check the signatures of a service program and a program to ensure the program can call the Service program.
     - SYSINFO Program to retrieve and display system status.
@@ -45,13 +46,15 @@ Welcome to the OSSILE project. This project is to serve three purposes:
        - [CHKRCVRDLT](main/c_check_recvr_delete/README.md)
        - [CHKOSLVL](main/c_chk_os_lvl/README.md)
        - [DSPCSTINF](main/c_display_constraints/README.md)
-       - [DSPDQINF](main/c_dspdqinf/README.md)
        - [DSPTRGINF](main/c_display_triggers/README.md)
+       - [DSPDQINF](main/c_dspdqinf/README.md)
        - [DSPUSRIDX](main/c_dspusridx/README.md)
+       - [FTPCLNT] (main/c_ftpclnt/README.md)
+       - [FTPCLNT Manual] (main/c_ftpclnt/FTP_Client_OSS.pdf)
        - [JOBLIST](main/c_joblist/README.md)
        - [LSTDBRTST](main/c_list_dbr/README.md)
-       - [MD5CRC](main/c_md5crc/README.md)
        - [RTVJRNOBJ](main/c_list_jrn_obj/README.md)
+       - [MD5CRC](main/c_md5crc/README.md)
        - [RTVDIRSZ](main/c_rtvdirsz/README.md)
        - [SRVPGMCHK](main/c_signature_verification/README.md)
        - [SYSINFO](main/c_sysinfo/README.md)
