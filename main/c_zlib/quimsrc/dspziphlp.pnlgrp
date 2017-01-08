@@ -1,0 +1,68 @@
+.**********************************************************************
+.* DSPZIP command help panel
+.*****************************************************************
+.*
+:PNLGRP.
+:HELP NAME='DSPZIP'.
+Display Zipped File (DSPZIP) - Help
+:P.
+The DSPZIP command allows you to view contents of
+standard ZIP format file. The format is compatible with
+PKZip 2.04g, WinZip, InfoZip and other popular ZIP utilities.
+:P.
+Sample output
+:P.
+:LINES.
+  Length  Method   Size  Ratio   Date    Time   CRC-32     Name
+  ------  ------   ----  -----   ----    ----   ------     ----
+   37272  Defl:N*   6983  18%  09-27-03  13:00  296d360d   /tmp/zip.c
+:ELINES.
+:P.
+:LINES.
+    Length    : uncompressed size.
+    Method    : 'Defl:N' -> normal, 'Defl:X' -> best, 'Defl:F' -> fast
+                '*' indicates the file is encrypted.
+    Size      : compressed size.
+    Ratio     : compression ratio.
+    Date/Time : file timestamp (MM-DD-YY HH:MM).
+    CRC-32    : 32-bit cyclic redundancy checksum.
+    Name      : file path name.
+:ELINES.
+:P.
+:HP2.Restrictions::EHP2.
+:UL.
+:LI.
+Multi volume ZipFile (span) is not supported.
+:LI.
+Old compression used by old PKZip 1.x is not supported.
+:LI.
+Wild card (*, ?) and regular expression are not supported.
+:EUL.
+.* Error messages
+:XH3.Error messages for ZIP
+:P.
+:HP3.*ESCAPE Messages:EHP3.
+:DL COMPACT.
+:DT.CPF9897
+:DD.Command failed.
+:EDL.
+:EHELP.
+.*****************************************************************
+.* Parameters Help
+.*
+:HELP NAME='DSPZIP/ZIPFILE'.
+ZIP file (ZIPFILE) - HELP
+:XH3.ZIP file (ZIPFILE)
+:P.
+Specifies ZIP file name.
+:IMHELP NAME='COM/REQPARM'.
+:EHELP.
+.*****************************************************************
+.* Common help entries
+:HELP NAME='COM/REQPARM'.
+:P.
+This is a required parameter.
+:EHELP.
+.*
+.********************************************************************
+:EPNLGRP.

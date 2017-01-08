@@ -1,0 +1,136 @@
+.**********************************************************************
+.* UNZIP command help panel
+.*****************************************************************
+.*
+:PNLGRP.
+:HELP NAME='UNZIP'.
+Unpack Zipped File (UNZIP) - Help
+:P.
+The UNZIP command allows you to decompress file(s) from
+standard ZIP format file. The format is compatible with
+PKZip 2.04g, WinZip, InfoZip and other popular ZIP utilities.
+:P.
+:HP2.Restrictions::EHP2.
+:UL.
+:LI.
+Multi volume ZipFile (span) is not supported.
+:LI.
+Old compression used by old PKZip 1.x is not supported.
+:LI.
+Wild card (*, ?) and regular expression are not supported.
+:LI.
+This code support the "Traditional PKWARE Encryption".
+ 
+The new AES encryption added on Zip format by Winzip (see the page
+http://www.winzip.com/aes_info.htm ) and PKWare PKZip 5.x Strong
+Encryption is not supported.
+:LI.
+Not all errors can be monitored.
+:EUL.
+:IMHELP NAME='COM/ASTERISK'.
+.* Error messages
+:XH3.Error messages for UNZIP
+:P.
+:HP3.*ESCAPE Messages:EHP3.
+:DL COMPACT.
+:DT.CPF9897
+:DD.Command failed.
+:EDL.
+:EHELP.
+.*****************************************************************
+.* Parameters Help
+.*
+:HELP NAME='UNZIP/ZIPFILE'.
+ZIP file (ZIPFILE) - HELP
+:XH3.ZIP file (ZIPFILE)
+:P.
+Specifies ZIP file name.
+:IMHELP NAME='COM/REQPARM'.
+:EHELP.
+.*****************************
+:HELP NAME='UNZIP/FILE'.
+File to extract from ZIP file (FILE) - HELP
+:XH3.File to extract from ZIP file (FILE)
+:P.
+Specifies a file to extract from ZIP file.
+:IMHELP NAME='COM/LISTVAL'.
+:PARML.
+:PT.:PK DEF.*ALL:EPK.
+:PD.
+Extract all files in the ZIP file.
+:PT.:PV.single_path_name:EPV.
+:PD.
+Extract only specified file.
+:EPARML.
+:EHELP.
+.*****************************
+:HELP NAME='UNZIP/ADDPATH'.
+Extract with pathname (ADDPATH) - HELP
+:XH3.Extract with pathname (ADDPATH)
+:P.
+Specifies whether to use path name when ZIP file was created.
+:P.
+:IMHELP NAME='COM/LISTVAL'.
+:PARML.
+:PT.:PK DEF.*NO:EPK.
+:PD.
+Original path is ignored.
+:PT.:PV.*YES:EPV.
+:PD.
+Extract to original path.
+:EPARML.
+:EHELP.
+.*****************************
+:HELP NAME='UNZIP/REPLACE'.
+Replace existing file (REPLACE) - HELP
+:XH3.Replace existing file (REPLACE)
+:P.
+Specifies whether to overwrite existing file without prompt,
+or show prompt to for user intervention.
+:P.
+:IMHELP NAME='COM/LISTVAL'.
+:PARML.
+:PT.:PK DEF.*YES:EPK.
+:PD.
+Overwrite existing file without prompting.
+:PT.:PV.*PROMPT:EPV.
+:PD.
+Show prompt for user action.
+:EPARML.
+:EHELP.
+.*****************************
+:HELP NAME='UNZIP/PASSWORD'.
+Password (PASSWORD) - HELP
+:XH3.Password (PASSWORD)
+:P.
+Specify password for the ZIP file if necessary.
+:EHELP.
+.*****************************************************************
+.* Common help entries
+:HELP NAME='COM/ASTERISK'.
+:NT.
+Do not precede an entry with an asterisk unless that
+entry is a "special value" that is shown (on the display or in
+the help information) with an asterisk.
+:ENT.
+:EHELP.
+.*
+:HELP NAME='COM/REQPARM'.
+:P.
+This is a required parameter.
+:EHELP.
+.*
+:HELP NAME='COM/LISTVAL'.
+:P.
+The possible values are:
+:EHELP.
+.*
+:HELP NAME='COM/MULTI'.
+:P.
+You can enter multiple values for this parameter. If you are on an
+entry display and you need additional entry fields to enter these
+multiple values, type a plus sign (+) in the entry field opposite
+the phrase "+ for more" and press the Enter key.
+:EHELP.
+.********************************************************************
+:EPNLGRP.
