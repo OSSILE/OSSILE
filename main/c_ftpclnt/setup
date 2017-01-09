@@ -4,6 +4,13 @@ export PWD=$(pwd)
 SRCLIB = OSSFTPSRC
 OLIB = OSSFTPCLT
 
+if [ ! -e /qsys.lib/$SRCLIB.lib ] ; then
+  system "crtlib $TGTLIB"
+fi
+if [ ! -e /qsys.lib/$OLIB.lib ] ; then
+  system "crtlib $TGTLIB"
+fi
+
 system -kpieb "CRTLIB LIB($SRCLIB)"
 system -kpieb "ADDLIBLE LIB($SRCLIB)
 system -kpieb "CRTSRCPF FILE($SRCLIB/QCLSRC) RCDLEN(150)
@@ -18,3 +25,9 @@ system -kpieb "CRTOBJS TGTLIB($OLIB) SRCLIB($SRCLIB) RLSLVL(*CURRENT) DIR('&DIR/
 system -kpieb "RMVLIBLE LIB($SRCLIB)
 # clean up the source files etc
 system -kpieb "DLTLIB LIB($SRCLIB)
+if [ ! -e /qsys.lib/$OLIB.lib/CRTOBJS.PGM ] ; then
+  exit 5
+fi
+if [ ! -e /qsys.lib/$OLIB.lib/CRTOBJS.CMD ] ; then
+  exit 5
+fi
