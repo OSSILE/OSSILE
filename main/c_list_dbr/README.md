@@ -11,7 +11,7 @@ Demostrates how to use the API's available to extract the relational database in
 Test using the command line and entering `CALL OSSILE/LSTDBRTST 'FileName  Library   '`.
 
 ##Documentation
-See [IBM Knowledge Center](http://http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
+See [IBM Knowledge Center](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
 
 ##Contributors
 Provided by Chris Hird. You can contact me via Ryver or Linked in should it be necessary.

@@ -1,0 +1,33 @@
+*****************************************************************
+      * This file is part of FTP Client for IBM i.
+      *
+      * Copyright (c) 2017 Chris Hird
+      * All rights reserved.
+      *
+      * Redistribution and use in source and binary forms, with or without
+      * modification, are permitted provided that the following conditions
+      * are met:
+      * 1. Redistributions of source code must retain the above copyright
+      *    notice, this list of conditions and the following disclaimer.
+      * 2. Redistributions in binary form must reproduce the above copyright
+      *    notice, this list of conditions and the following disclaimer in the
+      *    documentation and/or other materials provided with the distribution.
+      *
+      * Disclaimer :
+      * FTP Client for IBM i is distributed in the hope that it will be useful,
+      * but WITHOUT ANY WARRANTY; without even the implied warranty of
+      * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+      *****************************************************************
+     A          R SITEREC
+     A            LCLUSER       10A         TEXT('Local User')
+     A            SITELBL       25A         TEXT('Site Lable')
+     A            HOSTADR       55A         TEXT('Host Address')
+     A            USERID        25A         TEXT('User ID')
+     A            PWD           25A         TEXT('Password')
+     A            RMTDIR        60A         TEXT('Remote Dir')
+     A            LCLDIR        60A         TEXT('Local Dir')
+     A            TRANSTYP       1A         TEXT('Transfer type')
+     A            RMTPORT        5P 0       TEXT('Remote Port')
+     A            CNNRTY         3P 0       TEXT('Connection Retries')
+     A            CNNDLY         3P 0       TEXT('Delay retries')
+     A          K LCLUSER

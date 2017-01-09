@@ -19,7 +19,7 @@ Use Command provided to prompt for directory and verify the results. The log wil
 which is named using the data and time the command was run.
 
 ##Documentation
-See [IBM Knowledge Center](http://http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
+See [IBM Knowledge Center](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
 
 ##Contributors
 Provided by Chris Hird. You can contact me via Ryver or Linked in should it be necessary.
