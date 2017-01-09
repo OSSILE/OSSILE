@@ -1,8 +1,8 @@
 #!/QOpenSys/usr/bin/sh
 export PWD=$(pwd)
 
-SRCLIB = OSSFTPSRC
-OLIB = OSSFTPCLT
+export SRCLIB = OSSFTPSRC
+export OLIB = OSSFTPCLT
 
 if [ ! -e /qsys.lib/$SRCLIB.lib ] ; then
   system "crtlib $TGTLIB"
