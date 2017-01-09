@@ -11,7 +11,7 @@ if [ ! -e /qsys.lib/$OLIB.lib ] ; then
   system "crtlib $OLIB"
 fi
 
-system -kpieb "ADDLIBLE LIB($SRCLIB)"
+
 system -kpieb "CRTSRCPF FILE($SRCLIB/QCLSRC) RCDLEN(150)"
 system -kpieb "CRTSRCPF FILE($SRCLIB/QCMDSRC) RCDLEN(150)"
 system -kpieb "ADDPFM FILE($SRCLIB/QCLSRC) MBR(CRTOBJS) SRCTYPE(CLLE)"
