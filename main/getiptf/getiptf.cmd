@@ -1,4 +1,4 @@
-             CMD        PROMPT('Get PTF ftom iPTF site')                        
+             CMD        PROMPT('Get PTF from iPTF site')                        
              PARM       KWD(SITE) TYPE(*CHAR) LEN(128) +                        
                           DFT('delivery01-bld.dhe.ibm.com') +                   
                           PROMPT('IBM iPTF Site')                               
