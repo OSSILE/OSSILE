@@ -637,6 +637,24 @@ if(nCode > 500) {
    iconv_close(eaTable);
    return -1;
    }
+sprintf(cvnBuffer,"SITE LISTFMT 1%c%c",0x0d,0x25);
+len = strlen(cvnBuffer);
+snd_status_msg("GEN0001",cvnBuffer,len-2);
+snd_log_msg("GEN0001",cvnBuffer,len-2);
+EtoA_CCSID(cvnBuffer,cBuffer,len,eaTable);
+ret = send(hCntrlSocket,cBuffer,len,0);
+if(ret != len) {
+   sprintf(msg_dta,"send() failed %s",strerror(errno));
+   snd_log_msg("GEN0001",msg_dta,strlen(msg_dta));
+   close(hLstnSocket);
+   iconv_close(eaTable);
+   return -1;
+   }
+nCode = Dsp_Server_Reply();
+if(nCode > 500) {
+   iconv_close(eaTable);
+   return -1;
+   }
 /* set the remote Cwd */
 if(Chg_Rmt_Dir(path) != 1) {
    sprintf(msg_dta,"Failed to change path to %s",path);
