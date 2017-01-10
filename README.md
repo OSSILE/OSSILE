@@ -75,6 +75,12 @@ Welcome to the OSSILE project. This project is to serve three purposes:
       - [README](main/arraylist/README.md)
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/SCHMIDTM.LIB/QRPGLESRC.FILE/ARRAYLIST.MBR) at [ILEDocs at Sourceforge.net](http://iledocs.sourceforge.net)
 
+ - SU, originally sourced from [bitbucket.org/cmasseVolubis/volubis](https://bitbucket.org/cmasseVolubis/volubis).
+    Like Under Linux, become QSECOFR as needed
+
+    Documentation:
+      - [README](main/su/readme.md)
+      
 # Installing OSSILE on your IBM i
 #### Method 1: download the .zip file and compile
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
