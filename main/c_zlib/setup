@@ -79,8 +79,8 @@ for N in $MN
 done
 system -kpieb "CRTPGM PGM($OLIB/MINIUNZ400) MODULE($SRCLIB/MINIUNZ400 $SRCLIB/UNZIP400 $SRCLIB/EBCDIC400) BNDSRVPGM($OLIB/ZLIB)"
 # clean up the files??
-system -kpieb "DLTF FILE(&INTOLIB/H)"
-system -kpieb "DLTF FILE(&INTOLIB/QCSRC)"
-system -kpieb "DLTF FILE(&INTOLIB/QCMDSRC)"
-system -kpieb "DLTF FILE(&INTOLIB/QREXSRC)"
-system -kpieb "DLTF FILE(&INTOLIB/QCLSRC)"
+system -kpieb "DLTF FILE($SRCLIB/H)"
+system -kpieb "DLTF FILE($SRCLIB/QCSRC)"
+system -kpieb "DLTF FILE($SRCLIB/QCMDSRC)"
+system -kpieb "DLTF FILE($SRCLIB/QREXSRC)"
+system -kpieb "DLTF FILE($SRCLIB/QCLSRC)"

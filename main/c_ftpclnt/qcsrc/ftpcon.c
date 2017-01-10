@@ -17,6 +17,7 @@
 /* but WITHOUT ANY WARRANTY; without even the implied warranty of                */
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                          */
 
+
 #include <iconv.h>
 #include <stdio.h>
 #include <H/FTPCON>
@@ -620,6 +621,24 @@ if(Get_Listen_Socket() == -1) {
 /* need to set the name format and list format for iseries */
 /* if not iseries will get 500 error back just ignore */
 sprintf(cvnBuffer,"SITE NAMEFMT 1%c%c",0x0d,0x25);
+len = strlen(cvnBuffer);
+snd_status_msg("GEN0001",cvnBuffer,len-2);
+snd_log_msg("GEN0001",cvnBuffer,len-2);
+EtoA_CCSID(cvnBuffer,cBuffer,len,eaTable);
+ret = send(hCntrlSocket,cBuffer,len,0);
+if(ret != len) {
+   sprintf(msg_dta,"send() failed %s",strerror(errno));
+   snd_log_msg("GEN0001",msg_dta,strlen(msg_dta));
+   close(hLstnSocket);
+   iconv_close(eaTable);
+   return -1;
+   }
+nCode = Dsp_Server_Reply();
+if(nCode > 500) {
+   iconv_close(eaTable);
+   return -1;
+   }
+sprintf(cvnBuffer,"SITE LISTFMT 1%c%c",0x0d,0x25);
 len = strlen(cvnBuffer);
 snd_status_msg("GEN0001",cvnBuffer,len-2);
 snd_log_msg("GEN0001",cvnBuffer,len-2);
