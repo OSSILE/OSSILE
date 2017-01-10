@@ -37,6 +37,10 @@
               MONMSG     MSGID(CPF0000) EXEC(GOTO ERREUR)
 
 /* main */
+
+         /* Check library exists */
+             CHKOBJ OBJ(QSYS/&LIB) OBJTYPE(*LIB)
+             
              DLTUSRSPC QTEMP/DLTLIBRCV
               MONMSG     MSGID(CPF2105) EXEC(RCVMSG PGMQ(*SAME) +
                           MSGTYPE(*EXCP))
