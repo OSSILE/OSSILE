@@ -21,8 +21,8 @@ run the shell script setup in QP2TERM ./code_examples/rpg/cf_api/setup '999'
 See [IBM Knowledge Center](http://www.ibm.com/support/knowledgecenter/ssw_ibm_i) for details of the API's used.
 
 ##Contributors
-Original code by Carsten Flensburg.
-Chris Hird. [Website](http://www.shieldadvanced.com)
+* Original code by Carsten Flensburg.
+* updates and formatting for OSSILE Chris Hird. [Website](http://www.shieldadvanced.com)
    
 ##Copyright
 Copyright (c) OSSILE 2016 Made available under the terms of the license of the containing project   
