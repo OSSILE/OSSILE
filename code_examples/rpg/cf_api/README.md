@@ -1,5 +1,5 @@
 ##Synopsis
-A number of sample programs supplied by Carsten Flensburg which demonstrate how to use vairous API's. These are all code
+A number of sample programs supplied by Carsten Flensburg which demonstrate how to use various API's. These are all code
 samples originally posted to iProdeveloper as part of the Using APis articles. 
 
 ##Purpose
@@ -8,7 +8,8 @@ Provide a number of code examples which can be used as utilities on IBM i. The c
 ## Utilities
 * 100 - Sample of QDBRTVFD
 * ... - More utilities/samples
-* 999 - WRKRMTOUTQ utility
+* 998 - WRKSBSE Work with Subsystem Entries utility
+* 999 - WRKRMTOUTQ Work with Remote OUTQ's utility
 
 ##Build
 run the shell script setup in QP2TERM ./code_examples/rpg/cf_api/setup '999'

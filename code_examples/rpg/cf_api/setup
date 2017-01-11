@@ -2,6 +2,7 @@
 export PWD=$(pwd)
 SRCLIB = OSSILESRC
 OLIB = OSSILE
+VLDCHK= "*NONE"
 
 # need parameter to determine the build directory
 if [[ $# -eq 0 ]];then
@@ -18,6 +19,10 @@ for FILE in "$PWD/$BUILD"
       # seperate the file name and extension
       EXT = $(echo ${FILE}|awk -F\. '{print $2}')
       OBJ = $(echo ${FILE}|awk -F\. '{print $1}')
+      # if the program == $OBJv we have a validity checker
+      if[$OBJ == "$BUILDv"]
+         $VLDCHK = "$BUILDv"
+      fi    
       # add the file member
       system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ)"
       # copy the source across
@@ -29,7 +34,7 @@ for FILE in "$PWD/$BUILD"
       fi
       if[ $EXT == "cmd"]
          # create the command
-         system -kpieb "CRTCMD CMD($OLIB/$OBJ) PGM($BUILD) SRCFILE(&SRCLIB/$BUILD) SRCMBR($OBJ)"
+         system -kpieb "CRTCMD CMD($OLIB/$OBJ) PGM($BUILD) SRCFILE(&SRCLIB/$BUILD) SRCMBR($OBJ) HLPPNLGRP(*LIBL/$BUILDh) HLPID(*CMD) VLDCHK($VLDCHK)"
       fi
       if[ $EXT == "pnlgrp"]
          # create the panel group
