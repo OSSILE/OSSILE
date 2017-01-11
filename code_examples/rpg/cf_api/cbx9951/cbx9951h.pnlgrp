@@ -1,0 +1,381 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9951H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( CBX9951H )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+.* Command help section:
+:HELP NAME='WRKRTGE'.Work with Routing Entries - Help
+:P.
+The Work with Routinge Entries (WRKRTGE) command allows you to work
+with all routing entries defined for the specified subsystem.
+:P.
+The routing entries are listed in routing entry sequence number order.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/SBS'.Subsystem (SBSD) - Help
+:XH3.Subsystem (SBS)
+:P.
+Specify the name of the subsystem for which to list the routing
+entries.
+:P.
+This is a required parameter.
+:P.
+:XH3.Library
+:P.
+The library containing the specified subsystem.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*LIBL:EPK.
+:PD.
+All libraries in the library list for the current thread are searched.
+:PT.:PK.*CURLIB:EPK.
+:PD.
+The current library for the thread is searched.  If no library is
+specified as the current library for the thread, the QGPL library is
+is searched.
+:PT.:PV.library-name:EPV.
+:PD.
+Specify the name of the library to be searched.
+:EPARML.
+:EHELP.
+ 
+.* Panel help section:
+:HELP NAME=HLPFKEYS.
+Function Keys - Help
+:XH3.Function keys
+:EHELP.
+ 
+:HELP NAME=HLPENT.
+:PARML.
+:PT.Enter
+:PD.Submits information on the display for processing.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF1.
+:PARML.
+:PT.F1=Help
+:PD.Provides additional information about using the display.
+:EPARML.
+:EHELP.
+ 
+:HELP     NAME=HLPF3.
+:PARML.
+:PT.F3=Exit
+:PD.Ends the current task and returns you to the display from which
+the task was started.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF4.
+:PARML.
+:PT.F4=Prompt
+:PD.Provides assistance in entering or selecting a command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF5.
+:PARML.
+:PT.F5=Refresh
+:PD.Shows the display you are viewing with updated information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF6.
+:PARML.
+:PT.F6=Add routing entry
+:PD.Executes the Add Routing Entry (ADDRTGE) command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF9.
+:PARML.
+:PT.F9=Retrieve
+:PD.Displays the last command you entered on the command line and any
+parameters you included.  Pressing this key once, shows the last
+command you ran.  Pressing this key twice, shows the command you ran
+before that and so on.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF10.
+:PARML.
+:PT.F10=Work with subsystem description
+:PD.Executes the Work with Subsystem Description (WRKSBSD) command
+for the specified subsystem.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW1'.
+:PARML.
+:PT.F11=View 2
+:PD.Shows the list again displaying the next set of list columns.
+information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW2'.
+:PARML.
+:PT.F11=View 3
+:PD.Shows the list again displaying the final set of list columns.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW3'.
+:PARML.
+:PT.F11=Display status
+:PD.Shows the list again displaying the initial set of list columns.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF12.
+:PARML.
+:PT.F12=Cancel
+:PD.Cancels processing of any options or changes you have made to the
+current display and returns you to the previous menu or display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF21.
+:PARML.
+:PT.F21=Print list
+:PD.Prints the current list, including information from two views.
+The spooled file is sent to the output queue and can be viewed using
+the WRKJOB or WRKSPLF command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF24.
+:PARML.
+:PT.F24=More keys
+:PD.Changes the keys shown at the bottom of the display.  When you
+press this key, additional function keys are displayed at the bottom
+of the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPHLP.
+:PARML.
+:PT.Help
+:PD.Provides additional information about using the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPGD.
+:PARML.
+:PT.Page Down (Roll Up)
+:PD.Moves the information displayed forward to show additional
+information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPGU.
+:PARML.
+:PT.Page Up (Roll Down)
+:PD.Moves the information displayed backward to show additional
+information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPRT.
+:PARML.
+:PT.Print
+:PD.Prints information currently shown on the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/'.Work with Routing Entries - Help
+:P.
+The Work with Routing Entries display shows the specified subsystem's
+currently configured routing entries.
+:P.
+You can type an option next to one or more routing entries.  Then, when
+the Enter key is pressed, the function associated with the number you
+typed is performed for that routing entry.
+:P.
+To have the list panel reflect the a changed or copied routing entry
+press the function key F5 to refresh the list.
+:P.
+If you press the Enter key without typing any other data, you are
+returned to the previous menu or display.
+:P.
+You can type parameters on the command line if you want to override the
+defaults for the option(s) you typed.  Typing parameters is valid only
+if you used one of the options.  For example, you typed option 2 next
+to one or more routing entries and you want to type POOLID(1) to change
+from the default, POOLID(*SAME).
+:P.
+To run a command, type the command and press the Enter key.  For
+assistance in typing the command, type the command and press F4.  For
+assistance in selecting a command, press F4 without typing anything.
+:P.
+If you see More ... on the lower right side of your display, there is
+more information to view.  Press Page Down (Roll Up) to move toward the
+end of the information.  Press Page Up (Roll Down) to move toward the
+beginning of the information.
+:P.
+If you see Bottom instead of More ..., you are at the end of the list.
+:P.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/SBSNAM'.
+Subsystem name - Help
+:XH3.Subsystem name
+:P.
+The name of the subsystem whose routing entries are listed.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/SBSLIB'.
+Library - Help
+:XH3.Library
+:P.
+The library containing the specified subsystem.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/SBSSTS'.
+Subsystem status - Help
+:XH3.Subsystem status
+:P.
+The current status of the specified subsystem.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/OPTCHG'.
+:PARML.
+:PT.2=Change
+:PD.Use this option to run the Change Routing Entry (CHGRTGE)
+command.
+:P.
+When values have been specified on the Parameters input field, the
+command is run without the prompt appearing when you press the Enter
+key.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/OPTCPY'.
+:PARML.
+:PT.3=Copy
+:PD.Use this option to run the Add Routing Entry (ADDRTGE) command
+based on the attributes of the selected routing entry.
+:P.
+When values have been specified on the Parameters input field, the
+command is run without the prompt appearing when you press the Enter
+key.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKSBSJOBQ/OPTRMV'.
+:PARML.
+:PT.4=Remove
+:PD.Use this option to run the Remove Routing Entry (RMVRTGE)
+command.
+:P.
+The routing entry is removed from the routing entry list if the command
+runs successfully.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKRTGE/OPTION'.
+Option - Help
+:XH3.Opt
+:P.
+Type the number of the option you want to specify.
+:EHELP.
+ 
+:HELP name='WRKRTGE/SEQNBR'.
+Seq nbr - Help
+:XH3.Seq nbr
+:P.
+The sequence number of the routing entry.
+:EHELP.
+ 
+:HELP name='WRKRTGE/PGMNAM'.
+Program name - Help
+:XH3.Program name
+:P.
+The name of the routing entry program name.
+:EHELP.
+ 
+:HELP name='WRKRTGE/PGMLIB'.
+Library - Help
+:XH3.Library
+:P.
+The name of the library where the routing entry program is located.
+:EHELP.
+ 
+:HELP name='WRKRTGE/CLSNAM'.
+Class name - Help
+:XH3.Class name
+:P.
+The name of the routing entry class name.
+:EHELP.
+ 
+:HELP name='WRKRTGE/CLSLIB'.
+Library - Help
+:XH3.Library
+:P.
+The name of the library where the routing entry class is located.
+:EHELP.
+ 
+:HELP name='WRKRTGE/MAXACT'.
+Max active routing steps - Help
+:XH3.Max active routing steps
+:P.
+The maximum number of concurrently active routing steps through this
+routing entry.
+:EHELP.
+ 
+:HELP name='WRKRTGE/POOLID'.
+Pool ID - Help
+:XH3.Pool ID
+:P.
+The routing entry pool ID.
+:EHELP.
+ 
+:HELP name='WRKRTGE/CMPVAL'.
+Comparison data - Help
+:XH3.Comparison data
+:P.
+The routing entry comparison data used to match against a job's
+routing data.
+:EHELP.
+ 
+:HELP name='WRKRTGE/CMPPOS'.
+Starting position - Help
+:XH3.Starting position
+:P.
+The position where the comparision between compare value and routing
+data begins.
+:EHELP.
+ 
+:HELP name='WRKRTGE/THDRSA'.
+Thread resources affinity - Help
+:XH3.Thread resources affinity
+:P.
+Specifies the affinity of threads to system resources.
+:EHELP.
+ 
+:HELP name='WRKRTGE/RAFGRP'.
+Resources affinity group - Help
+:XH3.Resources affinity group
+:P.
+Specifies whether or not jobs using this routing entry will be grouped
+together.
+:EHELP.
+ 
+:HELP name='CNFPNL/OPTION'.
+Opt - Help
+:XH3.Opt
+:P.
+This is the option field showing the remove routing entry option which
+causes the confirmation panel to be displayed.  For this panel, the
+option number will always be 4.
+:EHELP.
+:EPNLGRP.

@@ -8,8 +8,14 @@ Provide a number of code examples which can be used as utilities on IBM i. The c
 ## Utilities
 * 100 - Sample of QDBRTVFD
 * ... - More utilities/samples
-* 998 - WRKSBSE Work with Subsystem Entries utility
-* 999 - WRKRMTOUTQ Work with Remote OUTQ's utility
+* 990 - UPDUSRAUD Update User Auditing
+* 991 - ADDUSRAUD,RMVUSRAUD Add/Remove User Auditing
+* 993 - SETQRYPRFO Set Query Profile Options
+* 994 - WRKQRYPRFO Work with Query Profile Opts
+* 998 - WRKSBSE Work with Subsystem Entries
+* 999 - WRKRMTOUTQ Work with Remote OUTQ's
+* 9951 - WRKRTGE Work with Routing Entries
+* 9952 - WRKJOBQE Work job Queue Entries
 * 9953 - WRKJOBQJOB Work with Job Queue jobs
 * 9961 - WRKPJE Work with Prestart Job Entries
 * 9962 - WRKAJE Work with Autostart job Entries

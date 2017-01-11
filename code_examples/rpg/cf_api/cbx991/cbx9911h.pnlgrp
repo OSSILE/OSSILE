@@ -1,0 +1,203 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9911H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:IMPORT  PNLGRP='QHSYCMD'  NAME='*'.
+ 
+:HELP NAME='ADDUSRAUD'.
+Add User Auditing - Help
+:P.
+The Add User Auditing (ADDUSRAUD) command allows you to add one or
+more user action auditing values to a selection of user profiles
+defined by either a user profile name, a generic user profile name or
+the special value *ALL, causing all user profiles on the system to be
+selected.
+:P.
+To further narrow the selection of user profiles you have the option
+of specifying a user class criterion, ensuring that only user profiles
+having the specified user class are included in the selection of user
+profiles to be processed.
+:P.
+If you specify a user action auditing value that is already assigned to
+a user profile and REPLACE(*NO) is specified, the duplicate user action
+auditing value is ignored.  Under these circumstances, if all the
+specified user action auditing values are already assigned, no update
+of the user profile's user auditing values will occur.
+:P.
+Completion messages are returned for each user profile that has been
+updated and a final completion message specifies the total count of
+user profiles that were updated.
+:P.
+The auditing attributes of a user profile can be displayed with the
+Display User Profile (DSPUSRPRF) command.
+:P.
+:NT.
+The changes made by the UPDUSRAUD command take effect the next time a
+job is started for the specified user.
+:ENT.
+:P.
+:HP2.Restrictions::EHP2.
+:UL.
+:LI.
+You must have *AUDIT special authority to run this command.
+:LI.
+Only those profiles to which you have *READ authority are processed.
+:EUL.
+:EHELP.
+ 
+:HELP NAME='ADDUSRAUD/USRPRF'.
+User profile (USRPRF) - Help
+ 
+:XH3.User profile (USRPRF)
+:P.
+Specifies the user profile(s) to which the user action auditing
+value(s) should be added, provided that the
+:LINK PERFORM='DSPHELP ADDUSRAUD/USRCLS'.
+User class (USRCLS)
+:ELINK.
+criterion is met.
+:PARML.
+:PT.:PK DEF.*ALL:EPK.
+:PD.
+All user profiles are selected.
+:PT.:PV.generic-name:EPV.
+:PD.
+Specify the generic name of the user profiles to select.  A generic
+name is a character string that contains one or more characters
+followed by an asterisk (*).  For example, ABC*.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of the user profile to select.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='ADDUSRAUD/USRCLS'.
+User class (USRCLS) - Help
+ 
+:XH3.User class (USRCLS)
+:P.
+Specifies the user class used to select the user profiles to have the
+specified user auditing values added.
+:PARML.
+:PT.:PK DEF.*ANY:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion are selected.
+:PT.:PK.*USER:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *USER are selected.
+:PT.:PK.*SYSOPR:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *SYSOPR are selected.
+:PT.:PK.*PGMR:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *PGMR are selected.
+:PT.:PK.*SECADM:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *SECADM are selected.
+:PT.:PK.*SECOFR:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *SECOFR are selected.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='ADDUSRAUD/OBJAUD'.Object auditing value (OBJAUD) - Help
+:IMHELP  NAME='CHGUSRAUD/OBJAUD'.
+:EHELP.
+ 
+:HELP NAME='ADDUSRAUD/AUDLVL'.User action auditing (AUDLVL) - Help
+:IMHELP  NAME='CHGUSRAUD/AUDLVL'.
+:EHELP.
+ 
+:HELP NAME='ADDUSRAUD/REPLACE'.
+Replace user action auditing (REPLACE) - Help
+ 
+:XH3.Replace user action auditing (REPLACE)
+:P.
+Specifies whether the current user action auditing values are removed
+prior to adding the new user action auditing values specified for this
+command, in effect causing the new user action auditing values to
+replace the old ones.
+:P.
+Note that to add user action auditing value *NONE you must specify
+*YES for this paramter.  This requirement is dictated by the fact that
+*NONE is a single value, meaning that, if specified, it must be the
+only user action auditing value defined for the user profile.
+:PARML.
+:PT.:PK.*YES:EPK.
+:PD.
+The user profile's current user action auditing values are removed
+prior to adding the new user action auditing values.
+:PT.:PK DEF.*NO:EPK.
+:PD.
+The user profile's current user action auditing values are not removed
+prior to adding the new user action auditing values.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='ADDUSRAUD/COMMAND/EXAMPLES'.
+Examples for ADDUSRAUD - Help
+ 
+:XH3.Examples for ADDUSRAUD
+:P.
+:HP2.Example 1: Adding user action auditing to single user profile:EHP2.
+:XMP.
+ADDUSRAUD  USRPRF(JCROCE) AUDLVL(*SYSMGT)
+:EXMP.
+:P.
+This command adds user action auditing value to user profile JCROCE.
+:P.
+:HP2.Example 2: Adding user action auditing to a user class:EHP2.
+:XMP.
+ADDUSRAUD  USRPRF(*ALL) USRCLS(*SECOFR) AUDLVL(*CMD *SECURITY)
+:EXMP.
+:P.
+This command adds user action auditing values *CMD and *SECURITY to
+all user profiles having user class *SECOFR.  If any of the user
+profiles already have one or both new user action auditing values only
+the missing value, if any, is added.
+:P.
+:HP2.Example 3: Removing all user action auditing from generic user
+profile.:EHP2.
+:XMP.
+ADDUSRAUD  USRPRF(Q*) AUDLVL(*NONE) REPLACE(*YES)
+:EXMP.
+:P.
+This command adds user action auditing values *NONE to all user
+profiles beginning with the letter "Q".  Since *NONE is a single value
+this will only work if REPLACE(*YES) is specified to ensure that all
+current user action auditing are removed, prior to adding auditing
+value *NONE.
+:EHELP.
+ 
+:HELP NAME='ADDUSRAUD/ERROR/MESSAGES'.
+&MSG(CPX0005,QCPFMSG). ADDUSRAUD - Help
+ 
+:XH3.&MSG(CPX0005,QCPFMSG). ADDUSRAUD
+:P.
+:HP3.*ESCAPE &MSG(CPX0006,QCPFMSG).:EHP3.
+:DL COMPACT.
+:DT.CPF0002
+:DD.&MSG(CPF0002,QCPFMSG,*LIBL,nosub).
+:DT.CPF22B0
+:DD.&MSG(CPF22B0,QCPFMSG,*LIBL,nosub).
+:DT.CPF22CC
+:DD.&MSG(CPF22CC,QCPFMSG,*LIBL,nosub).
+:DT.CPFB304
+:DD.&MSG(CPFB304,QCPFMSG,*LIBL,nosub).
+:EDL.
+:EHELP.
+ 
+:EPNLGRP.

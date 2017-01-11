@@ -1,0 +1,275 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9912H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:IMPORT  PNLGRP='QHSYCMD'  NAME='*'.
+ 
+:HELP NAME='RMVUSRAUD'.
+Remove User Auditing - Help
+:P.
+The Remove User Auditing (RMVUSRAUD) command allows you to remove one
+or more user action auditing values from a selection of user profiles
+defined by either a user profile name, a generic user profile name or
+the special value *ALL, causing all user profiles on the system to be
+selected.
+:P.
+To further narrow the selection of user profiles you have the option
+of specifying a user class criterion, ensuring that only user profiles
+having the specified user class are included in the selection of user
+profiles to be processed.
+:P.
+If you specify a user action auditing value that is not assigned to a
+user profile, the user action auditing value is ignored.  Under these
+circumstances, if none of the specified user action auditing values are
+assigned to the user profile, no update of the user profile's user
+auditing values will occur.
+:P.
+Completion messages are returned for each user profile that has been
+updated and a final completion message specifies the total count of
+user profiles that were updated.
+:P.
+The auditing attributes of a user profile can be displayed with the
+Display User Profile (DSPUSRPRF) command.
+:P.
+:NT.
+The changes made by the RMVUSRAUD command take effect the next time a
+job is started for the specified user.
+:ENT.
+:P.
+:HP2.Restrictions::EHP2.
+:UL.
+:LI.
+You must have *AUDIT special authority to run this command.
+:LI.
+Only those profiles to which you have *READ authority are processed.
+:EUL.
+:EHELP.
+ 
+:HELP NAME='RMVUSRAUD/USRPRF'.
+User profile (USRPRF) - Help
+ 
+:XH3.User profile (USRPRF)
+:P.
+Specifies the user profile(s) from which the user action auditing
+value(s) should be removed, provided that the
+:LINK PERFORM='DSPHELP RMVUSRAUD/USRCLS'.
+User class (USRCLS)
+:ELINK.
+criterion is met.
+:PARML.
+:PT.:PK DEF.*ALL:EPK.
+:PD.
+All user profiles are selected.
+:PT.:PV.generic-name:EPV.
+:PD.
+Specify the generic name of the user profiles to select.  A generic
+name is a character string that contains one or more characters
+followed by an asterisk (*).  For example, ABC*.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of the user profile to select.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='RMVUSRAUD/USRCLS'.
+User class (USRCLS) - Help
+ 
+:XH3.User class (USRCLS)
+:P.
+Specifies the user class used to select the user profiles to have the
+specified user auditing values removed.
+:PARML.
+:PT.:PK DEF.*ANY:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion are selected.
+:PT.:PK.*USER:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *USER are selected.
+:PT.:PK.*SYSOPR:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *SYSOPR are selected.
+:PT.:PK.*PGMR:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *PGMR are selected.
+:PT.:PK.*SECADM:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *SECADM are selected.
+:PT.:PK.*SECOFR:EPK.
+:PD.
+All user profiles meeting the :HP2.User profile (USRPRF):EHP2.
+criterion and having a user class of *SECOFR are selected.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='RMVUSRAUD/OBJAUD'.
+Object auditing value (OBJAUD) - Help
+ 
+:XH3.Object auditing value (OBJAUD)
+:P.
+Specifies the object auditing value to remove for the user profiles
+selected.
+:PARML.
+:PT.:PK DEF.*SAME:EPK.
+:PD.
+The object auditing value does not change.
+:PT.:PK.*ANY:EPK.
+:PD.
+Any object auditing value, irrespective of the current value, is
+removed.
+:PT.:PK.*CHANGE:EPK.
+:PD.
+Only object auditing values currently set to *CHANGE are removed.
+:PT.:PK.*ALL:EPK.
+:PD.
+Only object auditing values currently set to *ALL are removed.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='RMVUSRAUD/AUDLVL'.
+User action auditing (AUDLVL) - Help
+ 
+:XH3.User action auditing (AUDLVL)
+:P.
+Specifies the user action auditing values to remove for the user
+profiles selected.
+:P.
+For an explanation of the action auditing values and their meaning
+look up the :HP2.CHGUSRAUD:EHP2. command's help text for the
+:LINK PERFORM='DSPHELP CHGUSRAUD/AUDLVL'.
+AUDLVL
+:ELINK.
+keyword.
+ 
+:P.
+:HP2.Single values:EHP2.
+:PARML.
+:PT.:PK DEF.*SAME:EPK.
+:PD.
+The user action auditing value does not change.
+:PT.:PK.*ALL:EPK.
+:PD.
+All user action auditing values currently registered for the user
+profiles selected are removed.
+:EPARML.
+:P.
+:HP2.Other values (up to 13 repetitions):EHP2.
+:PARML.
+:PT.:PK.*CMD:EPK.
+:PD.
+User action auditing values set to *CMD are removed from the
+selected user profiles.
+:PT.:PK.*CREATE:EPK.
+:PD.
+User action auditing values set to *CREATE are removed from the
+selected user profiles.
+:PT.:PK.*DELETE:EPK.
+:PD.
+User action auditing values set to *DELETE are removed from the
+selected user profiles.
+:PT.:PK.*JOBDTA:EPK.
+:PD.
+User action auditing values set to *JOBDTA are removed from the
+selected user profiles.
+:PT.:PK.*OBJMGT:EPK.
+:PD.
+User action auditing values set to *OBJMGT are removed from the
+selected user profiles.
+:PT.:PK.*OFCSRV:EPK.
+:PD.
+User action auditing values set to *OFCSRV are removed from the
+selected user profiles.
+:PT.:PK.*OPTICAL:EPK.
+:PD.
+User action auditing values set to *OPTICAL are removed from the
+selected user profiles.
+:PT.:PK.*PGMADP:EPK.
+:PD.
+User action auditing values set to *PGMADP are removed from the
+selected user profiles.
+:PT.:PK.*SAVRST:EPK.
+:PD.
+User action auditing values set to *SAVRST are removed from the
+selected user profiles.
+:PT.:PK.*SECURITY:EPK.
+:PD.
+User action auditing values set to *SECURITY are removed from the
+selected user profiles.
+:PT.:PK.*SERVICE:EPK.
+:PD.
+User action auditing values set to *SERVICE are removed from the
+selected user profiles.
+:PT.:PK.*SPLFDTA:EPK.
+:PD.
+User action auditing values set to *SPLFDTA are removed from the
+selected user profiles.
+:PT.:PK.*SYSMGT:EPK.
+:PD.
+User action auditing values set to *SYSMGT are removed from the
+selected user profiles.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='RMVUSRAUD/COMMAND/EXAMPLES'.
+Examples for RMVUSRAUD - Help
+ 
+:XH3.Examples for RMVUSRAUD
+:P.
+:HP2.Example 1: Removing user action auditing for a single user profile:EHP2.
+:XMP.
+RMVUSRAUD  USRPRF(JCROCE) AUDLVL(*SYSMGT)
+:EXMP.
+:P.
+This command removes user action auditing value from user profile
+JCROCE.
+:P.
+:HP2.Example 2: Removing user action auditing for a user class:EHP2.
+:XMP.
+RMVUSRAUD  USRPRF(*ALL) USRCLS(*SECOFR) AUDLVL(*CMD *SECURITY)
+:EXMP.
+:P.
+This command removes user action auditing values *CMD and *SECURITY
+from all user profiles having user class *SECOFR.  If any of the user
+profiles only have one or none of the action auditing values specified,
+only the present value, if any, is removed.
+:P.
+:HP2.Example 3: Removing all user action auditing from generic user
+profile.:EHP2.
+:XMP.
+RMVUSRAUD  USRPRF(Q*) AUDLVL(*ALL)
+:EXMP.
+:P.
+This command adds user action auditing values *NONE to all user
+profiles beginning with the letter "Q".
+:EHELP.
+ 
+:HELP NAME='RMVUSRAUD/ERROR/MESSAGES'.
+&MSG(CPX0005,QCPFMSG). RMVUSRAUD - Help
+ 
+:XH3.&MSG(CPX0005,QCPFMSG). RMVUSRAUD
+:P.
+:HP3.*ESCAPE &MSG(CPX0006,QCPFMSG).:EHP3.
+:DL COMPACT.
+:DT.CPF0002
+:DD.&MSG(CPF0002,QCPFMSG,*LIBL,nosub).
+:DT.CPF22B0
+:DD.&MSG(CPF22B0,QCPFMSG,*LIBL,nosub).
+:DT.CPF22CC
+:DD.&MSG(CPF22CC,QCPFMSG,*LIBL,nosub).
+:DT.CPFB304
+:DD.&MSG(CPFB304,QCPFMSG,*LIBL,nosub).
+:EDL.
+:EHELP.
+ 
+:EPNLGRP.

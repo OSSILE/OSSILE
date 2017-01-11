@@ -4,6 +4,7 @@ export PWD
 SRCLIB=OSSILESRC
 OLIB=OSSILE
 VLDCHK="*NONE"
+PMTOP="*NONE"
 
 # need parameter to determine the build directory
 if [ "$#" -eq 0 ]; then
@@ -14,37 +15,64 @@ fi
 BUILD = "cbx$1"
 # will create source file to hold all of the sources
 system -kpieb "CRTSRCPF FILE($SRCLIB/$BUILD) RCDLEN(150)"
+# some samples will need to be built using a CLP as they have additional objects involved.
+# search the directory for a file with $BUILDm
+if[ find "$PWD/$BUILD" -name "$BUILDm.clp" ]
+   # copy all of the source and just build the CLP command before calling with required parms
+   for FILE in "$PWD/$BUILD"
+      do
+        # seperate the file name and extension
+  		EXT = $(echo ${FILE}|awk -F\. '{print $2}')
+  		OBJ = $(echo ${FILE}|awk -F\. '{print $1}')
+  		# add the source member
+  		system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ)"
+  		# copy the source
+  		system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/$BUILD/$FILE') TOMBR('/QSYS.lib/OSSILE.lib/$BUILD.file/$OBJ.mbr')"
+  		if[ "$OBJ" = "$BUILDm" ]
+  			system -kpieb "CRTCLPGM PGM($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
+  		fi
+   done   
+   # now call the clp to build all the other required objects
+   system -kpieb "CALL PGM($OLIB/$BUILDM) PARM('$OLIB')"
+   # clean up and exit
+   system -kpieb "DLTF FILE($SRCLIB/$BUILD)"
+   exit
+fi
 # loop through the directory content and copy the source to the source file
 for FILE in "$PWD/$BUILD"
-   do
-      # seperate the file name and extension
-      EXT = $(echo ${FILE}|awk -F\. '{print $2}')
-      OBJ = $(echo ${FILE}|awk -F\. '{print $1}')
-      # if the program == $OBJv we have a validity checker
-      if[ "$OBJ" = "$BUILDv" ]
-         $VLDCHK = "$BUILDv"
-      fi    
-      # add the file member
-      system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ)"
-      # copy the source across
-      system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/$BUILD/$FILE') TOMBR('/QSYS.lib/OSSILE.lib/$BUILD.file/$OBJ.mbr')"
-      if[ "$EXT" == "rpgle" ]
-      	# build the module and program
-      	system -kpieb "CRTRPGMOD MODULE($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD) DBGVIEW(*LIST)"
-      	system -kpieb "CRTPGM PGM($OLIB/$OBJ) ACTGRP(*NEW)"
-      fi
-      if[ "$EXT" = "cmd" ]
-         # create the command
-         system -kpieb "CRTCMD CMD($OLIB/$OBJ) PGM($BUILD) SRCFILE(&SRCLIB/$BUILD) SRCMBR($OBJ) HLPPNLGRP(*LIBL/$BUILDh) HLPID(*CMD) VLDCHK($VLDCHK)"
-      fi
-      if[ "$EXT" = "pnlgrp" ]
-         # create the panel group
-         system -kpieb "CRTPNLGRP PNLGRP($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
-      fi  
-      if[ "$EXT" = "clp" ]
-         #create the CL Program
-         system -kpieb "CRTCLPGM PGM($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
-      fi       	
+  do
+  # seperate the file name and extension
+  EXT = $(echo ${FILE}|awk -F\. '{print $2}')
+  OBJ = $(echo ${FILE}|awk -F\. '{print $1}')
+  # if the program == $OBJv we have a validity checker
+  if[ "$OBJ" = "$BUILDv" ]
+     $VLDCHK = "$BUILDv"
+  fi 
+  # if the program == $OBJo we have a prompt override program
+  if[ "$OBJ" = "$BUILDo" ]
+     $PMTOP = "$BUILDo"
+  fi 
+  # add the file member
+  system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ)"
+  # copy the source across
+  system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/$BUILD/$FILE') TOMBR('/QSYS.lib/OSSILE.lib/$BUILD.file/$OBJ.mbr')"
+  if[ "$EXT" == "rpgle" ]
+  	# build the module and program
+  	system -kpieb "CRTRPGMOD MODULE($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD) DBGVIEW(*LIST)"
+  	system -kpieb "CRTPGM PGM($OLIB/$OBJ) ACTGRP(*NEW)"
+  fi
+  if[ "$EXT" = "cmd" ]
+     # create the command
+     system -kpieb "CRTCMD CMD($OLIB/$OBJ) PGM($BUILD) SRCFILE(&SRCLIB/$BUILD) SRCMBR($OBJ) HLPPNLGRP(*LIBL/$BUILDh) HLPID(*CMD) VLDCHK($VLDCHK) PMTOVRPGM($PMTOP)"
+  fi
+  if[ "$EXT" = "pnlgrp" ]
+     # create the panel group
+     system -kpieb "CRTPNLGRP PNLGRP($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
+  fi  
+  if[ "$EXT" = "clp" ]
+     #create the CL Program
+     system -kpieb "CRTCLPGM PGM($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
+  fi       	
 done
 # clean up the source file
 system -kpieb "DLTF FILE($SRCLIB/$BUILD)"
