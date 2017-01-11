@@ -1,0 +1,417 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9972H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( CBX9972H )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+.* Command help section:
+:HELP NAME='WRKWSE'.Work with Work Station Entries - Help
+:P.
+The Work with Work Station Entries (WRKWSE) command allows you to
+work with all work station entries defined for the specified subsystem .
+:EHELP.
+ 
+:HELP NAME='WRKWSE/SBS'.Subsystem (SBSD) - Help
+:XH3.Subsystem (SBS)
+:P.
+Specify the name of the subsystem for which to list the work station
+entries.
+:P.
+This is a required parameter.
+:P.
+:XH3.Library
+:P.
+The library containing the specified subsystem.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*LIBL:EPK.
+:PD.
+All libraries in the library list for the current thread are searched.
+:PT.:PK.*CURLIB:EPK.
+:PD.
+The current library for the thread is searched.  If no library is
+specified as the current library for the thread, the QGPL library is
+is searched.
+:PT.:PV.library-name:EPV.
+:PD.
+Specify the name of the library to be searched.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/ENTTYPE'.Entry type (ENTTYPE) - Help
+:XH3.Entry type (ENTTYPE)
+:P.
+Specifies the work station entry type to include in the work station
+entry list.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*NAME:EPK.
+:PD.
+Work station name entries are included in the work station entry list.
+:PT.:PK.*TYPE:EPK.
+:PD.
+Work station type entries are included in the work station entry list.
+:EPARML.
+:EHELP.
+ 
+.* Panel help section:
+:HELP NAME=HLPFKEYS.
+Function Keys - Help
+:XH3.Function keys
+:EHELP.
+ 
+:HELP NAME=HLPENT.
+:PARML.
+:PT.Enter
+:PD.Submits information on the display for processing.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF1.
+:PARML.
+:PT.F1=Help
+:PD.Provides additional information about using the display.
+:EPARML.
+:EHELP.
+ 
+:HELP     NAME=HLPF3.
+:PARML.
+:PT.F3=Exit
+:PD.Ends the current task and returns you to the display from which
+the task was started.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF4.
+:PARML.
+:PT.F4=Prompt
+:PD.Provides assistance in entering or selecting a command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF5.
+:PARML.
+:PT.F5=Refresh
+:PD.Shows the display you are viewing with updated information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF6.
+:PARML.
+:PT.F6=Add work station entry
+:PD.Executes the Add Work Station Entry (ADDWSE) command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF9.
+:PARML.
+:PT.F9=Retrieve
+:PD.Displays the last command you entered on the command line and any
+parameters you included.  Pressing this key once, shows the last
+command you ran.  Pressing this key twice, shows the command you ran
+before that and so on.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF10.
+:PARML.
+:PT.F10=Work with subsystem jobs
+:PD.Executes the Work with Subsystem Jobs (WRKSBSJOB) command
+for the specified subsystem.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW1'.
+:PARML.
+:PT.F11=Show names or types only
+:PD.Displays only the work station entry name or type in 4 columns.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW2'.
+:PARML.
+:PT.F11=Show details
+:PD.Displays the work station entry name or type, job description,
+maximum active jobs as well as allocation attribute.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF12.
+:PARML.
+:PT.F12=Cancel
+:PD.Cancels processing of any options or changes you have made to the
+current display and returns you to the previous menu or display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF20.
+:PARML.
+:PT.F20=Work with subsystem description
+:PD.Executes the Work with Subsystem Description (WRKSBSD) command
+for the specified subsystem.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF21.
+:PARML.
+:PT.F21=Print list
+:PD.Prints the current list.  The spooled file is sent to the output
+queue and can be viewed using the WRKJOB or WRKSPLF command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF24.
+:PARML.
+:PT.F24=More keys
+:PD.Changes the keys shown at the bottom of the display.  When you
+press this key, additional function keys are displayed at the bottom
+of the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPHLP.
+:PARML.
+:PT.Help
+:PD.Provides additional information about using the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPGD.
+:PARML.
+:PT.Page Down (Roll Up)
+:PD.Moves the information displayed forward to show additional
+information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPGU.
+:PARML.
+:PT.Page Up (Roll Down)
+:PD.Moves the information displayed backward to show additional
+information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPRT.
+:PARML.
+:PT.Print
+:PD.Prints information currently shown on the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/'.Work with Work Station Entries - Help
+:P.
+The Work with Work Station Entries display shows the specified
+subsystem's currently configured work station entries.
+:P.
+You can type an option next to one or more work station entries.
+When the Enter key is pressed, the function associated with the
+number you typed is performed for that work station entry.
+:P.
+To have the list panel reflect the a changed or copied work station
+entry press the function key F5 to refresh the list.
+:P.
+If you press the Enter key without typing any other data, you are
+returned to the previous menu or display.
+:P.
+You can type parameters on the command line if you want to override the
+defaults for the option(s) you typed.  Typing parameters is valid only
+if you used one of the options.
+:P.
+To run a command, type the command and press the Enter key.  For
+assistance in typing the command, type the command and press F4.  For
+assistance in selecting a command, press F4 without typing anything.
+:P.
+If you see More ... on the lower right side of your display, there is
+more information to view.  Press Page Down (Roll Up) to move toward the
+end of the information.  Press Page Up (Roll Down) to move toward the
+beginning of the information.
+:P.
+If you see Bottom instead of More ..., you are at the end of the list.
+:P.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/SBSNAM'.
+Subsystem name - Help
+:XH3.Subsystem name
+:P.
+The name of the subsystem whose work station entries are listed.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/SBSLIB'.
+Library - Help
+:XH3.Library
+:P.
+The library containing the specified subsystem.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/SBSSTS'.
+Subsystem status - Help
+:XH3.Subsystem status
+:P.
+The current status of the specified subsystem.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/OPTCHG'.
+:PARML.
+:PT.2=Change
+:PD.Use this option to run the Change Work Station Entry (CHGWSE)
+command.
+:P.
+When values have been specified on the Parameters input field, the
+command is run without the prompt appearing when you press the Enter
+key.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/OPTCPY'.
+:PARML.
+:PT.3=Copy
+:PD.Use this option to run the Add Work Station Entry (ADDWSE)
+command based on the attributes of the selected work station entry.
+:P.
+When values have been specified on the Parameters input field, the
+command is run without the prompt appearing when you press the Enter
+key.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/OPTRMV'.
+:PARML.
+:PT.4=Remove
+:PD.Use this option to run the Remove Work Station Entry (RMVWSE)
+command.
+:P.
+The work station entry is removed from the work station entry list
+if the command runs successfully.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/OPTWJD'.
+:PARML.
+:PT.5=Work with Job Description
+:PD.Use this option to run the Work with Job Description (WRKJOBD)
+command.  If special value *USRPRF is specified for the work station
+entry's job description attribute, selecting this option will cause
+an error message to be returned.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKWSE/OPTION'.
+Option - Help
+:XH3.Opt
+:P.
+Type the number of the option you want to specify.
+:EHELP.
+ 
+:HELP name='WRKWSE/WKSNAM'.
+Work station name - Help
+:XH3.Work station name
+:P.
+The work station name identifying the work station entry.
+:EHELP.
+ 
+:HELP name='WRKWSE/WKSTYP'.
+Work station type - Help
+:XH3.Work station type
+:P.
+The work station type identifying the work station entry.
+:EHELP.
+ 
+:HELP name='WRKWSE/JBDNAM'.
+Job description - Help
+:XH3.Job description
+:P.
+The name of the job description used when a job is started as a result
+of receiving a program start request and processed through this
+communications entry.
+:EHELP.
+ 
+:HELP name='WRKWSE/JBDLIB'.
+Library - Help
+:XH3.Library
+:P.
+The name of the library in which the communications entry job
+description resides.
+:EHELP.
+ 
+:HELP name='WRKWSE/JBDTXT'.
+Text - Help
+:XH3.Text
+:P.
+A text description of the job description.
+:EHELP.
+ 
+:HELP name='WRKWSE/MAXAJB'.
+Maximum active jobs - Help
+:XH3.Maximum active jobs
+:P.
+The maximum number of jobs that can be active at the same time through
+this entry. If the special value *NOMAX is specified, this indicates
+that there is no maximum of active jobs.
+:EHELP.
+ 
+:HELP name='WRKWSE/CTLJOB'.
+Allocation  - Help
+:XH3.Allocation
+:P.
+Specifies how the work stations associated with this work station entry
+are allocated.
+:P.
+The following special values are allowed:
+:DL.
+:DT.*SIGNON:DD.The work stations are allocated when the subsystem is
+started if the work station is not already in use (signed on) in
+another subsystem.  A sign-on prompt is displayed at each work station
+associated with this work entry.  If a work station becomes allocated
+to a different subsystem, interactive jobs associated with the work
+station are allowed to enter this subsystem through the Transfer Job
+(TFRJOB) command.
+:DT.*ENTER :DD.The work stations associated with this work entry are
+not allocated when the subsystem is started.  However, the interactive
+jobs associated with the work stations are allowed to enter this
+subsystem through the TFRJOB command.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='CNFPNL/'.
+Confirm Removal of Work Station Entry - Help
+:P.
+The Confirm Remove of Work Station Entry display shows all of the
+work station entries that you have chosen to remove by selecting
+option 4=Remove on the Work with Work Station Entries display.  The
+purpose of this display is to allow you to confirm your remove
+request(s) before the work station entry is removed.
+:P.
+Pressing the Enter key confirms the items on the display that you have
+chosen to remove.  Pressing F12 (Cancel) allows you to return to the
+previous display to change your choices.
+:P.
+If you see More ... on the lower right side of your display, there is
+more information to view. Press Page Down (Roll Up) to move toward the
+end of the information. Press Page Up (Roll Down) to move toward the
+beginning of the information.
+:P.
+If you see Bottom instead of More ..., you are at the end of the list.
+:P.
+:EHELP.
+ 
+:HELP name='CNFPNL/OPTION'.
+Opt - Help
+:XH3.Opt
+:P.
+This is the option field showing the remove work station entry option
+which causes the confirmation panel to be displayed.  For this panel,
+the option number will always be 4.
+:EHELP.
+ 
+:EPNLGRP.

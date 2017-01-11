@@ -10,6 +10,9 @@ Provide a number of code examples which can be used as utilities on IBM i. The c
 * ... - More utilities/samples
 * 998 - WRKSBSE Work with Subsystem Entries utility
 * 999 - WRKRMTOUTQ Work with Remote OUTQ's utility
+* 9971 - WRKCMNE Work with Communication Entries
+* 9972 - WRKWSE Work with Workstation Entries
+* 9973 - Work with Workstation entries.
 
 ##Build
 run the shell script setup in QP2TERM ./code_examples/rpg/cf_api/setup '999'

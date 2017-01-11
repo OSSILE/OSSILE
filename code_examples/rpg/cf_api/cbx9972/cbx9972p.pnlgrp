@@ -1,0 +1,547 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9972P )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:COPYR.
+(C) System iNetwork Systems Management Tips 2010.
+ 
+.*-- Import help panel group:
+:IMPORT   NAME='*'        PNLGRP=CBX9972H.
+.*-- Class definitions:
+:CLASS    NAME=CLACTION   BASETYPE=ACTION       WIDTH=1.
+:ECLASS.
+:CLASS    NAME=CLEXITPG   BASETYPE='CHAR 20'.
+:ECLASS.
+:CLASS    NAME=CLOBJNAM   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLALTVIEW  BASETYPE='BIN 15'.
+:ECLASS.
+:CLASS    NAME=CLTIMZON   BASETYPE='TIME ZONE'.
+:ECLASS.
+:CLASS    NAME=CLTIME     BASETYPE='TIME'.
+:ECLASS.
+:CLASS    NAME=CLDATE     BASETYPE='DATE 2'.
+:ECLASS.
+:CLASS    NAME=CLCMDPRM   BASETYPE='CHAR 255'.
+:ECLASS.
+:CLASS    NAME=CLSBSSTS   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLCTLJOB   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLTXTDSC   BASETYPE='IGC 50'     SUBST=QUOTED.
+:ECLASS.
+:CLASS    NAME=CLNBRTYP   BASETYPE='BIN 15'     WIDTH=6.
+:TL.
+:TI  VALUE='-1'.*NOMAX
+:ETL.
+:ECLASS.
+:CLASS    NAME=CLQUALNM   BASETYPE='CHAR 21'.
+:ECLASS.
+ 
+.*-- Variable definitions:
+:VAR      NAME=OPTION    CLASS=CLACTION.
+:VAR      NAME=EXITPG    CLASS=CLEXITPG.
+:VAR      NAME=DATE      CLASS=CLDATE.
+:VAR      NAME=TIMZON    CLASS=CLTIMZON.
+:VAR      NAME=CMDPRM    CLASS=CLCMDPRM.
+:VAR      NAME=ALTVIEW   CLASS=CLALTVIEW.
+ 
+:VAR      NAME=SBSNAM    CLASS=CLOBJNAM.
+:VAR      NAME=SBSLIB    CLASS=CLOBJNAM.
+:VAR      NAME=SBSSTS    CLASS=CLSBSSTS.
+ 
+:VAR      NAME=WKSNAM    CLASS=CLOBJNAM.
+:VAR      NAME=JBDNAM    CLASS=CLOBJNAM.
+:VAR      NAME=JBDLIB    CLASS=CLOBJNAM.
+:VAR      NAME=JBDTXT    CLASS=CLTXTDSC.
+:VAR      NAME=CTLJOB    CLASS=CLCTLJOB.
+:VAR      NAME=MAXAJB    CLASS=CLNBRTYP.
+:VAR      NAME=JBDNMQ    CLASS=CLQUALNM.
+ 
+.*-- Variable record definitions:
+:VARRCD   NAME=EXPRCD
+          VARS='EXITPG'.
+ 
+:VARRCD   NAME=HDRRCD
+          VARS='DATE TIMZON SBSNAM SBSLIB SBSSTS'.
+ 
+:VARRCD   NAME=DTLRCD
+          VARS='OPTION WKSNAM JBDNAM JBDLIB JBDTXT CTLJOB MAXAJB'
+          VARS='JBDNMQ'.
+ 
+.*-- List definition:
+:LISTDEF  NAME=DTLLST
+          VARS='OPTION WKSNAM JBDNAM JBDLIB JBDTXT CTLJOB MAXAJB'
+          VARS='JBDNMQ'
+          MSGID=CPI0923
+          MSGF='QCPFMSG'.
+ 
+:LISTDEF  NAME=CNFLST
+          VARS='OPTION WKSNAM JBDNAM JBDLIB JBDTXT CTLJOB MAXAJB'
+          VARS='JBDNMQ'.
+ 
+.*-- Conditions:
+:COND     NAME=VIEW1      EXPR='ALTVIEW = 0'.
+:COND     NAME=VIEW2      EXPR='ALTVIEW = 1'.
+ 
+:COND     NAME=SBSACT     EXPR='SBSSTS *EQ "*ACTIVE"'.
+ 
+:TT       NAME=PNLTT
+          CONDS= 'VIEW1   VIEW2'.
+:TTROW    VALUES='  1       0  '.
+:TTROW    VALUES='  1       0  '.
+:ETT.
+ 
+ 
+.*-- Key definitions - main panel:
+:KEYL     NAME=FKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F3
+          HELP=HLPF3
+          ACTION='EXIT SET'
+          VARUPD=NO
+          .F3=Exit
+ 
+:KEYI     KEY=F4
+          HELP=HLPF4
+          PRIORITY=30
+          ACTION=PROMPT
+          .F4=Prompt
+ 
+:KEYI     KEY=F5
+          HELP=HLPF5
+          PRIORITY=20
+          ACTION='RETURN 5'
+          .F5=Refresh
+ 
+:KEYI     KEY=F6
+          HELP='HLPF6'
+          ACTION='CMD ?ADDWSE ?*SBSD(&SBSLIB/&SBSNAM)'
+          PRIORITY=20
+          .F6=Add work station entry
+ 
+:KEYI     KEY=F9
+          HELP=HLPF9
+          PRIORITY=30
+          ACTION=RETRIEVE
+          .F9=Retrieve
+ 
+:KEYI     KEY=F10
+          HELP=HLPF10
+          PRIORITY=30
+          COND=SBSACT
+          ACTION='CMD WRKSBSJOB SBS(&SBSNAM)'
+          .F10=Work with subsystem jobs
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW1'
+          ACTION=CHGVIEW
+          COND=VIEW1
+          PRIORITY=20
+          .F11=Show names only
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW2'
+          ACTION=CHGVIEW
+          COND=VIEW2
+          PRIORITY=20
+          .F11=Show details
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=F20
+          HELP=HLPF20
+          PRIORITY=30
+          ACTION='CMD WRKSBSD SBSD(&SBSLIB/&SBSNAM)'
+          .F20=Work with subsystem description
+ 
+:KEYI     KEY=F21
+          HELP=HLPF21
+          ACTION='CALL EXITPG'
+          PRIORITY=20
+          .F21=Print list
+ 
+:KEYI     KEY=F24
+          HELP=HLPF24
+          ACTION=MOREKEYS
+          .F24=More keys
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Key definitions - confirmation panel:
+:KEYL     NAME=CNFKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW1'
+          ACTION=CHGVIEW
+          COND=VIEW1
+          PRIORITY=20
+          .F11=Show names only
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW2'
+          ACTION=CHGVIEW
+          COND=VIEW2
+          PRIORITY=20
+          .F11=Show details
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CBX9972P
+          KEYL=FKEYS
+          ENTER='RETURN 500'
+          HELP='WRKWSE/'
+          TT=PNLTT
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Work with Work Station Entries
+ 
+.*-- Data presentation area:
+ 
+:DATA     DEPTH=3
+          LAYOUT=2
+          BOTSEP=SPACE.
+ 
+:DATACOL  WIDTH=18.
+:DATACOL  WIDTH='*'.
+ 
+:DATAGRP  GRPSEP=QINDENT
+          COMPACT.
+ 
+:DATAI    VAR=SBSNAM
+          USAGE=OUT
+          HELP='WRKWSE/SBSNAM'
+          .Subsystem
+ 
+:DATAI    VAR=SBSLIB
+          USAGE=OUT
+          HELP='WRKWSE/SBSLIB'
+          .Library
+:EDATAGRP.
+ 
+:DATAGRP  GRPSEP=NONE
+          COMPACT.
+ 
+:DATAI    VAR=SBSSTS
+          USAGE=OUT
+          HELP='WRKWSE/SBSSTS'
+          .Subsystem status
+:EDATAGRP.
+:EDATA.
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=DTLLST
+          MAXHEAD=2
+          VIEW=ALTVIEW
+          ACTOR=UIM
+          SCROLL=YES
+          PARMS=CMDPRM.
+ 
+:TOPINST .Type options, press Enter.
+ 
+:LISTACT  ENTER='CMD CHGWSE SBSD(&SBSLIB/&SBSNAM) WRKSTN(&WKSNAM)'
+          ENTER='JOBD(&JBDNMQ) MAXACT(&MAXAJB) AT(&CTLJOB)'
+          ENTER='MAXACT(&MAXAJB)'
+          PROMPT='CMD ?CHGWSE ?*SBSD(&SBSLIB/&SBSNAM) ?*WRKSTN(&WKSNAM)'
+          PROMPT='?-WRKSTNTYPE() ??JOBD(&JBDNMQ) ??MAXACT(&MAXAJB)'
+          PROMPT='??AT(&CTLJOB)'
+          HELP='WRKWSE/OPTCHG'
+          OPTION=2
+          NOCMD=PROMPT
+          .2=Change
+ 
+:LISTACT  ENTER='CMD ADDWSE SBSD(&SBSLIB/&SBSNAM) WRKSTN(&WKSNAM)'
+          ENTER='JOBD(&JBDNMQ) MAXACT(&MAXAJB) AT(&CTLJOB)'
+          PROMPT='CMD ?ADDWSE ?*SBSD(&SBSLIB/&SBSNAM) ??WRKSTN(&WKSNAM)'
+          PROMPT='?-WRKSTNTYPE() ??JOBD(&JBDNMQ) ??MAXACT(&MAXAJB)'
+          PROMPT='??AT(&CTLJOB)'
+          HELP='WRKWSE/OPTCPY'
+          OPTION=3
+          NOCMD=PROMPT
+          .3=Copy
+ 
+:LISTACT  ENTER='CMD RMVWSE SBSD(&SBSLIB/&SBSNAM) WRKSTN(&WKSNAM)'
+          PROMPT='CMD ?RMVWSE ?*SBSD(&SBSLIB/&SBSNAM) ?*WRKSTN(&WKSNAM)'
+          PROMPT='?-WRKSTNTYPE()'
+          HELP='WRKWSE/OPTRMV'
+          OPTION=4
+          CONFIRM=CNFPNL
+          USREXIT='CALL EXITPG'
+          .4=Remove
+ 
+:LISTACT  ENTER='CMD WRKJOBD JOBD(&JBDNMQ)'
+          PROMPT='CMD ?WRKJOBD ?*JOBD(&JBDNMQ)'
+          HELP='WRKWSE/OPTWJD'
+          OPTION=5
+          .5=Work with Job description
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=INOUT
+          MAXWIDTH=3
+          HELP='WRKWSE/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=WKSNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          HELP='WRKWSE/WKSNAM'
+          .'Workstation' 'Name       '
+ 
+:LISTCOL  VAR=JBDNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          HELP='WRKWSE/JBDNAM'
+          .'Job        ' 'Description'
+ 
+:LISTCOL  VAR=JBDLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKWSE/JBDLIB'
+          .Library
+ 
+:LISTCOL  VAR=JBDTXT
+          USAGE=OUT
+          MAXWIDTH='*'
+          HELP='WRKWSE/JBDTXT'
+          .Text
+ 
+:LISTCOL  VAR=MAXAJB
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKWSE/MAXAJB'
+          .'Max.  ' 'Active'
+ 
+:LISTCOL  VAR=CTLJOB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKWSE/CTLJOB'
+          .Allocation
+ 
+:LISTVIEW COLS='OPTION WKSNAM MAXAJB CTLJOB JBDNAM JBDLIB JBDTXT'.
+:LISTVIEW COLS='OPTION WKSNAM'
+          LAYOUT=4.
+:ELIST.
+ 
+:CMDLINE  SIZE=SHORT
+          .Parameters or command
+:EPANEL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CNFPNL
+          KEYL=CNFKEYS
+          ENTER='RETURN 100'
+          HELP='CNFPNL/'
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Confirm Removal of Work Station Entry
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=CNFLST
+          MAXHEAD=2
+          VIEW=ALTVIEW
+          SCROLL=YES.
+ 
+:TOPINST.Press Enter to confirm your choices of 4=Remove.
+:TOPINST.Press F12 to return to change your choices.
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=OUT
+          MAXWIDTH=3
+          HELP='CNFPNL/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=WKSNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          HELP='WRKWSE/WKSNAM'
+          .'Workstation' 'Name       '
+ 
+:LISTCOL  VAR=JBDNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          HELP='WRKWSE/JBDNAM'
+          .'Job        ' 'Description'
+ 
+:LISTCOL  VAR=JBDLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKWSE/JBDLIB'
+          .Library
+ 
+:LISTCOL  VAR=JBDTXT
+          USAGE=OUT
+          MAXWIDTH='*'
+          HELP='WRKWSE/JBDTXT'
+          .Text
+ 
+:LISTCOL  VAR=MAXAJB
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKWSE/MAXAJB'
+          .'Max.  ' 'Active'
+ 
+:LISTCOL  VAR=CTLJOB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKWSE/CTLJOB'
+          .Allocation
+ 
+:LISTVIEW COLS='OPTION WKSNAM MAXAJB CTLJOB JBDNAM JBDLIB JBDTXT'.
+:LISTVIEW COLS='OPTION WKSNAM'
+          LAYOUT=4.
+:ELIST.
+:EPANEL.
+ 
+.*-- Print panel header definition:
+:PRTHEAD  NAME=PRTHDR
+          WIDTH=132
+          .Subsystem Communication Entry List
+ 
+:PRTTRAIL .E N D   O F   L I S T I N G
+ 
+:EPRTHEAD.
+ 
+.*-- Print panel detail definition:
+ 
+:PRTPNL   NAME=PRTLST
+          WIDTH=132.
+ 
+:DATA     LAYOUT=2
+          BOTSEP=SPACE.
+ 
+:DATACOL  WIDTH=24.
+:DATACOL  WIDTH='*'.
+ 
+:DATAGRP  GRPSEP=QINDENT
+          COMPACT.
+ 
+:DATAI    VAR=SBSNAM
+          USAGE=OUT
+          .Subsystem
+ 
+:DATAI    VAR=SBSLIB
+          USAGE=OUT
+          .Library
+:EDATAGRP.
+ 
+:DATAGRP  GRPSEP=NONE
+          COMPACT.
+ 
+:DATAI    VAR=SBSSTS
+          USAGE=OUT
+          .Subsystem status
+:EDATAGRP.
+:EDATA.
+ 
+.*-- Print panel list definition:
+ 
+:LIST     LISTDEF=DTLLST
+          MAXHEAD=3
+          BOTSEP=NONE.
+ 
+:LISTCOL  VAR=WKSNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          .'Workstation' 'Name       '
+ 
+:LISTCOL  VAR=JBDNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          .'Job        ' 'Description'
+ 
+:LISTCOL  VAR=JBDLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=JBDTXT
+          USAGE=OUT
+          MAXWIDTH='*'
+          .Text
+ 
+:LISTCOL  VAR=MAXAJB
+          USAGE=OUT
+          MAXWIDTH=8
+          .'Max.  ' 'Active'
+ 
+:LISTCOL  VAR=CTLJOB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKWSE/CTLJOB'
+          .Allocation
+ 
+:LISTVIEW COLS='WKSNAM MAXAJB CTLJOB JBDNAM JBDLIB JBDTXT'.
+:ELIST.
+ 
+:EPRTPNL.
+:EPNLGRP.
