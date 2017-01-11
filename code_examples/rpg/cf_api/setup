@@ -1,16 +1,17 @@
-#!/QOpenSys/usr/bin/sh
-export PWD=$(pwd)
-SRCLIB = OSSILESRC
-OLIB = OSSILE
-VLDCHK= "*NONE"
+#!/QOpenSys/usr/bin/ksh
+PWD=`pwd`
+export PWD
+SRCLIB=OSSILESRC
+OLIB=OSSILE
+VLDCHK="*NONE"
 
 # need parameter to determine the build directory
-if [[ $# -eq 0 ]];then
+if [ "$#" -eq 0 ]; then
    print "No Arguments"
    exit
 fi
 # the build name is the first parameter prepended with cbx
-$BUILD = "cbx$1"
+BUILD = "cbx$1"
 # will create source file to hold all of the sources
 system -kpieb "CRTSRCPF FILE($SRCLIB/$BUILD) RCDLEN(150)"
 # loop through the directory content and copy the source to the source file
@@ -20,27 +21,27 @@ for FILE in "$PWD/$BUILD"
       EXT = $(echo ${FILE}|awk -F\. '{print $2}')
       OBJ = $(echo ${FILE}|awk -F\. '{print $1}')
       # if the program == $OBJv we have a validity checker
-      if[$OBJ == "$BUILDv"]
+      if[ "$OBJ" = "$BUILDv" ]
          $VLDCHK = "$BUILDv"
       fi    
       # add the file member
       system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ)"
       # copy the source across
       system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/$BUILD/$FILE') TOMBR('/QSYS.lib/OSSILE.lib/$BUILD.file/$OBJ.mbr')"
-      if[ $EXT == "rpgle"]
+      if[ "$EXT" == "rpgle" ]
       	# build the module and program
       	system -kpieb "CRTRPGMOD MODULE($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD) DBGVIEW(*LIST)"
       	system -kpieb "CRTPGM PGM($OLIB/$OBJ) ACTGRP(*NEW)"
       fi
-      if[ $EXT == "cmd"]
+      if[ "$EXT" = "cmd" ]
          # create the command
          system -kpieb "CRTCMD CMD($OLIB/$OBJ) PGM($BUILD) SRCFILE(&SRCLIB/$BUILD) SRCMBR($OBJ) HLPPNLGRP(*LIBL/$BUILDh) HLPID(*CMD) VLDCHK($VLDCHK)"
       fi
-      if[ $EXT == "pnlgrp"]
+      if[ "$EXT" = "pnlgrp" ]
          # create the panel group
          system -kpieb "CRTPNLGRP PNLGRP($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
       fi  
-      if[ $EXT == "clp"]
+      if[ "$EXT" = "clp" ]
          #create the CL Program
          system -kpieb "CRTCLPGM PGM($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
       fi       	
