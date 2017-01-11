@@ -6,9 +6,9 @@ samples originally posted to iProdeveloper as part of the Using APis articles.
 Provide a number of code examples which can be used as utilities on IBM i. The code demonstrates the use of a number of API's.
 
 ## Utilities
-100 - Sample of QDBRTVFD
-... - More utilities/samples
-999 - WRKRMTOUTQ utility
+*100 - Sample of QDBRTVFD
+*... - More utilities/samples
+*999 - WRKRMTOUTQ utility
 
 ##Build
 run the shell script setup in QP2TERM ./code_examples/rpg/cf_api/setup '999'
