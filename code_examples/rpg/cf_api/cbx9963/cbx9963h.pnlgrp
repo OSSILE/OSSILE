@@ -1,0 +1,88 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9963H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( CBX9963H )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:HELP NAME='SBMJOBDJOB'.Submit Job Description Job - Help
+:P.
+The Submit Job Description Job (SBMJOBDJOB) command submits a job based
+on the job attributes and job information defined in the specified job
+description.
+:EHELP.
+ 
+:HELP NAME='SBMJOBDJOB/JOB'.Job name (JOB) - Help
+:XH3.Job name (JOB)
+:P.
+Specifies the name of the job that is submitted.
+:P.
+This is a required parameter.
+:P.
+:EHELP.
+ 
+:HELP NAME='SBMJOBDJOB/JOBD'.Job description (JOBD) - Help
+:XH3.Job description (JOBD)
+:P.
+Specifies the name of the job description used by the submitted job.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*JOB:EPK.
+:PD.
+The job description name is the same as the specified job name.
+:PT.:PV.job-description-name:EPV.
+:PD.
+Specify the name of the job description to use by the submitted job.
+:EPARML.
+:XH3.Library
+:P.
+The library where the job description is located.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*LIBL:EPK.
+:PD.
+All libraries in the thread's library list are searched until a match
+is found.
+:PT.:PK.*CURLIB:EPK.
+:PD.
+The current library for the thread is used to locate the job
+description.  If no library is specified as the current library for the
+thread, the QGPL library is used.
+:PT.:PV.library-name:EPV.
+:PD.
+Specify the library where the job description is located.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='SBMJOBDJOB/OPTION'.Parameter option (OPTION) - Help
+:XH3.Parameter option (OPTION)
+:P.
+Specifies where to locate the parameters for the submitted job, that
+cannot be defined by a job description.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*USRPRF:EPK.
+:PD.
+The special value *USRPRF is used on the submit job command for all
+parameters that cannot be defined by a job description.
+:PT.:PK.*SYSVAL:EPK.
+:PD.
+The special value *SYSVAL is used on the submit job command for all
+parameters that cannot be defined by a job description.
+:P.
+Parameters that do not have a *SYSVAL option, will be given the special
+value *NONE or a special value to the equivalent effect.
+:EPARML.
+:EHELP.
+ 
+:EPNLGRP.

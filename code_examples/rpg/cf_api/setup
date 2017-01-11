@@ -38,8 +38,12 @@ for FILE in "$PWD/$BUILD"
       fi
       if[ $EXT == "pnlgrp"]
          # create the panel group
-         system -kpieb "CRTPNLGRP PNLGRP($OBJ) SRCFILE($SRCLIB/$BUILD)"
-      fi      	
+         system -kpieb "CRTPNLGRP PNLGRP($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
+      fi  
+      if[ $EXT == "clp"]
+         #create the CL Program
+         system -kpieb "CRTCLPGM PGM($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
+      fi       	
 done
 # clean up the source file
 system -kpieb "DLTF FILE($SRCLIB/$BUILD)"
