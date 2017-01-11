@@ -10,7 +10,10 @@ Provide a number of code examples which can be used as utilities on IBM i. The c
 * ... - More utilities/samples
 * 998 - WRKSBSE Work with Subsystem Entries utility
 * 999 - WRKRMTOUTQ Work with Remote OUTQ's utility
-* 9961 - SBMJOBDJOB Submit Job Description Job
+* 9953 - WRKJOBQJOB Work with Job Queue jobs
+* 9961 - WRKPJE Work with Prestart Job Entries
+* 9962 - WRKAJE Work with Autostart job Entries
+* 9963 - SBMJOBDJOB Submit Job Description Job
 * 9971 - WRKCMNE Work with Communication Entries
 * 9972 - WRKWSE Work with Workstation Entries
 * 9973 - Work with Workstation entries.

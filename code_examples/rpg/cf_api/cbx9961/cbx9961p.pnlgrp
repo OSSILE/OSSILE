@@ -1,0 +1,996 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9961P )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:COPYR.
+(C) System iNetwork Systems Management Tips 2010.
+ 
+.*-- Import help panel group:
+:IMPORT   NAME='*'        PNLGRP=CBX9961H.
+.*-- Class definitions:
+:CLASS    NAME=CLACTION   BASETYPE=ACTION       WIDTH=1.
+:ECLASS.
+:CLASS    NAME=CLEXITPG   BASETYPE='CHAR 20'.
+:ECLASS.
+:CLASS    NAME=CLOBJNAM   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLALTVIEW  BASETYPE='BIN 15'.
+:ECLASS.
+:CLASS    NAME=CLTIMZON   BASETYPE='TIME ZONE'.
+:ECLASS.
+:CLASS    NAME=CLTIME     BASETYPE='TIME'.
+:ECLASS.
+:CLASS    NAME=CLDATE     BASETYPE='DATE 2'.
+:ECLASS.
+:CLASS    NAME=CLCMDPRM   BASETYPE='CHAR 255'.
+:ECLASS.
+:CLASS    NAME=CLSBSSTS   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLTXTDSC   BASETYPE='IGC 50'     SUBST=QUOTED.
+:ECLASS.
+:CLASS    NAME=CLNBRTYP   BASETYPE='BIN 15'     WIDTH=6.
+:TL.
+:TI  VALUE='-1'.*NOMAX
+:ETL.
+:ECLASS.
+:CLASS    NAME=CLNBRJOB   BASETYPE='BIN 15'     WIDTH=8.
+:TL.
+:TI  VALUE='-3'.*CALC
+:TI  VALUE='-4'.*MAXJOBS
+:ETL.
+:ECLASS.
+:CLASS    NAME=CLBOLTYP   BASETYPE='CHAR 1'     WIDTH=4.
+:TL.
+:TI  VALUE='"0"'.*NO
+:TI  VALUE='"1"'.*YES
+:ETL.
+:ECLASS.
+:CLASS    NAME=CLQUALNM   BASETYPE='CHAR 21'.
+:ECLASS.
+ 
+.*-- Variable definitions:
+:VAR      NAME=OPTION    CLASS=CLACTION.
+:VAR      NAME=EXITPG    CLASS=CLEXITPG.
+:VAR      NAME=DATE      CLASS=CLDATE.
+:VAR      NAME=TIMZON    CLASS=CLTIMZON.
+:VAR      NAME=CMDPRM    CLASS=CLCMDPRM.
+:VAR      NAME=ALTVIEW   CLASS=CLALTVIEW.
+ 
+:VAR      NAME=SBSNAM    CLASS=CLOBJNAM.
+:VAR      NAME=SBSLIB    CLASS=CLOBJNAM.
+:VAR      NAME=SBSSTS    CLASS=CLSBSSTS.
+ 
+:VAR      NAME=PGMNAM    CLASS=CLOBJNAM.
+:VAR      NAME=PGMLIB    CLASS=CLOBJNAM.
+:VAR      NAME=JOBNAM    CLASS=CLOBJNAM.
+:VAR      NAME=JBDNAM    CLASS=CLOBJNAM.
+:VAR      NAME=JBDLIB    CLASS=CLOBJNAM.
+:VAR      NAME=JBDTXT    CLASS=CLTXTDSC.
+:VAR      NAME=USRPRF    CLASS=CLOBJNAM.
+:VAR      NAME=STRJOB    CLASS=CLBOLTYP.
+:VAR      NAME=WAITJB    CLASS=CLBOLTYP.
+:VAR      NAME=INLJOB    CLASS=CLNBRTYP.
+:VAR      NAME=THRHLD    CLASS=CLNBRTYP.
+:VAR      NAME=ADDNBJ    CLASS=CLNBRTYP.
+:VAR      NAME=MAXNBJ    CLASS=CLNBRTYP.
+:VAR      NAME=MAXNBU    CLASS=CLNBRTYP.
+:VAR      NAME=POOLID    CLASS=CLNBRTYP.
+:VAR      NAME=FCLNAM    CLASS=CLOBJNAM.
+:VAR      NAME=FCLLIB    CLASS=CLOBJNAM.
+:VAR      NAME=NBRFCJ    CLASS=CLNBRJOB.
+:VAR      NAME=SCLNAM    CLASS=CLOBJNAM.
+:VAR      NAME=SCLLIB    CLASS=CLOBJNAM.
+:VAR      NAME=NBRSCJ    CLASS=CLNBRJOB.
+:VAR      NAME=TRAGRP    CLASS=CLOBJNAM.
+:VAR      NAME=TRALVL    CLASS=CLOBJNAM.
+:VAR      NAME=AFFGRP    CLASS=CLOBJNAM.
+:VAR      NAME=JBDNMQ    CLASS=CLQUALNM.
+:VAR      NAME=SCLNMQ    CLASS=CLQUALNM.
+ 
+.*-- Variable record definitions:
+:VARRCD   NAME=EXPRCD
+          VARS='EXITPG'.
+ 
+:VARRCD   NAME=HDRRCD
+          VARS='DATE TIMZON SBSNAM SBSLIB SBSSTS'.
+ 
+:VARRCD   NAME=DTLRCD
+          VARS='OPTION JOBNAM JBDNAM JBDLIB JBDTXT PGMNAM PGMLIB'
+          VARS='USRPRF STRJOB WAITJB INLJOB THRHLD ADDNBJ MAXNBJ'
+          VARS='MAXNBU POOLID FCLNAM FCLLIB NBRFCJ SCLNAM SCLLIB'
+          VARS='NBRSCJ TRAGRP TRALVL AFFGRP JBDNMQ SCLNMQ'.
+ 
+.*-- List definition:
+:LISTDEF  NAME=DTLLST
+          VARS='OPTION JOBNAM JBDNAM JBDLIB JBDTXT PGMNAM PGMLIB'
+          VARS='USRPRF STRJOB WAITJB INLJOB THRHLD ADDNBJ MAXNBJ'
+          VARS='MAXNBU POOLID FCLNAM FCLLIB NBRFCJ SCLNAM SCLLIB'
+          VARS='NBRSCJ TRAGRP TRALVL AFFGRP JBDNMQ SCLNMQ'
+          MSGID=CPI0951
+          MSGF='QCPFMSG'.
+ 
+:LISTDEF  NAME=CNFLST
+          VARS='OPTION JOBNAM JBDNAM JBDLIB JBDTXT PGMNAM PGMLIB'
+          VARS='USRPRF STRJOB WAITJB INLJOB THRHLD ADDNBJ MAXNBJ'
+          VARS='MAXNBU POOLID FCLNAM FCLLIB NBRFCJ SCLNAM SCLLIB'
+          VARS='NBRSCJ TRAGRP TRALVL AFFGRP JBDNMQ SCLNMQ'.
+ 
+.*-- Conditions:
+:COND     NAME=VIEW1      EXPR='ALTVIEW = 0'.
+:COND     NAME=VIEW2      EXPR='ALTVIEW = 1'.
+:COND     NAME=VIEW3      EXPR='ALTVIEW = 2'.
+:COND     NAME=VIEW4      EXPR='ALTVIEW = 3'.
+ 
+:COND     NAME=SBSACT     EXPR='SBSSTS *EQ "*ACTIVE"'.
+ 
+:TT       NAME=PNLTT
+          CONDS= 'VIEW1   VIEW2   VIEW3   VIEW4'.
+:TTROW    VALUES='  1       0       0       0  '.
+:TTROW    VALUES='  0       1       0       0  '.
+:TTROW    VALUES='  0       0       1       0  '.
+:TTROW    VALUES='  0       0       0       1  '.
+:ETT.
+ 
+ 
+.*-- Key definitions - main panel:
+:KEYL     NAME=FKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F3
+          HELP=HLPF3
+          ACTION='EXIT SET'
+          VARUPD=NO
+          .F3=Exit
+ 
+:KEYI     KEY=F4
+          HELP=HLPF4
+          PRIORITY=30
+          ACTION=PROMPT
+          .F4=Prompt
+ 
+:KEYI     KEY=F5
+          HELP=HLPF5
+          PRIORITY=20
+          ACTION='RETURN 5'
+          .F5=Refresh
+ 
+:KEYI     KEY=F6
+          HELP='HLPF6'
+          ACTION='CMD ?ADDPJE ?*SBSD(&SBSLIB/&SBSNAM)'
+          PRIORITY=20
+          .F6=Add prestart job entry
+ 
+:KEYI     KEY=F9
+          HELP=HLPF9
+          PRIORITY=30
+          ACTION=RETRIEVE
+          .F9=Retrieve
+ 
+:KEYI     KEY=F10
+          HELP=HLPF10
+          PRIORITY=30
+          COND=SBSACT
+          ACTION='CMD WRKSBSJOB SBS(&SBSNAM)'
+          .F10=Work with subsystem jobs
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW1'
+          ACTION=CHGVIEW
+          COND=VIEW1
+          PRIORITY=20
+          .F11=View 2
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW2'
+          ACTION=CHGVIEW
+          COND=VIEW2
+          PRIORITY=20
+          .F11=View 3
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW3'
+          ACTION=CHGVIEW
+          COND=VIEW3
+          PRIORITY=20
+          .F11=View 4
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW4'
+          ACTION=CHGVIEW
+          COND=VIEW4
+          PRIORITY=20
+          .F11=View 1
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=F20
+          HELP=HLPF20
+          PRIORITY=30
+          ACTION='CMD WRKSBSD SBSD(&SBSLIB/&SBSNAM)'
+          .F20=Work with subsystem description
+ 
+:KEYI     KEY=F21
+          HELP=HLPF21
+          ACTION='CALL EXITPG'
+          PRIORITY=20
+          .F21=Print list
+ 
+:KEYI     KEY=F24
+          HELP=HLPF24
+          ACTION=MOREKEYS
+          .F24=More keys
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Key definitions - confirmation panel:
+:KEYL     NAME=CNFKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW1'
+          ACTION=CHGVIEW
+          COND=VIEW1
+          PRIORITY=20
+          .F11=View 2
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW2'
+          ACTION=CHGVIEW
+          COND=VIEW2
+          PRIORITY=20
+          .F11=View 3
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW3'
+          ACTION=CHGVIEW
+          COND=VIEW3
+          PRIORITY=20
+          .F11=View 4
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW4'
+          ACTION=CHGVIEW
+          COND=VIEW4
+          PRIORITY=20
+          .F11=View 1
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CBX9961P
+          KEYL=FKEYS
+          ENTER='RETURN 500'
+          HELP='WRKPJE/'
+          TT=PNLTT
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Work with Prestart Job Entries
+ 
+.*-- Data presentation area:
+ 
+:DATA     DEPTH=3
+          LAYOUT=2
+          BOTSEP=SPACE.
+ 
+:DATACOL  WIDTH=18.
+:DATACOL  WIDTH='*'.
+ 
+:DATAGRP  GRPSEP=QINDENT
+          COMPACT.
+ 
+:DATAI    VAR=SBSNAM
+          USAGE=OUT
+          HELP='WRKPJE/SBSNAM'
+          .Subsystem
+ 
+:DATAI    VAR=SBSLIB
+          USAGE=OUT
+          HELP='WRKPJE/SBSLIB'
+          .Library
+:EDATAGRP.
+ 
+:DATAGRP  GRPSEP=NONE
+          COMPACT.
+ 
+:DATAI    VAR=SBSSTS
+          USAGE=OUT
+          HELP='WRKPJE/SBSSTS'
+          .Subsystem status
+:EDATAGRP.
+:EDATA.
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=DTLLST
+          MAXHEAD=2
+          VIEW=ALTVIEW
+          ACTOR=UIM
+          SCROLL=YES
+          PARMS=CMDPRM.
+ 
+:TOPINST .Type options, press Enter.
+ 
+:LISTACT  ENTER='CMD WRKACTJOB JOB(&JOBNAM)'
+          PROMPT='CMD ?WRKACTJOB ?*JOB(&JOBNAM)'
+          HELP='WRKPJE/OPTWAJ'
+          OPTION=1
+          .
+ 
+:LISTACT  ENTER='CMD CHGPJE SBSD(&SBSLIB/&SBSNAM) PGM(&PGMLIB/&PGMNAM)'
+          ENTER='USER(&USRPRF) STRJOBS(&STRJOB) INLJOBS(&INLJOB)'
+          ENTER='THRESHOLD(&THRHLD) ADLJOBS(&ADDNBJ) MAXJOBS(&MAXNBJ)'
+          ENTER='JOB(&JOBNAM) JOBD(&JBDNMQ) MAXUSE(&MAXNBU)'
+          ENTER='WAIT(&WAITJB) POOLID(&POOLID) RSCAFNGRP(&AFFGRP)'
+          ENTER='CLS(&FCLLIB/&FCLNAM &NBRFCJ &SCLNMQ &NBRSCJ)'
+          ENTER='THDRSCAFN(&TRAGRP &TRALVL) &CMDPRM'
+          PROMPT='CMD ?CHGPJE ?*SBSD(&SBSLIB/&SBSNAM) ?*PGM(&PGMLIB/&PGMNAM)'
+          PROMPT='??USER(&USRPRF) ??STRJOBS(&STRJOB) ??INLJOBS(&INLJOB)'
+          PROMPT='??THRESHOLD(&THRHLD) ??ADLJOBS(&ADDNBJ) ??MAXJOBS(&MAXNBJ)'
+          PROMPT='??JOB(&JOBNAM) ??JOBD(&JBDNMQ) ??MAXUSE(&MAXNBU)'
+          PROMPT='??WAIT(&WAITJB) ??POOLID(&POOLID) ??RSCAFNGRP(&AFFGRP)'
+          PROMPT='??CLS(&FCLLIB/&FCLNAM &NBRFCJ &SCLNMQ &NBRSCJ)'
+          PROMPT='??THDRSCAFN(&TRAGRP &TRALVL) &CMDPRM'
+          HELP='WRKPJE/OPTCHG'
+          OPTION=2
+          NOCMD=PROMPT
+          .2=Change
+ 
+:LISTACT  ENTER='CMD ADDPJE SBSD(&SBSLIB/&SBSNAM) PGM(&PGMLIB/&PGMNAM)'
+          ENTER='USER(&USRPRF) STRJOBS(&STRJOB) INLJOBS(&INLJOB)'
+          ENTER='THRESHOLD(&THRHLD) ADLJOBS(&ADDNBJ) MAXJOBS(&MAXNBJ)'
+          ENTER='JOB(&JOBNAM) JOBD(&JBDNMQ) MAXUSE(&MAXNBU)'
+          ENTER='WAIT(&WAITJB) POOLID(&POOLID) RSCAFNGRP(&AFFGRP)'
+          ENTER='CLS(&FCLLIB/&FCLNAM &NBRFCJ &SCLNMQ &NBRSCJ)'
+          ENTER='THDRSCAFN(&TRAGRP &TRALVL) &CMDPRM'
+          PROMPT='CMD ?ADDPJE ?*SBSD(&SBSLIB/&SBSNAM) ??PGM(&PGMLIB/&PGMNAM)'
+          PROMPT='??USER(&USRPRF) ??STRJOBS(&STRJOB) ??INLJOBS(&INLJOB)'
+          PROMPT='??THRESHOLD(&THRHLD) ??ADLJOBS(&ADDNBJ) ??MAXJOBS(&MAXNBJ)'
+          PROMPT='??JOB(&JOBNAM) ??JOBD(&JBDNMQ) ??MAXUSE(&MAXNBU)'
+          PROMPT='??WAIT(&WAITJB) ??POOLID(&POOLID) ??RSCAFNGRP(&AFFGRP)'
+          PROMPT='??CLS(&FCLLIB/&FCLNAM &NBRFCJ &SCLNMQ &NBRSCJ)'
+          PROMPT='??THDRSCAFN(&TRAGRP &TRALVL) &CMDPRM'
+          HELP='WRKPJE/OPTCPY'
+          OPTION=3
+          NOCMD=PROMPT
+          .3=Copy
+ 
+:LISTACT  ENTER='CMD RMVPJE SBSD(&SBSLIB/&SBSNAM) PGM(&PGMLIB/&JOBNAM)'
+          PROMPT='CMD ?RMVPJE ?*SBSD(&SBSLIB/&SBSNAM) ?*PGM(&PGMLIB/&JOBNAM)'
+          HELP='WRKPJE/OPTRMV'
+          OPTION=4
+          CONFIRM=CNFPNL
+          USREXIT='CALL EXITPG'
+          .4=Remove
+ 
+:LISTACT  ENTER='CMD WRKJOBD JOBD(&JBDNMQ)'
+          PROMPT='CMD ?WRKJOBD ?*JOBD(&JBDNMQ)'
+          HELP='WRKPJE/OPTWJD'
+          OPTION=5
+          .5=Work with job description
+ 
+:LISTACT  ENTER='CMD DSPACTPJ SBS(&SBSNAM) PGM(&PGMLIB/&PGMNAM)'
+          PROMPT='CMD ?DSPACTPJ ?*SBS(&SBSNAM) ?*PGM(&PGMLIB/&PGMNAM) '
+          PROMPT='&CMDPRM'
+          HELP='WRKPJE/OPTAPJ'
+          OPTION=6
+          .6=Display jobs
+ 
+:LISTACT  ENTER='CMD WRKPGM PGM(&PGMLIB/&PGMNAM)'
+          PROMPT='CMD ?WRKPGM ?*JOBD(&PGMLIB/&PGMNAM)'
+          HELP='WRKPJE/OPTWPG'
+          OPTION=7
+          .7=Work with program
+ 
+:LISTACT  ENTER='CMD WRKJOBS JOB(&JOBNAM)'
+          PROMPT='CMD ?WRKJOBS ?*JOB(&JOBNAM)'
+          HELP='WRKPJE/OPTWJB'
+          OPTION=8
+          .8=Work with jobs
+ 
+:LISTACT  ENTER='CMD STRPJ SBS(&SBSNAM) PGM(&PGMLIB/&PGMNAM) '
+          PROMPT='CMD ?STRPJ ?*SBS(&SBSNAM) ?*PGM(&PGMLIB/&PGMNAM) '
+          HELP='WRKPJE/OPTSPJ'
+          NOCMD=PROMPT
+          OPTION=9
+          .9=Start prestart job
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=INOUT
+          MAXWIDTH=3
+          HELP='WRKPJE/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=JOBNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/JOBNAM'
+          .Job
+ 
+:LISTCOL  VAR=JBDNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          HELP='WRKPJE/JBDNAM'
+          .'Job        ' 'Description'
+ 
+:LISTCOL  VAR=JBDLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/JBDLIB'
+          .Library
+ 
+:LISTCOL  VAR=JBDTXT
+          USAGE=OUT
+          MAXWIDTH='*'
+          HELP='WRKPJE/JBDTXT'
+          .Text
+ 
+:LISTCOL  VAR=PGMNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/PGMNAM'
+          .Program
+ 
+:LISTCOL  VAR=PGMLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/PGMLIB'
+          .Library
+ 
+:LISTCOL  VAR=USRPRF
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/USRPRF'
+          .User
+ 
+:LISTCOL  VAR=STRJOB
+          USAGE=OUT
+          MAXWIDTH=5
+          HELP='WRKPJE/STRJOB'
+          .'Start' 'Jobs '
+ 
+:LISTCOL  VAR=WAITJB
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/WAITJB'
+          .'Wait   ' 'for job'
+ 
+:LISTCOL  VAR=INLJOB
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/INLJOB'
+          .'Initial' 'Jobs   '
+ 
+:LISTCOL  VAR=THRHLD
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/THRHLD'
+          .'Thres- ' 'hold   '
+ 
+:LISTCOL  VAR=ADDNBJ
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/ADDNBJ'
+          .'Addit. ' 'Jobs   '
+ 
+:LISTCOL  VAR=MAXNBJ
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKPJE/MAXNBJ'
+          .'Max.' 'Jobs'
+ 
+:LISTCOL  VAR=MAXNBU
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKPJE/MAXNBU'
+          .'Max.' 'Uses'
+ 
+:LISTCOL  VAR=POOLID
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKPJE/POOLID'
+          .'Pool'   'ID  '
+ 
+:LISTGRP  COL=THDAFF
+          COLSEP=1
+          HELP='WRKPJE/THDAFF'
+          .Thread affinity
+ 
+:LISTCOL  VAR=TRAGRP
+          USAGE=OUT
+          MAXWIDTH=10
+          .Group
+ 
+:LISTCOL  VAR=TRALVL
+          USAGE=OUT
+          MAXWIDTH=10
+          .Level
+:ELISTGRP.
+ 
+:LISTCOL  VAR=AFFGRP
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKPJE/AFFGRP'
+          .'Affinity' 'Group   '
+ 
+:LISTGRP  COL=PJECLS
+          COLSEP=1
+          HELP='WRKPJE/PJECLS'
+          .Class
+ 
+:LISTCOL  VAR=FCLNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .First
+ 
+:LISTCOL  VAR=FCLLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=NBRFCJ
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Jobs
+ 
+:LISTCOL  VAR=SCLNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .Second
+ 
+:LISTCOL  VAR=SCLLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=NBRSCJ
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Jobs
+:ELISTGRP.
+ 
+:LISTVIEW COLS='OPTION PGMNAM PGMLIB USRPRF STRJOB WAITJB THDAFF'.
+:LISTVIEW COLS='OPTION PGMNAM AFFGRP INLJOB THRHLD ADDNBJ MAXNBJ'
+          COLS='MAXNBU POOLID'.
+:LISTVIEW COLS='OPTION PGMNAM PJECLS'.
+:LISTVIEW COLS='OPTION PGMNAM JOBNAM JBDNAM JBDLIB JBDTXT'.
+:ELIST.
+ 
+:CMDLINE  SIZE=SHORT
+          .Parameters or command
+:EPANEL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CNFPNL
+          KEYL=CNFKEYS
+          ENTER='RETURN 100'
+          HELP='CNFPNL/'
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Confirm Removal of Prestart Job Entry
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=CNFLST
+          MAXHEAD=2
+          VIEW=ALTVIEW
+          SCROLL=YES.
+ 
+:TOPINST.Press Enter to confirm your choices of 4=Remove.
+:TOPINST.Press F12 to return to change your choices.
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=OUT
+          MAXWIDTH=3
+          HELP='CNFPNL/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=JOBNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/JOBNAM'
+          .Job
+ 
+:LISTCOL  VAR=JBDNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          HELP='WRKPJE/JBDNAM'
+          .'Job        ' 'Description'
+ 
+:LISTCOL  VAR=JBDLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/JBDLIB'
+          .Library
+ 
+:LISTCOL  VAR=JBDTXT
+          USAGE=OUT
+          MAXWIDTH='*'
+          HELP='WRKPJE/JBDTXT'
+          .Text
+ 
+:LISTCOL  VAR=PGMNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/PGMNAM'
+          .Program
+ 
+:LISTCOL  VAR=PGMLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/PGMLIB'
+          .Library
+ 
+:LISTCOL  VAR=USRPRF
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPJE/USRPRF'
+          .User
+ 
+:LISTCOL  VAR=STRJOB
+          USAGE=OUT
+          MAXWIDTH=5
+          HELP='WRKPJE/STRJOB'
+          .'Start' 'Jobs '
+ 
+:LISTCOL  VAR=WAITJB
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/WAITJB'
+          .'Wait   ' 'for job'
+ 
+:LISTCOL  VAR=INLJOB
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/INLJOB'
+          .'Initial' 'Jobs   '
+ 
+:LISTCOL  VAR=THRHLD
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/THRHLD'
+          .'Thres- ' 'hold   '
+ 
+:LISTCOL  VAR=ADDNBJ
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPJE/ADDNBJ'
+          .'Addit. ' 'Jobs   '
+ 
+:LISTCOL  VAR=MAXNBJ
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKPJE/MAXNBJ'
+          .'Max.' 'Jobs'
+ 
+:LISTCOL  VAR=MAXNBU
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKPJE/MAXNBU'
+          .'Max.' 'Uses'
+ 
+:LISTCOL  VAR=POOLID
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKPJE/POOLID'
+          .'Pool'   'ID  '
+ 
+:LISTGRP  COL=THDAFF
+          COLSEP=1
+          HELP='WRKPJE/THDAFF'
+          .Thread affinity
+ 
+:LISTCOL  VAR=TRAGRP
+          USAGE=OUT
+          MAXWIDTH=10
+          .Group
+ 
+:LISTCOL  VAR=TRALVL
+          USAGE=OUT
+          MAXWIDTH=10
+          .Level
+:ELISTGRP.
+ 
+:LISTCOL  VAR=AFFGRP
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKPJE/AFFGRP'
+          .'Affinity' 'Group   '
+ 
+:LISTGRP  COL=PJECLS
+          COLSEP=1
+          HELP='WRKPJE/PJECLS'
+          .Class
+ 
+:LISTCOL  VAR=FCLNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .First
+ 
+:LISTCOL  VAR=FCLLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=NBRFCJ
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Jobs
+ 
+:LISTCOL  VAR=SCLNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .Second
+ 
+:LISTCOL  VAR=SCLLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=NBRSCJ
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Jobs
+:ELISTGRP.
+ 
+:LISTVIEW COLS='OPTION PGMNAM PGMLIB USRPRF STRJOB WAITJB THDAFF'.
+:LISTVIEW COLS='OPTION PGMNAM AFFGRP INLJOB THRHLD ADDNBJ MAXNBJ'
+          COLS='MAXNBU POOLID'.
+:LISTVIEW COLS='OPTION PGMNAM PJECLS'.
+:LISTVIEW COLS='OPTION PGMNAM JOBNAM JBDNAM JBDLIB JBDTXT'.
+:ELIST.
+:EPANEL.
+ 
+.*-- Print panel header definition:
+:PRTHEAD  NAME=PRTHDR
+          WIDTH=132
+          .Subsystem Prestart Job Entry List
+ 
+:PRTTRAIL .E N D   O F   L I S T I N G
+ 
+:EPRTHEAD.
+ 
+.*-- Print panel detail definition:
+ 
+:PRTPNL   NAME=PRTLST
+          WIDTH=132.
+ 
+:DATA     LAYOUT=2
+          BOTSEP=SPACE.
+ 
+:DATACOL  WIDTH=24.
+:DATACOL  WIDTH='*'.
+ 
+:DATAGRP  GRPSEP=QINDENT
+          COMPACT.
+ 
+:DATAI    VAR=SBSNAM
+          USAGE=OUT
+          .Subsystem
+ 
+:DATAI    VAR=SBSLIB
+          USAGE=OUT
+          .Library
+:EDATAGRP.
+ 
+:DATAGRP  GRPSEP=NONE
+          COMPACT.
+ 
+:DATAI    VAR=SBSSTS
+          USAGE=OUT
+          .Subsystem status
+:EDATAGRP.
+:EDATA.
+ 
+.*-- Print panel list definition:
+ 
+:LIST     LISTDEF=DTLLST
+          MAXHEAD=3
+          BOTSEP=NONE.
+ 
+:LISTCOL  VAR=JOBNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .Job
+ 
+:LISTCOL  VAR=JBDNAM
+          USAGE=OUT
+          MAXWIDTH=11
+          .'Job        ' 'Description'
+ 
+:LISTCOL  VAR=JBDLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=JBDTXT
+          USAGE=OUT
+          MAXWIDTH='*'
+          .Text
+ 
+:LISTCOL  VAR=PGMNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .Program
+ 
+:LISTCOL  VAR=PGMLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=USRPRF
+          USAGE=OUT
+          MAXWIDTH=10
+          .User
+ 
+:LISTCOL  VAR=STRJOB
+          USAGE=OUT
+          MAXWIDTH=5
+          .'Start' 'Jobs '
+ 
+:LISTCOL  VAR=WAITJB
+          USAGE=OUT
+          MAXWIDTH=7
+          .'Wait   ' 'for job'
+ 
+:LISTCOL  VAR=INLJOB
+          USAGE=OUT
+          MAXWIDTH=7
+          .'Initial' 'Jobs   '
+ 
+:LISTCOL  VAR=THRHLD
+          USAGE=OUT
+          MAXWIDTH=7
+          .'Thres- ' 'hold   '
+ 
+:LISTCOL  VAR=ADDNBJ
+          USAGE=OUT
+          MAXWIDTH=7
+          .'Addit. ' 'Jobs   '
+ 
+:LISTCOL  VAR=MAXNBJ
+          USAGE=OUT
+          MAXWIDTH=6
+          .'Max.' 'Jobs'
+ 
+:LISTCOL  VAR=MAXNBU
+          USAGE=OUT
+          MAXWIDTH=6
+          .'Max.' 'Uses'
+ 
+:LISTCOL  VAR=POOLID
+          USAGE=OUT
+          MAXWIDTH=6
+          .'Pool'   'ID  '
+ 
+:LISTGRP  COL=THDAFF
+          COLSEP=1
+          .Thread affinity
+ 
+:LISTCOL  VAR=TRAGRP
+          USAGE=OUT
+          MAXWIDTH=10
+          .Group
+ 
+:LISTCOL  VAR=TRALVL
+          USAGE=OUT
+          MAXWIDTH=10
+          .Level
+:ELISTGRP.
+ 
+:LISTCOL  VAR=AFFGRP
+          USAGE=OUT
+          MAXWIDTH=8
+          .'Affinity' 'Group   '
+ 
+:LISTGRP  COL=PJECLS
+          COLSEP=1
+          .Class
+ 
+:LISTCOL  VAR=FCLNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .First
+ 
+:LISTCOL  VAR=FCLLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=NBRFCJ
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Jobs
+ 
+:LISTCOL  VAR=SCLNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .Second
+ 
+:LISTCOL  VAR=SCLLIB
+          USAGE=OUT
+          MAXWIDTH=10
+          .Library
+ 
+:LISTCOL  VAR=NBRSCJ
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Jobs
+:ELISTGRP.
+ 
+:LISTVIEW COLS='PGMNAM PGMLIB USRPRF STRJOB WAITJB INLJOB THRHLD'
+          COLS='ADDNBJ MAXNBJ MAXNBU POOLID JOBNAM JBDNAM'.
+:ELIST.
+ 
+:EPRTPNL.
+:EPNLGRP.
