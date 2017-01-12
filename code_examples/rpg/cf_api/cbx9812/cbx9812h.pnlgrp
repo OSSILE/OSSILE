@@ -1,0 +1,94 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9812H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( CBX9812H )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:IMPORT  PNLGRP='QHQQCMD' NAME='*'.
+ 
+:HELP NAME='CHGUSRQRYA'.
+Change User Query Attributes - Help
+:P.
+The Add User Query Attributes (ADDUSRQRYA) command allows you to change
+the user query attributes for the specified user profile.
+:P.
+The specified user query attributes can later be applied to jobs run
+by the user profile.
+:P.
+:HP2.Restrictions::EHP2.
+:UL.
+:LI.
+You must have *ALLOBJ and *SECADM special authority to run this command.
+:EUL.
+:EHELP.
+ 
+:HELP NAME='CHGUSRQRYA/USRPRF'.User profile (USRPRF) - Help
+:XH3.User profile (USRPRF)
+:P.
+The user profile for which to change the user query attributes.
+:P.
+This is a required parameter.
+:P.
+:EHELP.
+ 
+:HELP NAME='CHGUSRQRYA/QRYINTTIML'.
+Query interactive time limit (QRYINTTIML) - Help
+ 
+:XH3.Query interactive time limit (QRYINTTIML)
+:P.
+Specifies a limit for interactively run database queries allowed to be
+started based on the estimated number of elapsed seconds that the
+query requires to process.
+:PARML.
+:PT.:PK.*NOMAX:EPK.
+:PD.
+Interactive queries do not have a time limit and will be run regardless
+of the estimated number of elapsed seconds that the query requires to
+proces.
+:PT.:PK DEF.*QRYTIMLMT:EPK.
+:PD.
+The maximum value specified for the QRYTIMLMT query attribute also
+apply to interactively run queries.
+:PT.:PV.0-2147352578:EPV.
+:PD.
+Specify the maximum value that is checked against the estimated number
+of elapsed seconds required to run an interactive query.  If the
+estimated elapsed seconds is greater than this value, the query is not
+started.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='CHGUSRQRYA/QRYINTALW'.
+Force interactive query (QRYINTALW) - Help
+ 
+:XH3.Force interactive query (QRYINTALW)
+:P.
+Allows you to temporarily override the QRYINTTIML value without
+changing this value.
+:P.
+If the default value of *NO is changed to *YES, interactive queries will
+be allowed to run, regardless of the estimated elapsed seconds required
+to process the queries, until the value is changed back to *NO.
+:PARML.
+:PT.:PK DEF.*NO:EPK.
+:PD.
+Interactive queries are not allowed to run if the QRYINTTIML value
+is exceeded.
+:PT.:PK.*YES:EPK.
+:PD.
+Interactive queries are allowed to run even if the QRYINTTIML value
+is exceeded.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='CHGUSRQRYA/QRYOPTLIB'.
+Query options file library (QRYOPTLIB) - Help
+:IMHELP  NAME='CHGQRYA/QRYOPTLIB'.
+:EHELP.
+ 
+:EPNLGRP.

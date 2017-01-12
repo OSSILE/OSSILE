@@ -1,0 +1,371 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX982P )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:COPYR.
+(C) System iNetwork Systems Management Tips 2008.
+ 
+.*-- Import help panel group:
+:IMPORT   NAME='*'        PNLGRP=CBX982H.
+ 
+.*-- Class definitions:
+:CLASS    NAME=CLACTION   BASETYPE=ACTION      WIDTH=1.
+:ECLASS.
+:CLASS    NAME=CLEXITPG   BASETYPE='CHAR 20'.
+:ECLASS.
+:CLASS    NAME=CLUSRPRF   BASETYPE='CHAR 10'    CASE=UPPER.
+:ECLASS.
+:CLASS    NAME=CLWRKUSR   BASETYPE='OBJNAME 10 GENERIC'.
+:ECLASS.
+:CLASS    NAME=CLOBJNAM   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLTIME     BASETYPE='TIME ZONE'.
+:ECLASS.
+:CLASS    NAME=CLDATE     BASETYPE='DATE 2'.
+:ECLASS.
+:CLASS    NAME=CLINTLMT   BASETYPE='BIN 31'.
+:TL.
+:TI  VALUE='-1'.*NOMAX
+:TI  VALUE='-3'.*QRYTIMLMT
+:ETL.
+:ECLASS.
+:CLASS    NAME=CLINTALW   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLCMDPRM   BASETYPE='CHAR 255'.
+:ECLASS.
+ 
+.*-- Variable definitions:
+:VAR      NAME=OPTION    CLASS=CLACTION.
+:VAR      NAME=EXITPG    CLASS=CLEXITPG.
+:VAR      NAME=DATE      CLASS=CLDATE.
+:VAR      NAME=TIMZON    CLASS=CLTIME.
+:VAR      NAME=WRKUSR    CLASS=CLWRKUSR.
+:VAR      NAME=POSUSR    CLASS=CLUSRPRF.
+:VAR      NAME=QRYUSR    CLASS=CLOBJNAM.
+:VAR      NAME=INTLMT    CLASS=CLINTLMT.
+:VAR      NAME=INTALW    CLASS=CLINTALW.
+:VAR      NAME=OPTLIB    CLASS=CLOBJNAM.
+:VAR      NAME=CMDPRM    CLASS=CLCMDPRM.
+ 
+.*-- Variable record definitions:
+:VARRCD   NAME=UIMEXP
+          VARS='EXITPG'.
+ 
+:VARRCD   NAME=HDRRCD
+          VARS='DATE TIMZON WRKUSR POSUSR'.
+ 
+:VARRCD   NAME=DTLRCD
+          VARS='OPTION QRYUSR INTLMT INTALW OPTLIB'.
+ 
+.*-- List definition:
+:LISTDEF  NAME=DTLLST
+          VARS='OPTION QRYUSR INTLMT INTALW OPTLIB'
+          MSGID=CPIB302
+          MSGF='QCPFMSG'.
+ 
+:LISTDEF  NAME=CNFLST
+          VARS='OPTION QRYUSR INTLMT INTALW OPTLIB'.
+ 
+.*-- Conditions:
+:COND     NAME=V5R3       EXPR='*NOT (CHKPGM("CBX982C2"))'.
+:COND     NAME=V5R4       EXPR='CHKPGM("CBX982C2")'.
+ 
+:TT       NAME=PNLTT
+          CONDS= 'V5R4   V5R4'.
+:TTROW    VALUES='  1      0 '.
+:TTROW    VALUES='  0      1 '.
+:ETT.
+ 
+.*-- Key definitions - main panel:
+:KEYL     NAME=FKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F3
+          HELP=HLPF3
+          ACTION='EXIT SET'
+          VARUPD=NO
+          .F3=Exit
+ 
+:KEYI     KEY=F4
+          HELP=HLPF4
+          PRIORITY=20
+          ACTION=PROMPT
+          .F4=Prompt
+ 
+:KEYI     KEY=F5
+          HELP=HLPF5
+          PRIORITY=20
+          ACTION='RETURN 5'
+          .F5=Refresh
+ 
+:KEYI     KEY=F6
+          HELP=HLPF6
+          PRIORITY=20
+          ACTION='CMD ?ADDUSRQRYA'
+          .F6=Add
+ 
+:KEYI     KEY=F7
+          HELP=HLPF7
+          PRIORITY=20
+          ACTION='CMD WRKF FILE(*ALL/QAQQINI)'
+          .F7=Work with query options files
+ 
+:KEYI     KEY=F8
+          HELP=HLPF8
+          COND=V5R4
+          PRIORITY=20
+          ACTION='CMD ?CRTDUPOBJ ?*OBJ(QAQQINI) ?*FROMLIB(QSYS) '
+          ACTION='?*OBJTYPE(*FILE) ?*NEWOBJ(QAQQINI) ??TOLIB() '
+          ACTION='?*ASPDEV(*) ?*TOASPDEV(*ASPDEV) ?*DATA(*YES) '
+          ACTION='?*TRG(*YES)'
+          .F8=Create query options file
+ 
+:KEYI     KEY=F8
+          HELP=HLPF8
+          COND=V5R3
+          PRIORITY=20
+          ACTION='CMD ?CRTDUPOBJ ?*OBJ(QAQQINI) ?*FROMLIB(QSYS) '
+          ACTION='?*OBJTYPE(*FILE) ?*NEWOBJ(QAQQINI) ??TOLIB() '
+          ACTION='?*ASPDEV(*) ?*TOASPDEV(*ASPDEV) ?*DATA(*YES)'
+          .F8=Create query options file
+ 
+:KEYI     KEY=F9
+          HELP=HLPF9
+          PRIORITY=20
+          ACTION=RETRIEVE
+          .F9=Retrieve
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=F24
+          HELP=HLPF24
+          ACTION=MOREKEYS
+          .F24=More keys
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Key definitions - confirmation panel:
+:KEYL     NAME=CNFKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CBX982P
+          KEYL=FKEYS
+          ENTER='RETURN 500'
+          HELP='WRKUSRQRYA/'
+          TT=PNLTT
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Work with User Query Attributes
+ 
+.*-- Data presentation area:
+ 
+:DATA     DEPTH=2
+          LAYOUT=2
+          BOTSEP=SPACE.
+ 
+:DATACOL  WIDTH=18.
+:DATACOL  WIDTH='*'.
+ 
+:DATAI    VAR=WRKUSR
+          USAGE=INOUT
+          HELP='WRKUSRQRYA/WRKUSR'
+          .User
+ 
+:DATAI    VAR=POSUSR
+          USAGE=INOUT
+          HELP='WRKUSRQRYA/POSUSR'
+          .Position to
+:EDATA.
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=DTLLST
+          MAXHEAD=2
+          ACTOR=UIM
+          SCROLL=YES
+          PARMS=CMDPRM.
+ 
+:TOPINST .Type options, press Enter.
+ 
+:LISTACT  ENTER='CMD CHGUSRQRYA USRPRF(&QRYUSR) &CMDPRM'
+          PROMPT='CMD ?CHGUSRQRYA ?*USRPRF(&QRYUSR) &CMDPRM'
+          HELP='WRKUSRQRYA/OPTCHG'
+          OPTION=2
+          NOCMD=PROMPT
+          USREXIT='CALL EXITPG'
+          .2=Change
+ 
+:LISTACT  ENTER='CMD RMVUSRQRYA USRPRF(&QRYUSR)'
+          PROMPT='CMD ?RMVUSRQRYA ?*USRPRF(&QRYUSR)'
+          HELP='WRKUSRQRYA/OPTRMV'
+          OPTION=4
+          CONFIRM=CNFPNL
+          USREXIT='CALL EXITPG'
+          .4=Remove
+ 
+:LISTACT  ENTER='CMD WRKUSRJOB USER(&QRYUSR) STATUS(*ACTIVE)'
+          PROMPT='CMD ?WRKUSRJOB ?*USER(&QRYUSR) ??STATUS(*ACTIVE)'
+          HELP='WRKUSRQRYA/OPTWUJ'
+          OPTION=8
+          .8=Work with user jobs
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=INOUT
+          MAXWIDTH=3
+          HELP='WRKUSRQRYA/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=QRYUSR
+          USAGE=OUT
+          MAXWIDTH=14
+          HELP='WRKUSRQRYA/QRYUSR'
+          .User Profile
+ 
+:LISTCOL  VAR=INTLMT
+          USAGE=OUT
+          MAXWIDTH=12
+          JUSTIFY=LEFT
+          HELP='WRKUSRQRYA/INTLMT'
+          .'Interactive' 'Time limit'
+ 
+:LISTCOL  VAR=INTALW
+          USAGE=OUT
+          MAXWIDTH=17
+          HELP='WRKUSRQRYA/INTALW'
+          .'Force interactive' ' Query           '
+ 
+:LISTCOL  VAR=OPTLIB
+          USAGE=OUT
+          MAXWIDTH=12
+          HELP='WRKUSRQRYA/OPTLIB'
+          .'Options file' ' Library    '
+ 
+:LISTVIEW COLS='OPTION QRYUSR INTLMT INTALW OPTLIB'.
+:ELIST.
+ 
+:CMDLINE  SIZE=SHORT
+          .Parameters or command
+:EPANEL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CNFPNL
+          KEYL=CNFKEYS
+          ENTER='RETURN 100'
+          HELP='CNFPNL/'
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Confirm Removal of User Query Attributes
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=CNFLST
+          MAXHEAD=2
+          SCROLL=YES.
+ 
+:TOPINST.Press Enter to confirm your choices of 4=Remove.
+:TOPINST.Press F12 to return to change your choices.
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=OUT
+          MAXWIDTH=3
+          HELP='CNFPNL/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=QRYUSR
+          USAGE=OUT
+          MAXWIDTH=14
+          HELP='WRKUSRQRYA/QRYUSR'
+          .User Profile
+ 
+:LISTCOL  VAR=INTLMT
+          USAGE=OUT
+          MAXWIDTH=12
+          JUSTIFY=LEFT
+          HELP='WRKUSRQRYA/INTLMT'
+          .'Interactive' 'Time limit'
+ 
+:LISTCOL  VAR=INTALW
+          USAGE=OUT
+          MAXWIDTH=17
+          HELP='WRKUSRQRYA/INTALW'
+          .'Force interactive' ' Query           '
+ 
+:LISTCOL  VAR=OPTLIB
+          USAGE=OUT
+          MAXWIDTH=12
+          HELP='WRKUSRQRYA/OPTLIB'
+          .'Options file' ' Library    '
+ 
+:LISTVIEW COLS='OPTION QRYUSR INTLMT INTALW OPTLIB'.
+:ELIST.
+ 
+:EPANEL.
+:EPNLGRP.

@@ -24,8 +24,12 @@ if[ find "$PWD/$BUILD" -name "$BUILDm.clp" ]
         # seperate the file name and extension
   		EXT = $(echo ${FILE}|awk -F\. '{print $2}')
   		OBJ = $(echo ${FILE}|awk -F\. '{print $1}')
+  		# when creating service program need export file
+  		if[ "$EXT" = "srvsrc" ]
+  			$EXT = "*blank"
+  		fi	
   		# add the source member
-  		system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ)"
+  		system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ) SRCTYPE($EXT)"
   		# copy the source
   		system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/$BUILD/$FILE') TOMBR('/QSYS.lib/OSSILE.lib/$BUILD.file/$OBJ.mbr')"
   		if[ "$OBJ" = "$BUILDm" ]
@@ -53,7 +57,7 @@ for FILE in "$PWD/$BUILD"
      $PMTOP = "$BUILDo"
   fi 
   # add the file member
-  system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ)"
+  system -kpieb "ADDPFM FILE($SRCLIB/$BUILD) MBR($OBJ) SRCTYPE($EXT)"
   # copy the source across
   system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/$BUILD/$FILE') TOMBR('/QSYS.lib/OSSILE.lib/$BUILD.file/$OBJ.mbr')"
   if[ "$EXT" == "rpgle" ]
@@ -72,7 +76,11 @@ for FILE in "$PWD/$BUILD"
   if[ "$EXT" = "clp" ]
      #create the CL Program
      system -kpieb "CRTCLPGM PGM($OLIB/$OBJ) SRCFILE($SRCLIB/$BUILD)"
-  fi       	
+  fi   
+  if[ "$EXT" = "menu" ]
+     #create the UIM Menu
+     system -kpieb "CRTMNU MENU($OLIB/$OBJ) TYPE(*UIM) SRCFILE($SRCLIB/$BUILD)"
+  fi      	
 done
 # clean up the source file
 system -kpieb "DLTF FILE($SRCLIB/$BUILD)"

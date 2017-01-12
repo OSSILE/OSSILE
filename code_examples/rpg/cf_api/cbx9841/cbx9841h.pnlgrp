@@ -1,0 +1,93 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9841H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( CBX9841H )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:HELP NAME='CHKSFWAGR'.
+Check Software Agreement - Help
+:P.
+The Check Software Agreement (CHKSFWAGR) command checks the current
+software agreement status of the specified product ID, product release
+and product option.
+:P.
+An agreement status of 0 indicates that the software agreement
+currently has not been accepted.
+:P.
+An agreement status of 1 indicates that the software agreement has been
+accepted.
+:EHELP.
+ 
+:HELP NAME='CHKSFWAGR/PRDID'.
+Product identifier (PRDID) - Help
+ 
+:XH3.Product identifier (PRDID)
+:P.
+Specifies the identifier of the software product being checked.
+:P.
+This is a required parameter.
+:PARML.
+:PT.:PV.product-identifier:EPV.
+:PD.
+Specify a product identifier.  The identifier must be seven characters
+in length.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='CHKSFWAGR/RLS'.
+Release (RLS) - Help
+ 
+:XH3.Release (RLS)
+:P.
+Specifies the release level of the product to be checked.
+:P.
+This is a required parameter.
+:PARML.
+:PT.:PK.release-level:EPK.
+:PD.
+Specify the release level in VxRxMx format where Vx is the version
+number, Rx is the release number, and Mx is the modification number.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='CHKSFWAGR/OPTION'.
+Product option (OPTION) - Help
+ 
+:XH3.Product option (OPTION)
+:P.
+Specifies the product option being checked.
+:P.
+This is a required parameter.
+:PARML.
+:PT.:PK.*BASE:EPK.
+:PD.
+Specifies the *BASE option. The *BASE option internally is defined as
+option 0000.
+:PT.:PV.0000-0099:EPV.
+:PD.
+Specify an option number ranging from 0000 through 0099.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='CHKSFWAGR/ERROR/MESSAGES'.
+&MSG(CPX0005,QCPFMSG). CHKSFWAGR - Help
+ 
+:XH3.&MSG(CPX0005,QCPFMSG). CHKSFWAGR
+:P.
+:HP3.*ESCAPE &MSG(CPX0006,QCPFMSG).:EHP3.
+:DL COMPACT.
+:DT.CPF358A
+:DD.&MSG(CPF358A,QCPFMSG,*LIBL,nosub).
+:DT.CPF3DDF
+:DD.&MSG(CPF3DDF,QCPFMSG,*LIBL,nosub).
+:DT.CPF3DEF
+:DD.&MSG(CPF3DEF,QCPFMSG,*LIBL,nosub).
+:EDL.
+:EHELP.
+ 
+:EPNLGRP.
