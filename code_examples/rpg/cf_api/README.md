@@ -10,6 +10,10 @@ Provide a number of code examples which can be used as utilities on IBM i. The c
 ## Utilities
 * 100 - Sample of QDBRTVFD
 * ... - More utilities/samples
+* 972 - WRKPRFSECA Work with Profile Security Attributes
+* 973 - SETDFTJRN Set Default journal 
+* 974 - WRKDFTJRN Work with Default Journal
+* 975 - RUNJOBCMD Run Job Command setup and programs
 * 976 - RTVJOBITPS,CHGJOBITPS Retrieve/Change Job Interrupt Status
 * 977 - WRKJOBS Work with Jobs
 * 978 - RTVCMDINF Retrieve Command Information

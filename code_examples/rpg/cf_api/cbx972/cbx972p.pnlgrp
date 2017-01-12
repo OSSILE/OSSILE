@@ -1,0 +1,721 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX972P )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP   DFTMSGF=QCPFMSG.
+ 
+.*:COPYR.
+.*(C) System iNetwork Systems Management Tips 2007.
+ 
+.*-- Import help panel group:
+:IMPORT   NAME='*'        PNLGRP=CBX972H.
+ 
+.*-- Class definitions:
+:CLASS    NAME=CLACTION   BASETYPE=ACTION       WIDTH=1.
+:ECLASS.
+:CLASS    NAME=CLCSREID   BASETYPE='CHAR 4'.
+:ECLASS.
+:CLASS    NAME=CLCSRVAL   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLEXITPG   BASETYPE='CHAR 20'.
+:ECLASS.
+:CLASS    NAME=CLALTVIEW  BASETYPE='BIN 15'.
+:ECLASS.
+:CLASS    NAME=CLTIMZON   BASETYPE='TIME ZONE'.
+:ECLASS.
+:CLASS    NAME=CLTIME     BASETYPE='TIME'.
+:ECLASS.
+:CLASS    NAME=CLDATE     BASETYPE='DATE 2'.
+:ECLASS.
+:CLASS    NAME=CLCMDPRM   BASETYPE='CHAR 255'.
+:ECLASS.
+:CLASS    NAME=CLTGLF14   BASETYPE='BIN 15'.
+:ECLASS.
+ 
+:CLASS    NAME=CLUSRPRF   BASETYPE='CHAR 10'    CASE=UPPER.
+:ECLASS.
+:CLASS    NAME=CLINVSGO   BASETYPE='ZONED 7 0'  WIDTH=7.
+:ECLASS.
+:CLASS    NAME=CLSECATR   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLSPCAUT   BASETYPE='CHAR 15'.
+:ECLASS.
+:CLASS    NAME=CLTXTDSC   BASETYPE='IGC 50'     SUBST=QUOTED.
+:ECLASS.
+:CLASS    NAME=CLSUPGRP   BASETYPE='CHAR 150'.
+:ECLASS.
+:CLASS    NAME=CLUSRAUD   BASETYPE='CHAR 25'.
+:ECLASS.
+:CLASS    NAME=CLPUBAUT   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLJRNDTM   BASETYPE='CHAR 8'.
+:ECLASS.
+ 
+:CLASS    NAME=CLWRKUSR   BASETYPE='OBJNAME 10 GENERIC'.
+:TL.
+:TI  VALUE='"*ALL"'.*ALL
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLSECDAT   BASETYPE='DATE 2'.
+:TL.
+:TI  VALUE='"       "'.
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLPWDITV   BASETYPE='BIN 15'     WIDTH=7.
+:TL.
+:TI  VALUE='0' .*SYSVAL
+:TI  VALUE='-1'.*NOMAX
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLPWDXPI   BASETYPE='CHAR 1'     WIDTH=4.
+:TL.
+:TI  VALUE='"Y"'.*YES
+:TI  VALUE='"N"'.*NO
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLPWDTYP   BASETYPE='CHAR 1'     WIDTH=5.
+:TL.
+:TI  VALUE='"N"'.*NONE
+:TI  VALUE='"P"'.*PWD
+:TI  VALUE='"D"'.*DFT
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLNBRSUP   BASETYPE='BIN 15'     WIDTH=6.
+:TL.
+:TI  VALUE='0'.*NONE
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLNBRAUT   BASETYPE='BIN 15'.
+:TL.
+:TI  VALUE='8'.*FULL
+:TI  VALUE='0'.*NONE
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLNBRAUD   BASETYPE='BIN 15'     WIDTH=6.
+:TL.
+:TI  VALUE='0'.*NONE
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLDIGCER   BASETYPE='CHAR 1'     WIDTH=4.
+:TL.
+:TI  VALUE='"0"'.*NO
+:TI  VALUE='"1"'.*YES
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLLOCPWD   BASETYPE='CHAR 1'     WIDTH=4.
+:TL.
+:TI  VALUE='"Y"'.*YES
+:TI  VALUE='"N"'.*NO
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLSIGNON   BASETYPE='CHAR 1'     WIDTH=4.
+:TL.
+:TI  VALUE='"0"'.*NO
+:TI  VALUE='"1"'.*YES
+:TI  VALUE='"2"'.*OVR
+:ETL.
+:ECLASS.
+ 
+.*-- Variable definitions:
+:VAR      NAME=OPTION    CLASS=CLACTION.
+:VAR      NAME=CSREID    CLASS=CLCSREID.
+:VAR      NAME=CSRVAR    CLASS=CLCSRVAL.
+:VAR      NAME=EXITPG    CLASS=CLEXITPG.
+:VAR      NAME=DATE      CLASS=CLDATE.
+:VAR      NAME=TIMZON    CLASS=CLTIMZON.
+:VAR      NAME=CMDPRM    CLASS=CLCMDPRM.
+:VAR      NAME=ALTVIEW   CLASS=CLALTVIEW.
+:VAR      NAME=WRKUSR    CLASS=CLWRKUSR.
+:VAR      NAME=POSUSR    CLASS=CLUSRPRF.
+:VAR      NAME=TGLF14    CLASS=CLTGLF14.
+ 
+:VAR      NAME=USRPRF    CLASS=CLUSRPRF.
+:VAR      NAME=PRFSTS    CLASS=CLSECATR.
+:VAR      NAME=USRCLS    CLASS=CLSECATR.
+:VAR      NAME=INVSGO    CLASS=CLINVSGO.
+:VAR      NAME=PRVSGO    CLASS=CLSECDAT.
+:VAR      NAME=PRVSGT    CLASS=CLTIME.
+:VAR      NAME=LSTUSD    CLASS=CLSECDAT.
+:VAR      NAME=PWDTYP    CLASS=CLPWDTYP.
+:VAR      NAME=PWDXPI    CLASS=CLPWDXPI.
+:VAR      NAME=PWDITV    CLASS=CLPWDITV.
+:VAR      NAME=PWDCHG    CLASS=CLSECDAT.
+:VAR      NAME=LMTCAP    CLASS=CLSECATR.
+:VAR      NAME=NBRAUT    CLASS=CLNBRAUT.
+:VAR      NAME=SPCAUT    CLASS=CLSPCAUT.
+:VAR      NAME=GRPPRF    CLASS=CLUSRPRF.
+:VAR      NAME=NBRSUP    CLASS=CLNBRSUP.
+:VAR      NAME=SUPGRP    CLASS=CLSUPGRP.
+:VAR      NAME=OBJAUD    CLASS=CLSECATR.
+:VAR      NAME=NBRAUD    CLASS=CLNBRAUD.
+:VAR      NAME=USRAUD    CLASS=CLUSRAUD.
+:VAR      NAME=DIGCER    CLASS=CLDIGCER.
+:VAR      NAME=LOCPWD    CLASS=CLLOCPWD.
+:VAR      NAME=TXTDSC    CLASS=CLTXTDSC.
+:VAR      NAME=PUBAUT    CLASS=CLPUBAUT.
+:VAR      NAME=CRTUSR    CLASS=CLUSRPRF.
+:VAR      NAME=OBJOWN    CLASS=CLUSRPRF.
+:VAR      NAME=SIGNON    CLASS=CLSIGNON.
+:VAR      NAME=JRNDAT    CLASS=CLJRNDTM.
+:VAR      NAME=JRNTIM    CLASS=CLJRNDTM.
+ 
+.*-- Variable record definitions:
+:VARRCD   NAME=CSRRCD
+          VARS='CSREID CSRVAR'.
+ 
+:VARRCD   NAME=CTLRCD
+          VARS='TGLF14'.
+ 
+:VARRCD   NAME=EXPRCD
+          VARS='EXITPG'.
+ 
+:VARRCD   NAME=HDRRCD
+          VARS='DATE TIMZON WRKUSR POSUSR'.
+ 
+:VARRCD   NAME=DTLRCD
+          VARS='OPTION USRPRF PRFSTS USRCLS INVSGO PRVSGO PRVSGT PWDTYP'
+          VARS='PWDXPI PWDITV PWDCHG LMTCAP NBRAUT SPCAUT GRPPRF NBRSUP'
+          VARS='SUPGRP OBJAUD NBRAUD USRAUD DIGCER LOCPWD TXTDSC PUBAUT'
+          VARS='CRTUSR OBJOWN SIGNON LSTUSD JRNDAT JRNTIM'.
+ 
+.*-- List definition:
+:LISTDEF  NAME=DTLLST
+          VARS='OPTION USRPRF PRFSTS USRCLS INVSGO PRVSGO PRVSGT PWDTYP'
+          VARS='PWDXPI PWDITV PWDCHG LMTCAP NBRAUT SPCAUT GRPPRF NBRSUP'
+          VARS='SUPGRP OBJAUD NBRAUD USRAUD DIGCER LOCPWD TXTDSC PUBAUT'
+          VARS='CRTUSR OBJOWN SIGNON LSTUSD JRNDAT JRNTIM'
+          MSGID=CPIB302
+          MSGF='QCPFMSG'.
+ 
+.*-- Conditions:
+:COND     NAME=VIEW1      EXPR='ALTVIEW = 0'.
+:COND     NAME=VIEW2      EXPR='ALTVIEW = 1'.
+:COND     NAME=VIEW3      EXPR='ALTVIEW = 2'.
+:COND     NAME=VIEW4      EXPR='ALTVIEW = 3'.
+ 
+:TT       NAME=PNLTT
+          CONDS= 'VIEW1   VIEW2   VIEW3   VIEW4'.
+:TTROW    VALUES='  1       0       0       0  '.
+:TTROW    VALUES='  0       1       0       0  '.
+:TTROW    VALUES='  0       0       1       0  '.
+:TTROW    VALUES='  0       0       0       1  '.
+:ETT.
+ 
+.*-- Key definitions - main panel:
+:KEYL     NAME=FKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F3
+          HELP=HLPF3
+          ACTION='EXIT SET'
+          VARUPD=NO
+          .F3=Exit
+ 
+:KEYI     KEY=F4
+          HELP=HLPF4
+          PRIORITY=30
+          ACTION=PROMPT
+          .F4=Prompt
+ 
+:KEYI     KEY=F5
+          HELP=HLPF5
+          PRIORITY=20
+          ACTION='RETURN 5'
+          .F5=Refresh
+ 
+:KEYI     KEY=F6
+          HELP='HLPF6'
+          ACTION='CMD ?CRTUSRPRF'
+          PRIORITY=20
+          .F6=Create user profile
+ 
+:KEYI     KEY=F9
+          HELP=HLPF9
+          PRIORITY=50
+          ACTION=RETRIEVE
+          .F9=Retrieve
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW1'
+          ACTION=CHGVIEW
+          COND=VIEW1
+          PRIORITY=20
+          .F11=View 2
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW2'
+          ACTION=CHGVIEW
+          COND=VIEW2
+          PRIORITY=20
+          .F11=View 3
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW3'
+          ACTION=CHGVIEW
+          COND=VIEW3
+          PRIORITY=20
+          .F11=View 4
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW4'
+          ACTION=CHGVIEW
+          COND=VIEW4
+          PRIORITY=20
+          .F11=View 1
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=F17
+          HELP=HLPF17
+          PRIORITY=40
+          ACTION='RETURN 17'
+          VARUPD=NO
+          .F17=Top
+ 
+:KEYI     KEY=F18
+          HELP=HLPF18
+          PRIORITY=40
+          ACTION='RETURN 18'
+          VARUPD=NO
+          .F18=Bottom
+ 
+:KEYI     KEY=F22
+          HELP=HLPF22
+          PRIORITY=20
+          ACTION='CALL EXITPG'
+          .F22=Display values (*)
+ 
+:KEYI     KEY=F24
+          HELP=HLPF24
+          ACTION=MOREKEYS
+          .F24=More keys
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CBX972P
+          KEYL=FKEYS
+          CSREID=CSREID
+          CSRVAR=CSRVAR
+          ENTER='RETURN 500'
+          HELP='WRKPRFSECA/'
+          TT=PNLTT
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Work with Profile Security Attributes
+ 
+.*-- Data presentation area:
+ 
+:DATA     DEPTH=2
+          LAYOUT=2
+          BOTSEP=NONE.
+ 
+:DATACOL  WIDTH=22.
+:DATACOL  WIDTH='*'.
+ 
+:DATAI    VAR=WRKUSR
+          USAGE=INOUT
+          HELP='WRKPRFSECA/WRKUSR'
+          .User profile
+ 
+:DATAI    VAR=POSUSR
+          USAGE=INOUT
+          HELP='WRKPRFSECA/POSUSR'
+          .Position to
+:EDATA.
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=DTLLST
+          MAXHEAD=2
+          VIEW=ALTVIEW
+          ACTOR=UIM
+          SCROLL=YES
+          PARMS=CMDPRM.
+ 
+:TOPINST .Type options, press Enter.
+ 
+:LISTACT  ENTER='CMD CHGUSRPRF USRPRF(&USRPRF) &CMDPRM'
+          PROMPT='CMD ?CHGUSRPRF ?*USRPRF(&USRPRF) &CMDPRM'
+          HELP='WRKPRFSECA/OPTCHG'
+          OPTION=2
+          NOCMD=PROMPT
+          USREXIT='CALL EXITPG'
+          .2=Change
+ 
+:LISTACT  ENTER='CMD DSPUSRPRF USRPRF(&USRPRF) &CMDPRM'
+          PROMPT='CMD ?DSPUSRPRF ?*USRPRF(&USRPRF) ??OUTPUT(*) &CMDPRM'
+          HELP='WRKPRFSECA/OPTDSP'
+          OPTION=5
+          .5=Display
+ 
+:LISTACT  ENTER='CMD ANZAUDJRN ENTTYP(JS) RCVRNG(*CURCHAIN) '
+          ENTER='FROMTIME(''&JRNDAT'' ''&JRNTIM'') USRPRF(&USRPRF) &CMDPRM'
+          PROMPT='CMD ?ANZAUDJRN ?*ENTTYP(JS) ?*EVTTYP(*ALL) ?*RCVRNG(*CURCHAIN) '
+          PROMPT='??FROMTIME(''&JRNDAT'' ''&JRNTIM'') ?*USRPRF(&USRPRF) &CMDPRM'
+          HELP='WRKPRFSECA/OPTAAJ'
+          OPTION=6
+          .6=Journal
+ 
+:LISTACT  ENTER='CMD WRKUSRAUD USRPRF(&USRPRF) &CMDPRM'
+          PROMPT='CMD ?WRKUSRAUD ?*USRPRF(&USRPRF) ??OUTPUT(*) &CMDPRM'
+          HELP='WRKPRFSECA/OPTWUA'
+          OPTION=7
+          .7=Audit
+ 
+:LISTACT  ENTER='CMD WRKUSRPRF USRPRF(&USRPRF) &CMDPRM'
+          PROMPT='CMD ?WRKUSRPRF ?*USRPRF(&USRPRF) &CMDPRM'
+          HELP='WRKPRFSECA/OPTWRK'
+          OPTION=8
+          .8=Work profile
+ 
+:LISTACT  ENTER='CMD WRKOBJ OBJ(&USRPRF) OBJTYPE(*USRPRF) &CMDPRM'
+          PROMPT='CMD ?WRKOBJ ?*OBJ(&USRPRF) ?*OBJTYPE(*USRPRF) &CMDPRM'
+          HELP='WRKPRFSECA/OPTOBJ'
+          OPTION=9
+          .9=Work object
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=INOUT
+          MAXWIDTH=3
+          HELP='WRKPRFSECA/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=USRPRF
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPRFSECA/USRPRF2'
+          .User Profile
+ 
+:LISTCOL  VAR=PRFSTS
+          USAGE=OUT
+          MAXWIDTH=9
+          HELP='WRKPRFSECA/PRFSTS'
+          .Status
+ 
+:LISTCOL  VAR=USRCLS
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPRFSECA/USRCLS2'
+          .User Class
+ 
+:LISTCOL  VAR=PRVSGO
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKPRFSECA/PRVSGO'
+          .Previous Sign-on
+ 
+:LISTCOL  VAR=LSTUSD
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKPRFSECA/LSTUSD'
+          .'Last    ' 'Used    '
+ 
+:LISTCOL  VAR=INVSGO
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPRFSECA/INVSGO'
+          .Invalid Sign-on
+ 
+:LISTGRP  COL=PWDINF
+          COLSEP=1
+          HELP='WRKPRFSECA/PWDINF'
+          .Password
+ 
+:LISTCOL  VAR=PWDTYP
+          USAGE=OUT
+          MAXWIDTH=5
+          .Type
+ 
+:LISTCOL  VAR=PWDXPI
+          USAGE=OUT
+          MAXWIDTH=7
+          .Expired
+ 
+:LISTCOL  VAR=PWDCHG
+          USAGE=OUT
+          MAXWIDTH=8
+          .Changed
+ 
+:LISTCOL  VAR=PWDITV
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Interval
+:ELISTGRP.
+ 
+:LISTCOL  VAR=LMTCAP
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKPRFSECA/LMTCAP2'
+          .Limit Capab.
+ 
+:LISTCOL  VAR=NBRAUT
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPRFSECA/NBRAUT'
+          .'Special' '  Auth*'
+ 
+:LISTCOL  VAR=GRPPRF
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPRFSECA/GRPPRF2'
+          .Group Profile
+ 
+:LISTCOL  VAR=NBRSUP
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKPRFSECA/NBRSUP'
+          .Suppl. Groups*
+ 
+:LISTCOL  VAR=OBJAUD
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKPRFSECA/OBJAUD'
+          .Object Audit
+ 
+:LISTCOL  VAR=NBRAUD
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPRFSECA/NBRAUD'
+          .User Audit*
+ 
+:LISTCOL  VAR=DIGCER
+          USAGE=OUT
+          MAXWIDTH=5
+          HELP='WRKPRFSECA/DIGCER'
+          .Dig. Cert.
+ 
+:LISTCOL  VAR=LOCPWD
+          USAGE=OUT
+          MAXWIDTH=5
+          HELP='WRKPRFSECA/LOCPWD'
+          .'Local' 'Pwd  '
+ 
+:LISTCOL  VAR=SIGNON
+          USAGE=OUT
+          MAXWIDTH=5
+          HELP='WRKPRFSECA/SIGNON'
+          .'Sign-' 'On   '
+ 
+:LISTCOL  VAR=PUBAUT
+          USAGE=OUT
+          MAXWIDTH=9
+          HELP='WRKPRFSECA/PUBAUT'
+          .'Public' 'Authority'
+ 
+:LISTCOL  VAR=CRTUSR
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPRFSECA/CRTUSR'
+          .Creator
+ 
+:LISTCOL  VAR=OBJOWN
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKPRFSECA/OBJOWN'
+          .Owner
+ 
+:LISTCOL  VAR=TXTDSC
+          USAGE=OUT
+          MAXWIDTH='*'
+          HELP='WRKPRFSECA/TXTDSC'
+          .Text
+ 
+:LISTVIEW COLS='OPTION USRPRF PRFSTS PRVSGO INVSGO PWDINF'.
+:LISTVIEW COLS='OPTION USRPRF PRFSTS PRVSGO LSTUSD SIGNON LOCPWD DIGCER PUBAUT'.
+:LISTVIEW COLS='OPTION USRPRF USRCLS NBRAUT LMTCAP GRPPRF NBRSUP OBJOWN'.
+:LISTVIEW COLS='OPTION USRPRF OBJAUD NBRAUD CRTUSR TXTDSC'.
+:ELIST.
+ 
+:CMDLINE  SIZE=SHORT
+          .Parameters or command
+:EPANEL.
+ 
+.*-- Print panel header definition:
+:PRTHEAD  NAME=PRTHDR
+          WIDTH=132
+          .Work with Profile Security Attributes
+ 
+:PRTTRAIL .E N D   O F   L I S T I N G
+ 
+:EPRTHEAD.
+ 
+.*-- Print panel detail definition:
+ 
+:PRTPNL   NAME=PRTLST
+          WIDTH=132.
+ 
+:DATA     LAYOUT=2
+          BOTSEP=SPACE.
+ 
+:DATACOL  WIDTH=26.
+:DATACOL  WIDTH='*'.
+ 
+:DATAI    VAR=WRKUSR
+          USAGE=OUT
+          .User profile
+:EDATA.
+ 
+.*-- Print panel list definition:
+ 
+:LIST     LISTDEF=DTLLST
+          MAXHEAD=2
+          BOTSEP=NONE.
+ 
+:LISTCOL  VAR=USRPRF
+          USAGE=OUT
+          MAXWIDTH=10
+          .User Profile
+ 
+:LISTCOL  VAR=PRFSTS
+          USAGE=OUT
+          MAXWIDTH=9
+          .Status
+ 
+:LISTCOL  VAR=USRCLS
+          USAGE=OUT
+          MAXWIDTH=7
+          .User Class
+ 
+:LISTCOL  VAR=INVSGO
+          USAGE=OUT
+          MAXWIDTH=7
+          .Invalid Sign-on
+ 
+:LISTCOL  VAR=PRVSGO
+          USAGE=OUT
+          MAXWIDTH=8
+          .Previous Sign-on
+ 
+:LISTCOL  VAR=LSTUSD
+          USAGE=OUT
+          MAXWIDTH=8
+          .'Last    ' 'Used    '
+ 
+:LISTGRP  COL=PWDINF
+          COLSEP=1
+          .Password
+ 
+:LISTCOL  VAR=PWDTYP
+          USAGE=OUT
+          MAXWIDTH=8
+          .Type
+ 
+:LISTCOL  VAR=PWDXPI
+          USAGE=OUT
+          MAXWIDTH=8
+          .Expired
+ 
+:LISTCOL  VAR=PWDITV
+          USAGE=OUT
+          MAXWIDTH=8
+          JUSTIFY=LEFT
+          .Interval
+ 
+:LISTCOL  VAR=PWDCHG
+          USAGE=OUT
+          MAXWIDTH=8
+          .Changed
+:ELISTGRP.
+ 
+:LISTCOL  VAR=LMTCAP
+          USAGE=OUT
+          MAXWIDTH=8
+          .Limit Capab.
+ 
+:LISTCOL  VAR=NBRAUT
+          USAGE=OUT
+          MAXWIDTH=8
+          .Special Auth.
+ 
+:LISTCOL  VAR=GRPPRF
+          USAGE=OUT
+          MAXWIDTH=10
+          .Group Profile
+ 
+:LISTCOL  VAR=NBRSUP
+          USAGE=OUT
+          MAXWIDTH=7
+          .Suppl. Groups
+ 
+:LISTCOL  VAR=OBJAUD
+          USAGE=OUT
+          MAXWIDTH=8
+          .Object Audit
+ 
+:LISTCOL  VAR=NBRAUD
+          USAGE=OUT
+          MAXWIDTH=6
+          .User Audit
+ 
+:LISTCOL  VAR=USRAUD
+          USAGE=OUT
+          MAXWIDTH=10
+          .User Audit
+ 
+:LISTCOL  VAR=DIGCER
+          USAGE=OUT
+          MAXWIDTH=6
+          .Dig. Cert.
+ 
+:LISTCOL  VAR=LOCPWD
+          USAGE=OUT
+          MAXWIDTH=5
+          .Local Pwd
+ 
+:LISTCOL  VAR=TXTDSC
+          USAGE=OUT
+          MAXWIDTH='*'
+          .Text
+ 
+:LISTVIEW COLS='USRPRF PRFSTS USRCLS NBRAUT PRVSGO INVSGO'
+          COLS='GRPPRF NBRSUP LMTCAP NBRAUD PWDINF'.
+:ELIST.
+ 
+:EPRTPNL.
+:EPNLGRP.

@@ -1,0 +1,1084 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX972H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:IMPORT  NAME=ANZDFTPWD  PNLGRP=QHSECCMD.
+ 
+.* Command help section:
+:HELP NAME='WRKPRFSECA'.
+Work with Profile Security Attributes - Help
+:P.
+The Work with Profile Security Attributes (WRKPRFSECA) command displays
+or prints a list of user profiles that meet the specified selection
+criteria.
+:P.
+If a printed list is requested, the list is written to a spooled file
+and placed in the current job's default output queue.
+:P.
+The available selection criteria all relate to user profile security
+and authorization.
+:P.
+As part of the user profile information retrieval, the
+:LINK PERFORM='DSPHELP ANZDFTPWD'.
+Analyze Default Password (ANZDFTPWD).
+:ELINK.
+command is run.
+:P.
+:NT.
+If no selection criteria are specified and a criteria relationship of
+:HP2.REL(*OR):EHP2. is defined, the resulting list will be empty.
+:ENT.
+:P.
+:NT.
+Depending on the number of user profiles on the system, this command
+will possibly take some time to complete and consume a substantial
+amount of system resources.
+:ENT.
+:P.
+:HP2.Restrictions::EHP2.
+:UL.
+:LI.
+This command requires *ALLOBJ and *SECADM special authority to run.
+:EUL.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/USRPRF'.
+User profile (USRPRF) - Help
+ 
+:XH3.User profile (USRPRF)
+:P.
+Specifies the user profiles to be included in the displayed list.
+:PARML.
+:PT.:PK DEF.*ALL:EPK.
+:PD.
+All user profiles are included in the list.
+:PT.:PV.generic-name:EPV.
+:PD.
+Specify the generic name of the user profiles to be shown.  A generic
+name is a character string that contains one or more characters
+followed by an asterisk (*).  If a generic name is specified, all user
+profiles that have names with the same prefix as the generic name are
+included in the list.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of the user profile to be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/REL'.
+Criteria relationship (REL) - Help
+ 
+:XH3.Criteria relationship (REL)
+:P.
+Defines how the combination of more than one specified selection
+criterion is evaluated.
+:PARML.
+:PT.:PK DEF.*AND:EPK.
+:PD.
+Only user profiles meeting all of the specified selection criteria
+will be included in the list.
+:PT.:PK.*OR:EPK.
+:PD.
+All user profiles meeting any of the specified selection criteria
+will be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/TYPE'.
+Type (TYPE) - Help
+ 
+:XH3.Type (TYPE)
+:P.
+Specifies whether the user profile type should be checked, when the
+list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile type is not checked.
+:PT.:PK.*GROUP:EPK.
+:PD.
+Only group profiles are included in the list.
+:PT.:PK.*USER:EPK.
+:PD.
+Only user profiles who are not also a group profile are included in
+the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/STATUS'.
+Status (STATUS) - Help
+ 
+:XH3.Status (STATUS)
+:P.
+Specifies whether the user profile status should be checked, when the
+list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile status is not checked.
+:PT.:PK.*ENABLED:EPK.
+:PD.
+User profiles must have status *ENABLED to be included in the list.
+:PT.:PK.*DISABLED:EPK.
+:PD.
+User profiles must have status *DISABLED to be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PRFDAYS'.
+Profile inactivity days (PRFDAYS) - Help
+ 
+:XH3.Profile inactivity days (PRFDAYS)
+:P.
+Specifies whether user profile inactivity should be checked, when the
+list is build.
+:P.
+The number of inctivity days is calculated as the number of days
+between current date and the user profile previous sign-on date.  If
+the user profile previous sign-on date is blank or earlier than the
+the user profile object last used date, the latter is used in the
+the calculation. If no user profile previous sign-on date and no last
+used date is registered, the object creation date is used in the
+calculation.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+User profile inactivity is not checked.
+:PT.:PV.1-999:EPV.
+:PD.
+Specify between 1 and 999 days inactivity as a selection criterion for
+user profiles to be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PWDTYP'.
+Password type (PWDTYP) - Help
+ 
+:XH3.Password type (PWDTYP)
+:P.
+Specifies whether user profile password type should be checked, when
+the list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+User profile password type is not checked.
+:PT.:PK.*NONE:EPK.
+:PD.
+User profiles must have password *NONE specified to be included in the
+list.
+:PT.:PK.*DFT:EPK.
+:PD.
+User profiles must have a default password specified to be included in
+the list.  A profile has a default password when the profile's password
+matches the user profile name.
+:NT.
+When the system is operating at password level 2 or 3, both the
+uppercase and lowercase values of the user profile name are checked.
+However, mixed case values of the user profile name will not be
+checked.  For example, if the user profile JAMES has a password of
+'JAMES' or 'james' it will be detected as having a default password;
+but passwords of 'JaMeS' or 'James' will not be detected as default
+passwords.
+:ENT.
+:PT.:PK.*PWD:EPK.
+:PD.
+User profiles must have password specified, and that password must not
+be a default password, for the user profile to be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PWDSTS'.
+Password status (PWDSTS) - Help
+ 
+:XH3.Password status (PWDSTS)
+:P.
+Specifies whether the user profile password status should be checked,
+when the list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+User profile password status is not checked.
+:PT.:PK.*EXPIRED:EPK.
+:PD.
+User profiles must have an expired password to be included in the list.
+:PT.:PK.*ACTIVE:EPK.
+:PD.
+User profiles must have a non-expired password to be included in the
+list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PWDDAYS'.
+Password unchanged days (PWDDAYS) - Help
+ 
+:XH3.Password unchanged days (PWDDAYS)
+:P.
+Specifies whether the age of a user profile's current password should
+be checked, when the list is build.
+:P.
+The password age is calculated as the number of days between current
+date and the user profile password change date.  If the user profile
+password change date is blank, the user profile object creation date is
+used in the calculation.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile password age is not checked.
+:PT.:PV.1-999:EPV.
+:PD.
+Specify a password age between 1 and 999 days as a selection criterion
+for user profiles to be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PWDEXPITV'.
+Password expiration interval (PWDEXPITV) - Help
+ 
+:XH3.Password expiration interval (PWDEXPITV)
+:P.
+Specifies whether the password expiration interval should be checked,
+when the list is build.
+:P.
+If a number between 1 and 366 is specified, all user profiles having
+a password expiration interval equal to or above the specified number
+are included in the list.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile password expiration interval is not checked.
+:PT.:PK DEF.*NOMAX:EPK.
+:PD.
+User profiles that have the password expiration interval defined as
+*NOMAX are included in the list.
+:PT.:PK DEF.*SYSVAL:EPK.
+:PD.
+User profiles that have the password expiration interval defined as
+*SYSVAL are included in the list.
+:PT.:PV.1-366:EPV.
+:PD.
+Specify a password expiration interval between 1 and 366 days as a
+minimum selection criterion for user profiles to be included in the
+list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/INVSGNON'.
+Invalid sign-on (INVSGNON) - Help
+ 
+:XH3.Invalid sign-on (INVSGNON)
+:P.
+Specifies whether one or more invalid sign-on attempts should be
+checked, when the list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+Invalid sign-on attempts are not checked.
+:PT.:PK.*CHECK:EPK.
+:PD.
+User profiles must currently have an invalid sign-on attempt count of
+on or more, to be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/USRCLS'.
+User class (USRCLS) - Help
+ 
+:XH3.User class (USRCLS)
+:P.
+Specifies whether the user profile's user class should be checked, when
+the list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile's user class is not checked.
+:PT.:PK.*NONUSER:EPK.
+:PD.
+User profiles must have a user class that is different from user class
+*USER, to be included in the list.  Specifying this value will cause
+user profiles having a user class of either *SYSOPR, *PGMR, *SECADM or
+*SECOFR to be selected.
+:PT.:PK.*USER:EPK.
+:PD.
+User profiles must have user class *USER to be included in the list.
+:PT.:PK.*SYSOPR:EPK.
+:PD.
+User profiles must have user class *SYSOPR to be included in the list.
+:PT.:PK.*PGMR:EPK.
+:PD.
+User profiles must have user class *PGMR to be included in the list.
+:PT.:PK.*SECADM:EPK.
+:PD.
+User profiles must have user class *SECADM to be included in the list.
+:PT.:PK.*SECOFR:EPK.
+:PD.
+User profiles must have user class *SECOFR to be included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/SPCAUT'.
+Special authority (SPCAUT) - Help
+ 
+:XH3.Special authority (SPCAUT)
+:P.
+Specifies whether the user profile's special authority assignment
+should be checked, when the list is build.
+:P.:HP2.Single values:EHP2.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile's special authority assignment is not checked.
+:PT.:PK.*ANY:EPK.
+:PD.
+User profiles must have one or more special authorities assigned to be
+included in the list.
+:PT.:PK.*NONE:EPK.
+:PD.
+User profiles must not have any special authorities assigned to be
+included in the list.
+:EPARML.
+:P.
+:HP2.Other values (up to 8 repetitions):EHP2.
+:PARML.
+:PT.:PK.*ALLOBJ:EPK.
+:PD.
+User profiles must have special authority *ALLOBJ assigned to be
+included in the list.
+:PT.:PK.*AUDIT:EPK.
+:PD.
+User profiles must have special authority *AUDIT assigned to be
+included in the list.
+:PT.:PK.*IOSYSCFG:EPK.
+:PD.
+User profiles must have special authority *IOSYSCFG assigned to be
+included in the list.
+:PT.:PK.*JOBCTL:EPK.
+:PD.
+User profiles must have special authority *JOBCTL assigned to be
+included in the list.
+:PT.:PK.*SAVSYS:EPK.
+:PD.
+User profiles must have special authority *SAVSYS assigned to be
+included in the list.
+:PT.:PK.*SECADM:EPK.
+:PD.
+User profiles must have special authority *SECADM assigned to be
+included in the list.
+:PT.:PK.*SERVICE:EPK.
+:PD.
+User profiles must have special authority *SERVICE assigned to be
+included in the list.
+:PT.:PK.*SPLCTL:EPK.
+:PD.
+User profiles must have special authority *SPLCTL assigned to be
+included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/LMTCAP'.
+Limit capabilities (LMTCAP) - Help
+ 
+:XH3.Limit capabilities (LMTCAP)
+:P.
+Specifies whether the user profile's limit capability attribute should
+be checked, when the list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile's limit capability attribute is not checked.
+:PT.:PK.*ANYLMT:EPK.
+:PD.
+User profiles must have a limit capabilites attribute of either *YES
+or *PARTIAL, to be included in the list.
+:PT.:PK.*NO:EPK.
+:PD.
+User profiles must have a limit capabilites attribute of *NO to be
+included in the list.
+:PT.:PK.*PARTIAL:EPK.
+:PD.
+User profiles must have a limit capabilites attribute of *PARTIAL to be
+included in the list.
+:PT.:PK.*YES:EPK.
+:PD.
+User profiles must have a limit capabilites attribute of *YES to be
+included in the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/GRPPRF'.
+Primary group profile (GRPPRF) - Help
+ 
+:XH3.Primary group profile (GRPPRF)
+:P.
+Specifies whether the user profile's primary group profile should be
+checked, when the list is build.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile's primary group profile is not checked.
+:PT.:PK.*ANY:EPK.
+:PD.
+User profiles must have a primary group profile assigned to be included
+in the list.  The actual group profile name is not evaluated.
+:PT.:PK.*NONE:EPK.
+:PD.
+User profiles must have a primary group profile value of *NONE to be
+included in the list.
+:PT.:PV.generic-name:EPV.
+:PD.
+Specify the generic name of group profiles to be used as selection
+criteria, when the list is build.
+:P.
+A generic name is a character string that contains one or more
+characters followed by an asterisk (*).  If a generic name is
+specified, all user profiles having a primary group profile, that has a
+name with the same prefix as the generic name, are included.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of a group profile to be used as selection criterion,
+when the list is build.
+:P.
+If a group profile name is specified, all user profiles having a
+primary group profile with that name, are included.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/SUPGRPPRF'.
+Supplemental groups (SUPGRPPRF) - Help
+ 
+:XH3.Supplemental groups (SUPGRPPRF)
+:P.
+Specifies whether the user profile's supplemental group profile should
+be checked, when the list is build.
+:P.:HP2.Single values:EHP2.
+:PARML.
+:PT.:PK DEF.*NOCHK:EPK.
+:PD.
+The user profile's supplemental group profiles are not checked.
+:PT.:PK.*ANY:EPK.
+:PD.
+User profiles must have at least one supplemental group profile
+assigned to be included in the list.  The actual name of the
+supplemental group profile is not evaluated.
+:PT.:PK.*NONE:EPK.
+:PD.
+User profiles must have a supplemental group profile value of *NONE to
+be included in the list.
+:EPARML.
+ 
+:P.
+:HP2.Other values (up to 15 repetitions):EHP2.
+:PARML.
+:PT.:PV.generic-name:EPV.
+:PD.
+Specify the generic name(s) of group profiles to be used as selection
+criteria, when the list is build.
+:P.
+A generic name is a character string that contains one or more
+characters followed by an asterisk (*).  If a generic name is
+specified, all user profiles having a supplemental group profile, that
+has a name with the same prefix as the generic name, are included.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of a group profile to be used as selection criterion,
+when the list is build.
+:P.
+If a group profile name is specified, all user profiles having a
+supplemental group profile with that name, are included.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/SYSPRF'.
+Include system profiles (SYSPRF) - Help
+ 
+:XH3.Include system profiles (SYSPRF)
+:P.
+Specifies whether system profiles should be included in the printed
+list.  User profiles having a creator user profile of *IBM are
+considered system profiles.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*YES:EPK.
+:PD.
+All selected user profiles, regardless of creator user profile, are
+included in the printed list.
+:PT.:PK.*NO:EPK.
+:PD.
+Selected user profiles having a creator user profile of *IBM are
+excluded from the printed list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/UPDDFTPWD'.
+Update default password table (UPDDFTPWD) - Help
+ 
+:XH3.Update default password table (UPDDFTPWD)
+:P.
+Specifies whether the internal table containing the user profiles
+having a default password should be updated as part of running this
+command.
+:NT.
+If the default password table is not updated, the default password
+check is not performed, and no user profiles will appear in the list
+with the password special value *DFT.
+:ENT.
+:P.
+The possible values are:
+:P.
+:PARML.
+:PT.:PK DEF.*YES:EPK.
+:PD.
+The default password table will be updated when this command is run,
+and if function key F5 is pressed in the user profile list panel.
+:PT.:PK.*NO:EPK.
+:PD.
+The default password table will not be updated, and no default password
+check will be performed when building the user profile list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OUTPUT'.
+Output (OUTPUT) - Help
+ 
+:XH3.Output (OUTPUT)
+:P.
+Specifies where the output from the command is sent.
+:PARML.
+:PT.:PK DEF.*:EPK.
+:PD.
+The output is displayed (if requested by an interactive job) or printed
+with the job's spooled output (if requested by a batch job).
+:PT.:PK.*PRINT:EPK.
+:PD.
+The output is printed with the job's spooled output.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/COMMAND/EXAMPLES'.
+Examples for WRKPRFSECA - Help
+ 
+:XH3.Examples for WRKPRFSECA
+:P.
+:HP2.Example 1: Displaying enabled user profiles with default
+password:EHP2.
+:XMP.
+ WRKPRFSECA USRPRF(*ALL)
+            REL(*AND)
+            STATUS(*ENABLED)
+            PWDTYP(*DFT)
+:EXMP.
+:P.
+This command will display all user profiles that can sign on and that
+have a default password.
+.*
+:P.
+:HP2.Example 2: Displaying inactive user profiles:EHP2.
+:XMP.
+WRKPRFSECA USRPRF(*ALL)
+           REL(*OR)
+           PRFDAYS(60)
+           PWDSTS(*EXPIRED)
+           PWDDAYS(30)
+           SYSPRF(*NO)
+:EXMP.
+:P.
+This command displays all user profiles that have not signed on for
+60 days or the password has expired or not been changed for more than
+30 days. System user profiles will be excluded from the list.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/ERROR/MESSAGES'.
+&msg(CPX0005,QCPFMSG). WRKPRFSECA - Help
+ 
+:XH3.&MSG(CPX0005,QCPFMSG). WRKPRFSECA
+:P.
+:HP3.*ESCAPE &msg(CPX0006,QCPFMSG).:EHP3.
+:DL COMPACT.
+:DT.CPFB304
+:DD.&MSG(CPFB304,QCPFMSG,*LIBL,NOSUB).
+:EDL.
+:EHELP.
+ 
+.* Panel help section:
+:HELP NAME=HLPFKEYS.
+Function Keys - Help
+:XH3.Function keys
+:EHELP.
+ 
+:HELP NAME=HLPENT.
+:PARML.
+:PT.Enter
+:PD.Submits information on the display for processing.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF1.
+:PARML.
+:PT.F1=Help
+:PD.Provides additional information about using the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF3.
+:PARML.
+:PT.F3=Exit
+:PD.Ends the current task and returns you to the display from which
+the task was started.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF4.
+:PARML.
+:PT.F4=Prompt
+:PD.Provides assistance in entering or selecting a command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF5.
+:PARML.
+:PT.F5=Refresh
+:PD.Shows the display you are viewing with updated information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF6.
+:PARML.
+:PT.F6=Create job user profile
+:PD.Executes the Create User Profile (CRTUSRPRF) command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF9.
+:PARML.
+:PT.F9=Retrieve
+:PD.Displays the last command you entered on the command line and any
+parameters you included.  Pressing this key once, shows the last
+command you ran.  Pressing this key twice, shows the command you ran
+before that and so on.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW1'.
+:PARML.
+:PT.F11=View 2
+:PD.Shows the list again displaying more user profile information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW2'.
+:PARML.
+:PT.F11=View 3
+:PD.Shows the list again displaying more user profile information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW3'.
+:PARML.
+:PT.F11=View 4
+:PD.Shows the list again displaying more user profile information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='HLPF11/VIEW4'.
+:PARML.
+:PT.F11=View 1
+:PD.Shows the list again displaying more user profile information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF12.
+:PARML.
+:PT.F12=Cancel
+:PD.Cancels processing of any options or changes you have made to the
+current display and returns you to the previous menu or display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF17.
+:PARML.
+:PT.F17=Top
+:PD.Brings you back to the top of the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF18.
+:PARML.
+:PT.F18=Bottom
+:PD.Brings you to the bottom of the list.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF22.
+:PARML.
+:PT.F22=Display values (*)
+:PD.Display all values for the selected row and column.  All columns
+that include the *-sign are available.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPF24.
+:PARML.
+:PT.F24=More keys
+:PD.Changes the keys shown at the bottom of the display.  When you
+press this key, additional function keys are displayed at the bottom
+of the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPHLP.
+:PARML.
+:PT.Help
+:PD.Provides additional information about using the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPGD.
+:PARML.
+:PT.Page Down (Roll Up)
+:PD.Moves the information displayed forward to show additional
+information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPGU.
+:PARML.
+:PT.Page Up (Roll Down)
+:PD.Moves the information displayed backward to show additional
+information.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME=HLPPRT.
+:PARML.
+:PT.Print
+:PD.Prints information currently shown on the display.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/'.Work with Profile Security Attributes - Help
+:P.
+The Work with Profile Security Attributes display shows a list of user
+profiles that match the specified search criteria.
+:P.
+You can type an option next to one or more user profiles.  Then, when
+the Enter key is pressed, the function associated with the number you
+typed is performed for that user profile.
+:P.
+If you press the Enter key without typing any other data, you are
+returned to the previous menu or display.
+:P.
+You can type parameters on the command line if you want to override the
+defaults for the option(s) you typed.  Typing parameters is valid only
+if you used one of the options.  For example, you typed option 2 next
+to one or more user profiles and you want to type STATUS(*ENABLED) to
+change from the default, STATUS(*SAME).
+:P.
+To run a command, type the command and press the Enter key.  For
+assistance in typing the command, type the command and press F4.  For
+assistance in selecting a command, press F4 without typing anything.
+:P.
+If you see More ... on the lower right side of your display, there is
+more information to view.  Press Page Down (Roll Up) to move toward the
+end of the information.  Press Page Up (Roll Down) to move toward the
+beginning of the information.
+:P.
+If you see Bottom instead of More ..., you are at the end of the list.
+:P.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OPTCHG'.
+:PARML.
+:PT.2=Change
+:PD.Use this option to run the Change User Profile (CHGUSRPRF)
+command. If no value is specified on the Parameter's input field,
+current values are shown for the parameters when you press the F4
+(prompt) key.
+:P.
+However, when values have been specified on the Parameters input field,
+the command is run without the prompt appearing when you press the
+Enter key.  Similarly, when you press F4, the specified values are
+highlighted and current valuse are shown for the remaining parameters.
+:P.
+If a successfull change is performed against a user profile, the
+list panel will not reflect the change until a refresh of the panel
+occurs, but the user profile status will show a value of *CHANGED.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OPTDSP'.
+:PARML.
+:PT.5=Display
+:PD.This option runs the Display User Profile (DSPUSRPRF) command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OPTWRK'.
+:PARML.
+:PT.8=Work with profile
+:PD.This option runs the Work with User Profile (WRKUSRPRF) command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OPTOBJ'.
+:PARML.
+:PT.9=Work with object
+:PD.This option runs the Work with Object (WRKOBJ) command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OPTION'.
+Option - Help
+:XH3.Opt
+:P.
+Type the number of the option you want to specify.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/USRPRF2'.
+User profile - Help
+:XH3.User profile
+:P.
+The name of each user profile that you can work with.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PRFSTS'.
+Status - Help
+:XH3.Status
+:P.
+The current status of the user profile.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/USRCLS2'.
+User class - Help
+:XH3.User class
+:P.
+The user class of the user profile.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PRVSGO'.
+Previous sign-on - Help
+:XH3.Previous sign-on
+:P.
+The previous sign-on date of the user profile.  If the user profile
+has not yet signed-on to the system, blanks are shown.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/LSTUSD'.
+Last used date - Help
+:XH3.Last used date
+:P.
+The user profile object last used date.  If a user profile last
+used date is not registered for the user profile, the profile
+creation date is shown.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/INVSGO'.
+Invalid sign-on - Help
+:XH3.Invalid sign-on
+:P.
+The current invalid sign-on attempt counts registered for the user
+profile.
+:P.
+Whenever a successful sign-on occurs, this value is reset to zero.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/PWDINF'.
+Password information - Help
+:XH3.Password information
+:P.
+This block of information contains password related data:
+:UL.
+:LI.
+Password type.  Possible values:
+:DL COMPACT.
+:DT.*DFT :DD.A default password
+:DT.*NONE:DD.A password of *NONE
+:DT.*PWD :DD.A non-default password
+:EDL.
+:LI.
+Password expired status.  Whether the password has already expired.
+:LI.
+Password change date.  If the password has not yet been changed, a
+value of blanks is shown.
+:LI.
+Password change interval.  The maximum number of days that are allowed
+before a password must be changed.
+:EUL.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OBJINF'.
+User profile object information - Help
+:XH3.User profile object information
+:P.
+This block of information contains user profile object related data:
+:P.
+:PARML.
+:PT.:PV.Creator:EPV.
+:PD.
+The name of the user profile that created this user profile.
+:P.
+The special value *IBM indicates that the user profile is a system
+user profile created by IBM.
+:PT.:PV.Owner:EPV.
+:PD.
+The current owner of the user profile.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/LMTCAP2'.
+Limit capabilities - Help
+:XH3.Limit capabilities
+:P.
+The limit capability attribute of the user profile.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/NBRAUT'.
+Special authority - Help
+:XH3.Special authority
+:P.
+The number of special authorities assigned to the user profile.
+:P.
+To see the actual list of special authorities assigned, place the
+cursor on the column and row of interest, and press function key F22.
+:P.
+The special value *FULL is shown for user profiles having all 8 special
+authorites assigned.
+:P.
+If no special authorities are assigned to the user profile, the special
+value *NONE is shown.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/GRPPRF2'.
+Group profile - Help
+:XH3.Group profile
+:P.
+The primary group profile of the user profile.
+:P.
+If no group profile is assigned to the user profile, the special value
+*NONE is shown.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/NBRSUP'.
+Supplemental group profiles - Help
+:XH3.Supplemental group profiles
+:P.
+The number of supplemental group profiles assigned to the user profile.
+:P.
+To see the actual list of supplemental group profiles assigned, place
+the cursor on the column and row of interest, and press function key
+F22.
+:P.
+If no supplemental group profiles are assigned to the user profile,
+the special value *NONE is shown.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/OBJAUD'.
+Object audit - Help
+:XH3.Object audit
+:P.
+The object auditing value of the user profile.
+:P.
+Possible values:
+:DL COMPACT.
+:DT.*NONE  :DD.No additional object auditing is done for the user
+profile.
+:DT.*CHANGE:DD.Object changes are audited for the user profile if the
+object's auditing value is *USRPRF.
+:DT.*ALL   :DD.Object read and change operations are audited for the
+user profile if the object's auditing value is *USRPRF.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/NBRAUD'.
+User action audit values - Help
+:XH3.User action audit values
+:P.
+The number of user action audit values for the user profile.
+:P.
+To see the actual list of user action audit values assigned, place the
+cursor on the column and row of interest, and press function key F22.
+:P.
+If no user action audit values are assigned to the user profile, the
+special value *NONE is shown.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/DIGCER'.
+Digital certificate - Help
+:XH3.Digital certificate
+:P.
+Specifies whether there are one or more digital certificates
+associated with this user profile.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/LOCPWD'.
+Local password management - Help
+:XH3.Local password management
+:P.
+Specifies whether the password is managed locally.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/SIGNON'.
+Sign-on - Help
+:XH3.Sign-on
+:P.
+Specifies whether the profile is enabled to sign-on and establish
+an interactive session on the system in view of the profile's
+initial menu and initial program settings.
+:P.
+If the special values *SIGNOFF and *NONE are specified for the
+profile's initial menu and initial program settings, respectively,
+the profile will not be able to sign-on and establish an interactive
+session.
+:P.
+Further, in order to prevent a possible initial menu or program override
+from the sign-on display panel, the user profile's limited capability
+setting must have a value of *YES.
+:P.
+Possible values:
+:DL COMPACT.
+:DT.*NO :DD.The profile is not able to establish an interactive session.
+:DT.*YES:DD.The profile is able to establish an interactive session.
+:DT.*OVR:DD.The profile is able to establish an interactive session, but only
+if an initial menu or program override is performed on the sign-on screen.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='WRKPRFSECA/TXTDSC'.
+Text - Help
+:XH3.Text
+:P.
+The descriptive text of the user profile.
+:EHELP.
+ 
+:HELP name='WRKPRFSECA/WRKUSR'.
+User profile - Help
+:XH3.User profile
+:P.
+The name of the user profile(s) to work with.  Specify a user profile
+name, a generic user profile name or the special value *ALL.
+:EHELP.
+ 
+:HELP name='WRKPRFSECA/POSUSR'.
+Position to - Help
+:XH3.Position to
+:P.
+Use this prompt to go to a particular area in the list.  Use it for
+quick repositioning of the list, not for creating a subset of the list.
+:P.
+Specify a name or a partial name of the user profile you want to
+position the list to.
+:P.
+The list of user profiles is positioned to the first user profile name
+beginning with the string specified.  If no user profiles exist in the
+present list, then the list is positioned to the item immediately
+preceding the position you want.
+:EHELP.
+ 
+:EPNLGRP.

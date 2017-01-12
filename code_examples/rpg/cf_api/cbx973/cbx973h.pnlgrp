@@ -1,0 +1,239 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX973H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( CBX973H )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:HELP NAME='SETDFTJRN'.
+Set Default Journal - Help
+:P.
+The Set Default Journal (SETDFTJRN) command defines the settings that
+apply to automatic journalling for the library specified.
+:P.
+Using a data area named QDFTJRN, you can automatically start journaling
+when a non-integrated file system object (data area, data queue, or
+file) is created, moved, or restored into the library, thus, ensuring
+the very first change to the object will be recorded in the journal and
+that no lock on the user's part prevents journaling from starting in
+the library. The QDFTJRN data area must exist in the library where the
+object is being added.
+:P.
+If a data area called QDFTJRN exists 1) in the same library into which
+the data area, data queue, or physical file is created, or 2) in the
+same schema that the SQL table is created into, and 3) the user (in
+either instance) is authorized to the data area, journaling will be
+started to the journal named in the data area if all the following are
+true:
+:UL.
+:LI.
+The identified library for the data area, data queue, or physical file
+or identified schema for the SQL table must not be QSYS, QSYS2,
+QRECOVERY, QSPL, QRCL, QRPLOBJ, QGPL, QTEMP, or any of the independent
+auxiliary storage pool (IASP) equivalents to these libraries. (An iASP
+equivalent of QRPLOBJ, for example, is QRPLxxxxx where 'xxxxx' is the
+number of a primary auxiliary storage pool (ASP).)
+:LI.
+The journal specified in the data area must exist and the user must be
+authorized to start journaling to the journal.
+:EUL.
+:NT.
+When creating SQL tables within a schema, the QSQJRN journal within the
+schema is used to start journaling the tables. To start journaling the
+tables to a different journal than QSQJRN within the schema, create the
+QDFTJRN data area in the schema and specify a different journal name
+inside the QDFTJRN data area.
+:ENT.
+:P.
+More IBM information and documentation on the QDFTJRN data area can be
+found following the link below:
+:P.
+http://www.google.com/search?q=QDFTJRN&site:ibm.com
+:EHELP.
+ 
+:HELP NAME='SETDFTJRN/LIB'.
+Library (LIB) - Help
+ 
+:XH3.Library (LIB)
+:P.
+Specifies the library for which the automatic journaling settings are
+defined.
+:P.
+This is a required parameter.
+:PARML.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of the name of the library for which automatic
+journalling should be defined.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='SETDFTJRN/JRN'.
+Journal (JRN) - Help
+ 
+:XH3.Journal (JRN)
+:P.
+Specifies the journal to which the journaling is automatically started
+for the events and operations described in the :HP2.OPTION:EHP2.
+parameter.
+:P.
+This is a required parameter.
+:P.
+:NT.
+The job creating the event that causes automatic journaling to be
+started by the default journal function, must have *OBJMGT, *OBJOPR
+and *OBJALTER authority to the journal specified as well as *EXECUTE
+authority to the journal library.  Otherwise the start journal attempt
+will fail, leaving messages reporting this failure in the job log of
+the job creating the object, including message ID CPI6954 (Object could
+not be journaled).
+:P.
+The required authority can be obtained from the job user profile, the
+user profile's group profile(s), *PUBLIC authority or program adopted
+authority.
+:ENT.
+:P.
+:HP2.Qualifier 1: Journal:EHP2.
+:PARML.
+:PT.:PV.name:EPV.
+:PD.
+The name of the journal to which the objects are to be journaled.
+:EPARML.
+:P.
+:HP2.Qualifier 2: Library:EHP2.
+:PARML.
+:PT.:PV.name:EPV.
+:PD.
+Specify the library name for the journal.
+.* Describe the function provided by the user-defined parameter value.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='SETDFTJRN/OPTION'.
+Journal option (OPTION) - Help
+ 
+:XH3.Journal option (OPTION)
+:P.
+Specifies the object types to consider journaling as well as the
+operations that should cause journaling to automatically start.
+:P.
+:NT.
+When more than one object type/operation combination is specified in
+the data area, the first combination that covers an object and
+operation will be used.
+:P.
+If no value is specified for operation then *CREATE is assumed.
+:ENT.
+:P.
+:HP2.Single values:EHP2.
+:PARML.
+:PT.:PK DEF.*NONE:EPK.
+:PD.
+No objects are defined.
+:EPARML.
+:P.
+:HP2.Other values (up to 5 repetitions):EHP2.
+:HP2.Element 1: Object type:EHP2.
+:PARML.
+:PT.:PK.*ALL:EPK.
+:PD.
+All eligible object types are defined for the specified operation.
+:PT.:PK.*FILE:EPK.
+:PD.
+Only data base files and SQL tables are defined for the specified
+operation.
+:PT.:PK.*DTAARA:EPK.
+:PD.
+Only data areas are defined for the specified operation.
+:PT.:PK.*DTAQ:EPK.
+:PD.
+Only data queues are defined for the specified operation.
+:EPARML.
+:P.
+:HP2.Element 2: Operation:EHP2.
+:PARML.
+:PT.:PK.*ALLOPR:EPK.
+:PD.
+Start journaling in all cases possible.
+:PT.:PK.*CREATE:EPK.
+:PD.
+Start journaling when an object is created into the library.
+:PT.:PK.*MOVE:EPK.
+:PD.
+Start journaling when an object is created into the library,
+:PT.:PK.*RESTORE:EPK.
+:PD.
+Start journaling when an object is restored into the library.
+:PT.:PK.*RSTOVRJRN:EPK.
+:PD.
+Override the saved object's journal and start journaling to the journal
+name in this QDFTJRN data area, when the object is restored into the
+library.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='SETDFTJRN/CREATE'.
+Create data area (CREATE) - Help
+ 
+:XH3.Create data area (CREATE)
+:p.
+Specifies whether to create the QDFTJRN data area if does not already
+exist.
+:PARML.
+:PT.:PK DEF.*NO:EPK.
+:PD.
+The QDFTJRN data area will not be created if it does not already exist,
+and instead an error message will be issued.
+:PT.:PK.*YES:EPK.
+:PD.
+The QDFTJRN data area will be created if it does not already exist.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='SETDFTJRN/COMMAND/EXAMPLES'.
+Examples for SETDFTJRN - Help
+ 
+:XH3.Examples for SETDFTJRN
+:P.
+:HP2.Example 1: Set default journal for created files:EHP2.
+:XMP.
+SETDFTJRN LIB(QGPL)
+          JRN(QUSRSYS/PRDJRN)
+          OPTION((*FILE *CREATE))
+          CREATE(*YES)
+:EXMP.
+:P.
+This command will cause all files created into library QGPL to
+start journaling against journal PRDJRN in library QUSRSYS.  The
+QDFTJRN data area will be created in the QGPL library.
+:P.
+:HP2.Example 2: Set default journal for all eligible object types:EHP2.
+:XMP.
+SETDFTJRN LIB(QGPL)
+          JRN(QUSRSYS/PRDJRN)
+          OPTION((*FILE *CREATE) (*ALL *ALLOPR))
+:EXMP.
+:P.
+This command will cause all files created into library QGPL to
+start journaling against journal PRDJRN in library QUSRSYS and all
+other eligible object types, i.e. *DTAARA and *DTAQ, to start
+journaling against the aforementioned journal for all events possible,
+i.e. *CREATE, *MOVE and *RESTORE.
+:EHELP.
+ 
+:HELP NAME='SETDFTJRN/ERROR/MESSAGES'.
+&MSG(CPX0005,QCPFMSG). SETDFTJRN - Help
+ 
+:XH3.&MSG(CPX0005,QCPFMSG). SETDFTJRN
+:P.
+:HP3.*ESCAPE &MSG(CPX0006,QCPFMSG).:EHP3.
+:DL COMPACT.
+:DT.CPF0002
+:DD.&MSG(CPF0002,QCPFMSG,*LIBL,nosub).
+:EDL.
+:EHELP.
+:EPNLGRP.
