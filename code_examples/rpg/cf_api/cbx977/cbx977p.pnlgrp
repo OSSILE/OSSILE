@@ -1,0 +1,749 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX977P )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:COPYR.
+(C) System iNetwork Systems Management Tips 2008.
+ 
+.*-- Import help panel group:
+:IMPORT   NAME='*'        PNLGRP=CBX977H.
+.*-- Class definitions:
+:CLASS    NAME=CLACTION   BASETYPE=ACTION      WIDTH=1.
+:ECLASS.
+:CLASS    NAME=CLEXITPG   BASETYPE='CHAR 20'.
+:ECLASS.
+:CLASS    NAME=CLCSREID   BASETYPE='CHAR 4'.
+:ECLASS.
+:CLASS    NAME=CLCSRVAL   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLALTVIEW  BASETYPE='BIN 15'.
+:ECLASS.
+:CLASS    NAME=CLCMDPRM   BASETYPE='CHAR 255'.
+:ECLASS.
+:CLASS    NAME=CLTIMZON   BASETYPE='TIME ZONE'.
+:ECLASS.
+:CLASS    NAME=CLDATE     BASETYPE='DATE 2'.
+:TL.
+:TI  VALUE='"       "'.
+:TI  VALUE='"*SYSVAL"'.*SYSVAL
+:ETL.
+:ECLASS.
+:CLASS    NAME=CLTIME     BASETYPE='TIME'.
+:TL.
+:TI  VALUE='"      "'.
+:ETL.
+:ECLASS.
+:CLASS    NAME=CLCTLDTA   BASETYPE='CHAR 8'.
+:ECLASS.
+:CLASS    NAME=CLPRMDTA   BASETYPE='CHAR 51'.
+:ECLASS.
+:CLASS    NAME=CLOBJNAM   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLENTID    BASETYPE='ZONED 19 0'.
+:ECLASS.
+:CLASS    NAME=CLHDRSTS   BASETYPE='CHAR 10'.
+:ECLASS.
+:CLASS    NAME=CLJOBNBR   BASETYPE='CHAR 6'.
+:ECLASS.
+:CLASS    NAME=CLJOBST2   BASETYPE='CHAR 4'   WIDTH=4.
+:ECLASS.
+:CLASS    NAME=CLFNCCMP   BASETYPE='CHAR 14'.
+:ECLASS.
+:CLASS    NAME=CLMSGRPY   BASETYPE='CHAR 1'.
+:ECLASS.
+ 
+ 
+:CLASS    NAME=CLJOBTYP   BASETYPE='CHAR 1'    WIDTH=3.
+:TL.
+:TI  VALUE='"A"'.ASJ
+:TI  VALUE='"B"'.BCH
+:TI  VALUE='"I"'.INT
+:TI  VALUE='"M"'.SBS
+:TI  VALUE='"R"'.RDR
+:TI  VALUE='"S"'.SYS
+:TI  VALUE='"W"'.WTR
+:TI  VALUE='"X"'.SCP
+:TI  VALUE='" "'.
+:ETL.
+:ECLASS.
+ 
+:CLASS    NAME=CLJOBST1   BASETYPE='CHAR 7'   WIDTH=7.
+:TL.
+:TI  VALUE='"*JOBQ"'  .JOBQ
+:TI  VALUE='"*ACTIVE"'.ACTIVE
+:TI  VALUE='"*OUTQ"'  .OUTQ
+:ETL.
+:ECLASS.
+ 
+.*-- Variable definitions:
+:VAR      NAME=OPTION    CLASS=CLACTION.
+:VAR      NAME=CSREID    CLASS=CLCSREID.
+:VAR      NAME=CSRVAR    CLASS=CLCSRVAL.
+:VAR      NAME=EXITPG    CLASS=CLEXITPG.
+:VAR      NAME=LISTPG    CLASS=CLEXITPG.
+:VAR      NAME=DATE      CLASS=CLDATE.
+:VAR      NAME=TIMZON    CLASS=CLTIMZON.
+:VAR      NAME=CMDPRM    CLASS=CLCMDPRM.
+:VAR      NAME=ALTVIEW   CLASS=CLALTVIEW.
+ 
+:VAR      NAME=CTLDTA    CLASS=CLCTLDTA.
+:VAR      NAME=PRMDTA    CLASS=CLPRMDTA.
+ 
+:VAR      NAME=HDRJOB    CLASS=CLOBJNAM.
+:VAR      NAME=HDRUSR    CLASS=CLOBJNAM.
+:VAR      NAME=HDRCUR    CLASS=CLOBJNAM.
+:VAR      NAME=HDRSTS    CLASS=CLHDRSTS.
+ 
+:VAR      NAME=ENTID     CLASS=CLENTID.
+:VAR      NAME=JOBNAM    CLASS=CLOBJNAM.
+:VAR      NAME=JOBUSR    CLASS=CLOBJNAM.
+:VAR      NAME=JOBNBR    CLASS=CLJOBNBR.
+:VAR      NAME=JOBTYP    CLASS=CLJOBTYP.
+:VAR      NAME=JOBST1    CLASS=CLJOBST1.
+:VAR      NAME=JOBST2    CLASS=CLJOBST2.
+:VAR      NAME=JOBDAT    CLASS=CLDATE.
+:VAR      NAME=ENTDAT    CLASS=CLDATE.
+:VAR      NAME=ENTTIM    CLASS=CLTIME.
+:VAR      NAME=ACTDAT    CLASS=CLDATE.
+:VAR      NAME=ACTTIM    CLASS=CLTIME.
+:VAR      NAME=CURUSR    CLASS=CLOBJNAM.
+:VAR      NAME=FNCCMP    CLASS=CLFNCCMP.
+:VAR      NAME=MSGRPY    CLASS=CLMSGRPY.
+:VAR      NAME=SBMJOB    CLASS=CLOBJNAM.
+:VAR      NAME=SBMUSR    CLASS=CLOBJNAM.
+:VAR      NAME=SBMNBR    CLASS=CLJOBNBR.
+ 
+.*-- Variable record definitions:
+:VARRCD   NAME=EXPRCD
+          VARS='EXITPG LISTPG'.
+ 
+:VARRCD   NAME=CTLRCD
+          VARS='CTLDTA'.
+ 
+:VARRCD   NAME=PRMRCD
+          VARS='PRMDTA'.
+ 
+:VARRCD   NAME=CSRRCD
+          VARS='CSREID CSRVAR'.
+ 
+:VARRCD   NAME=HDRRCD
+          VARS='DATE TIMZON HDRJOB HDRUSR HDRCUR HDRSTS'.
+ 
+:VARRCD   NAME=DTLRCD
+          VARS='OPTION ENTID  JOBNAM JOBUSR JOBNBR JOBTYP JOBST1'
+          VARS='JOBST2 JOBDAT ENTDAT ENTTIM ACTDAT ACTTIM CURUSR'
+          VARS='FNCCMP MSGRPY SBMJOB SBMUSR SBMNBR'.
+ 
+.*-- List definition:
+:LISTDEF  NAME=DTLLST
+          VARS='OPTION ENTID  JOBNAM JOBUSR JOBNBR JOBTYP JOBST1'
+          VARS='JOBST2 JOBDAT ENTDAT ENTTIM ACTDAT ACTTIM CURUSR'
+          VARS='FNCCMP MSGRPY SBMJOB SBMUSR SBMNBR'
+          MSGID=CPI0944
+          MSGF='QCPFMSG'.
+ 
+:LISTDEF  NAME=CNFLST
+          VARS='OPTION ENTID  JOBNAM JOBUSR JOBNBR JOBTYP JOBST1'
+          VARS='JOBST2 JOBDAT ENTDAT ENTTIM ACTDAT ACTTIM CURUSR'
+          VARS='FNCCMP MSGRPY SBMJOB SBMUSR SBMNBR'.
+ 
+.*-- Conditions:
+:COND     NAME=VIEW1      EXPR='ALTVIEW = 0'.
+:COND     NAME=VIEW2      EXPR='ALTVIEW = 1'.
+ 
+:TT       NAME=PNLTT
+          CONDS= 'VIEW1   VIEW2'.
+:TTROW    VALUES='  1       0  '.
+:TTROW    VALUES='  0       1  '.
+:ETT.
+ 
+.*-- Key definitions - main panel:
+:KEYL     NAME=FKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F3
+          HELP=HLPF3
+          ACTION='EXIT SET'
+          VARUPD=NO
+          .F3=Exit
+ 
+:KEYI     KEY=F4
+          HELP=HLPF4
+          PRIORITY=30
+          ACTION=PROMPT
+          .F4=Prompt
+ 
+:KEYI     KEY=F5
+          HELP=HLPF5
+          PRIORITY=20
+          ACTION='RETURN 5'
+          .F5=Refresh
+ 
+:KEYI     KEY=F6
+          HELP=HLPF6
+          ACTION='CMD ?SBMJOB'
+          PRIORITY=20
+          .F6=Submit job
+ 
+:KEYI     KEY=F9
+          HELP=HLPF9
+          PRIORITY=30
+          ACTION=RETRIEVE
+          .F9=Retrieve
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW1'
+          ACTION=CHGVIEW
+          COND=VIEW1
+          PRIORITY=20
+          .F11=View 2
+ 
+:KEYI     KEY=F11
+          HELP='HLPF11/VIEW2'
+          ACTION=CHGVIEW
+          COND=VIEW2
+          PRIORITY=20
+          .F11=View 1
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=F21
+          HELP=HLPF21
+          ACTION='CALL EXITPG'
+          PRIORITY=20
+          .F21=Print list
+ 
+:KEYI     KEY=F22
+          HELP=HLPF22
+          PRIORITY=40
+          ACTION='CALL EXITPG'
+          .F22=Work with active jobs
+ 
+:KEYI     KEY=F24
+          HELP=HLPF24
+          ACTION=MOREKEYS
+          .F24=More keys
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Key definitions - confirmation panel:
+:KEYL     NAME=CNFKEYS
+          HELP=HLPFKEYS.
+ 
+:KEYI     KEY=ENTER
+          HELP=HLPENT
+          ACTION=ENTER.
+ 
+:KEYI     KEY=F1
+          HELP=HLPF1
+          ACTION=HELP.
+ 
+:KEYI     KEY=F11
+          HELP='F11/VIEW1'
+          ACTION=CHGVIEW
+          COND=VIEW1
+          PRIORITY=30
+          .F11=View 2
+ 
+:KEYI     KEY=F11
+          HELP='F11/VIEW2'
+          ACTION=CHGVIEW
+          COND=VIEW2
+          PRIORITY=30
+          .F11=View 1
+ 
+:KEYI     KEY=F12
+          HELP=HLPF12
+          ACTION='CANCEL SET'
+          VARUPD=NO
+          .F12=Cancel
+ 
+:KEYI     KEY=HELP
+          HELP=HLPHLP
+          ACTION=HELP.
+ 
+:KEYI     KEY=PAGEDOWN
+          HELP=HLPPGD
+          ACTION=PAGEDOWN.
+ 
+:KEYI     KEY=PAGEUP
+          HELP=HLPPGU
+          ACTION=PAGEUP.
+ 
+:KEYI     KEY=PRINT
+          HELP=HLPPRT
+          ACTION=PRINT.
+:EKEYL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CBX977P
+          KEYL=FKEYS
+          CSREID=CSREID
+          CSRVAR=CSRVAR
+          ENTER='RETURN 500'
+          HELP='WRKJOBS/'
+          TT=PNLTT
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Work with Jobs
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=DTLLST
+          MAXHEAD=2
+          VIEW=ALTVIEW
+          ACTOR=UIM
+          SCROLL=YES
+          PARMS=CMDPRM.
+ 
+:TOPINST .Type options, press Enter.
+ 
+:LISTACT  ENTER='CMD CHGJOB JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          PROMPT='CMD ?CHGJOB ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          HELP='WRKJOBS/OPTCHG'
+          OPTION=2
+          NOCMD=PROMPT
+          USREXIT='CALL EXITPG'
+          .2=Change
+ 
+:LISTACT  ENTER='CMD HLDJOB JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          PROMPT='CMD ?HLDJOB ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          HELP='WRKJOBS/OPTHLD'
+          OPTION=3
+          USREXIT='CALL EXITPG'
+          .3=Hold
+ 
+:LISTACT  ENTER='CMD ENDJOB JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          PROMPT='CMD ?ENDJOB ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          HELP='WRKJOBS/OPTEND'
+          OPTION=4
+          CONFIRM=CNFPNL
+          USREXIT='CALL EXITPG'
+          .4=End
+ 
+:LISTACT  ENTER='CMD WRKJOB JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          PROMPT='CMD ?WRKJOB ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          HELP='WRKJOBS/OPTWRK'
+          OPTION=5
+          .5=Work with
+ 
+:LISTACT  ENTER='CMD RLSJOB JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          PROMPT='CMD ?RLSJOB ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          HELP='WRKJOBS/OPTRLS'
+          OPTION=6
+          USREXIT='CALL EXITPG'
+          .6=Release
+ 
+:LISTACT  ENTER='CMD WRKJOB JOB(&JOBNBR/&JOBUSR/&JOBNAM) '
+          ENTER='OPTION(*SPLF) &CMDPRM'
+          PROMPT='CMD ?WRKJOB ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) '
+          PROMPT='?*OPTION(*SPLF) &CMDPRM'
+          HELP='WRKJOBS/OPTSPL'
+          OPTION=8
+          .8=Spooled files
+ 
+:LISTACT  ENTER='CMD DSPJOBLOG JOB(&JOBNBR/&JOBUSR/&JOBNAM) '
+          ENTER='&CMDPRM'
+          PROMPT='CMD ?DSPJOBLOG ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) '
+          PROMPT='&CMDPRM'
+          HELP='WRKJOBS/OPTJBL'
+          OPTION=10
+          .10=Job log
+ 
+:LISTACT  ENTER='CMD WRKUSRJOB USER(&JOBUSR) STATUS(*&JOBST1) &CMDPRM '
+          PROMPT='CMD ?WRKUSRJOB USER(&JOBUSR) STATUS(*&JOBST1) '
+          PROMPT='&CMDPRM'
+          HELP='WRKJOBS/OPTWUJ'
+          OPTION=12
+          .12=Work with user jobs
+ 
+:LISTACT  ENTER='CMD DSCJOB JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          PROMPT='CMD ?DSCJOB ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          HELP='WRKJOBS/OPTDSC'
+          OPTION=13
+          .13=Disconnect
+ 
+:LISTACT  ENTER='CMD RUNJOBCMD JOB(&JOBNBR/&JOBUSR/&JOBNAM) &CMDPRM'
+          PROMPT='CMD ?RUNJOBCMD ?*JOB(&JOBNBR/&JOBUSR/&JOBNAM) '
+          PROMPT='&CMDPRM'
+          HELP='WRKJOBS/OPTRJC'
+          OPTION=14
+          NOCMD=PROMPT
+          .14=Run job command
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=INOUT
+          MAXWIDTH=3
+          HELP='WRKJOBS/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=JOBNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKJOBS/JOBNAM'
+          .Job
+ 
+:LISTCOL  VAR=JOBUSR
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKJOBS/JOBUSR'
+          .User
+ 
+:LISTCOL  VAR=JOBNBR
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKJOBS/JOBNBR'
+          .Number
+ 
+:LISTCOL  VAR=CURUSR
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKJOBS/CURUSP'
+          .'Current' 'User'
+ 
+:LISTCOL  VAR=JOBTYP
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKJOBS/JOBTYP'
+          .Type
+ 
+:LISTGRP  COL=JOBSTS
+          COLSEP=1
+          HELP='WRKJOBS/JOBSTS'
+          .Status
+ 
+:LISTCOL  VAR=JOBST1
+          USAGE=OUT
+          MAXWIDTH=7.
+ 
+:LISTCOL  VAR=JOBST2
+          USAGE=OUT
+          MAXWIDTH=7.
+:ELISTGRP.
+ 
+:LISTCOL  VAR=JOBDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKJOBS/JOBDAT'
+          .'Job date'
+ 
+:LISTGRP  COL=ENTDTS
+          COLSEP=2
+          HELP='WRKJOBS/ENTDTS'
+          .Entered system
+ 
+:LISTCOL  VAR=ENTDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          .Date
+ 
+:LISTCOL  VAR=ENTTIM
+          USAGE=OUT
+          MAXWIDTH=8
+          .Time
+:ELISTGRP.
+ 
+:LISTGRP  COL=ACTDTS
+          COLSEP=2
+          HELP='WRKJOBS/ACTDTS'
+          .Job active
+ 
+:LISTCOL  VAR=ACTDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          .Date
+ 
+:LISTCOL  VAR=ACTTIM
+          USAGE=OUT
+          MAXWIDTH=8
+          .Time
+:ELISTGRP.
+ 
+:LISTCOL  VAR=FNCCMP
+          USAGE=OUT
+          MAXWIDTH=14
+          HELP='WRKJOBS/FNCCMP'
+          .'Function/' 'Completion'
+ 
+:LISTVIEW COLS='OPTION JOBNAM CURUSR JOBDAT JOBTYP JOBSTS FNCCMP'.
+:LISTVIEW COLS='OPTION JOBNAM JOBUSR JOBNBR ENTDTS ACTDTS'.
+:ELIST.
+ 
+:CMDLINE  SIZE=SHORT
+          .Parameters or command
+:EPANEL.
+ 
+.*-- Panel definition:
+:PANEL    NAME=CNFPNL
+          KEYL=CNFKEYS
+          ENTER='RETURN 100'
+          HELP='CNFPNL/'
+          TOPSEP=DATETIME
+          DATE=DATE
+          TIME=TIMZON
+          .Confirm End of Job
+ 
+.*-- List presentation area:
+:LIST     DEPTH='*'
+          LISTDEF=CNFLST
+          MAXHEAD=2
+          VIEW=ALTVIEW
+          SCROLL=YES.
+ 
+:TOPINST.Press Enter to confirm your choices of 4=End.
+:TOPINST.Press F12 to return to change your choices.
+ 
+:LISTCOL  VAR=OPTION
+          USAGE=OUT
+          MAXWIDTH=3
+          HELP='CNFPNL/OPTION'
+          .Opt
+ 
+:LISTCOL  VAR=JOBNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKJOBS/JOBNAM'
+          .Job
+ 
+:LISTCOL  VAR=JOBUSR
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKJOBS/JOBUSR'
+          .User
+ 
+:LISTCOL  VAR=JOBNBR
+          USAGE=OUT
+          MAXWIDTH=6
+          HELP='WRKJOBS/JOBNBR'
+          .Number
+ 
+:LISTCOL  VAR=CURUSR
+          USAGE=OUT
+          MAXWIDTH=10
+          HELP='WRKJOBS/CURUSP'
+          .'Current' 'User'
+ 
+:LISTCOL  VAR=JOBTYP
+          USAGE=OUT
+          MAXWIDTH=7
+          HELP='WRKJOBQJOB/JOBTYP'
+          .Type
+ 
+:LISTGRP  COL=JOBSTS
+          COLSEP=1
+          HELP='WRKJOBQJOB/JOBSTS'
+          .Status
+ 
+:LISTCOL  VAR=JOBST1
+          USAGE=OUT
+          MAXWIDTH=7.
+ 
+:LISTCOL  VAR=JOBST2
+          USAGE=OUT
+          MAXWIDTH=7.
+:ELISTGRP.
+ 
+:LISTCOL  VAR=JOBDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          HELP='WRKJOBS/JOBDAT'
+          .'Job date'
+ 
+:LISTGRP  COL=ENTDTS
+          COLSEP=2
+          HELP='WRKJOBS/ENTDTS'
+          .Entered system
+ 
+:LISTCOL  VAR=ENTDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          .Date
+ 
+:LISTCOL  VAR=ENTTIM
+          USAGE=OUT
+          MAXWIDTH=8
+          .Time
+:ELISTGRP.
+ 
+:LISTGRP  COL=ACTDTS
+          COLSEP=2
+          HELP='WRKJOBS/ACTDTS'
+          .Job active
+ 
+:LISTCOL  VAR=ACTDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          .Date
+ 
+:LISTCOL  VAR=ACTTIM
+          USAGE=OUT
+          MAXWIDTH=8
+          .Time
+:ELISTGRP.
+ 
+:LISTCOL  VAR=FNCCMP
+          USAGE=OUT
+          MAXWIDTH=12
+          HELP='WRKJOBS/FNCCMP'
+          .'Function/' 'Completion'
+ 
+:LISTVIEW COLS='OPTION JOBNAM CURUSR JOBDAT JOBTYP JOBSTS FNCCMP'.
+:LISTVIEW COLS='OPTION JOBNAM JOBUSR JOBNBR ENTDTS ACTDTS'.
+:ELIST.
+:EPANEL.
+ 
+.*-- Print panel header definition:
+:PRTHEAD  NAME=PRTHDR
+          WIDTH=132
+          .Work with Jobs List
+ 
+:PRTTRAIL .E N D   O F   L I S T I N G
+ 
+:EPRTHEAD.
+ 
+.*-- Print panel detail definition:
+ 
+:PRTPNL   NAME=PRTLST
+          WIDTH=132.
+ 
+:DATA     LAYOUT=HORIZ
+          BOTSEP=SPACE.
+ 
+:DATAI    VAR=HDRJOB
+          USAGE=OUT
+          .Job
+ 
+:DATAI    VAR=HDRUSR
+          USAGE=OUT
+          .User
+ 
+:DATAIX   VAR=HDRCUR
+          USAGE=OUT
+          NEWLINE=NO
+          ITEMSEP=3.
+ 
+:DATAI    VAR=HDRSTS
+          USAGE=OUT
+          .Status
+:EDATA.
+ 
+.*-- Print panel list definition:
+ 
+:LIST     LISTDEF=DTLLST
+          MAXHEAD=3
+          BOTSEP=NONE.
+ 
+:LISTCOL  VAR=JOBNAM
+          USAGE=OUT
+          MAXWIDTH=10
+          .Job
+ 
+:LISTCOL  VAR=JOBUSR
+          USAGE=OUT
+          MAXWIDTH=10
+          .User
+ 
+:LISTCOL  VAR=JOBNBR
+          USAGE=OUT
+          MAXWIDTH=6
+          .Number
+ 
+:LISTCOL  VAR=CURUSR
+          USAGE=OUT
+          MAXWIDTH=10
+          .'Current' 'User'
+ 
+:LISTCOL  VAR=JOBTYP
+          USAGE=OUT
+          MAXWIDTH=7
+          .Type
+ 
+:LISTGRP  COL=JOBSTS
+          COLSEP=1
+          .Status
+ 
+:LISTCOL  VAR=JOBST1
+          USAGE=OUT
+          MAXWIDTH=7.
+ 
+:LISTCOL  VAR=JOBST2
+          USAGE=OUT
+          MAXWIDTH=7.
+:ELISTGRP.
+ 
+:LISTGRP  COL=ENTDTS
+          COLSEP=2
+          .Entered system
+ 
+:LISTCOL  VAR=ENTDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          .Date
+ 
+:LISTCOL  VAR=ENTTIM
+          USAGE=OUT
+          MAXWIDTH=8
+          .Time
+:ELISTGRP.
+ 
+:LISTGRP  COL=ACTDTS
+          COLSEP=2
+          .Job active
+ 
+:LISTCOL  VAR=ACTDAT
+          USAGE=OUT
+          MAXWIDTH=8
+          .Date
+ 
+:LISTCOL  VAR=ACTTIM
+          USAGE=OUT
+          MAXWIDTH=8
+          .Time
+:ELISTGRP.
+ 
+:LISTCOL  VAR=FNCCMP
+          USAGE=OUT
+          MAXWIDTH=14
+          .'Function/' 'Completion'
+ 
+:LISTVIEW COLS='JOBNAM JOBUSR JOBNBR CURUSR JOBTYP JOBSTS FNCCMP ENTDTS ACTDTS'.
+ 
+:ELIST.
+ 
+:EPRTPNL.
+:EPNLGRP.

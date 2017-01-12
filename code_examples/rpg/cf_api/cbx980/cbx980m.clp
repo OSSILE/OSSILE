@@ -32,10 +32,10 @@
      MonMsg      CPF0000    *N        GoTo Error
 
 
-     CrtRpgMod  &UtlLib/CBX980 SrcFile( &UtlLib/CBX980 SrcMbr( *Module ) DbgView( *LIST )
+     CrtRpgMod  &UtlLib/CBX980 SrcFile( OSSILESRC/CBX980 SrcMbr( *Module ) DbgView( *LIST )
 
-     CrtSrvPgm  &UtlLib/CBX980 Module( &UtlLib/CBX980 ) Export( *SRCFILE ) SrcFile( CBX980 ) +
-                  SrcMbr( CBX980B ) ActGrp( *CALLER )
+     CrtSrvPgm  &UtlLib/CBX980 Module( &UtlLib/CBX980 ) Export( *SRCFILE ) +
+                  SrcFile(OSSILESRC/CBX980 ) SrcMbr( CBX980B ) ActGrp( *CALLER )
 
      SndPgmMsg   Msg( 'User Query Attributes commands'      *Bcat +
                       'successfully created in library'     *Bcat +

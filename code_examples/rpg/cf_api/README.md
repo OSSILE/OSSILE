@@ -1,6 +1,8 @@
 ##Synopsis
 A number of sample programs supplied by Carsten Flensburg which demonstrate how to use various API's. These are all code
-samples originally posted to iProdeveloper as part of the Using API's articles. 
+samples originally posted to iProdeveloper as part of the Using API's articles. Some of the samples are a collection of commands
+and programs which require a special build file for them to be created, the setup script will call the cbx---m.clp if found in the 
+directory.
 
 ##Purpose
 Provide a number of code examples which can be used as utilities on IBM i. The code demonstrates the use of a number of API's.
@@ -8,6 +10,9 @@ Provide a number of code examples which can be used as utilities on IBM i. The c
 ## Utilities
 * 100 - Sample of QDBRTVFD
 * ... - More utilities/samples
+* 976 - RTVJOBITPS,CHGJOBITPS Retrieve/Change Job Interrupt Status
+* 977 - WRKJOBS Work with Jobs
+* 978 - RTVCMDINF Retrieve Command Information
 * 979 - Query Govenor Exit program. Note: Requires CBX980 Service Program.
 * 980 - CBX980 Service program used in xxxUSRQRYA command processing programs.
 * 982 - Work with User Query Attributes. Note: requires Service Program CBX980 to be built.

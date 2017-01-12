@@ -32,7 +32,7 @@
      MonMsg      CPF0000    *N        GoTo Error
 
 
-     CrtRpgMod  &UtlLib/CBX979 SrcFile( &UtlLib/CBX980 SrcMbr( *Module ) DbgView( *None )
+     CrtRpgMod  &UtlLib/CBX979 SrcFile( OSSILESRC/CBX979) SrcMbr( *Module ) DbgView( *None )
 
      CrtPgm     Pgm( CBX979 ) Module( CBX979 ) BndSrvPgm( &UtlLib/CBX980 ) AlwUpd( *YES ) +
                   AlwLibUpd( *YES ) ActGrp( *CALLER ) Aut( *USE )

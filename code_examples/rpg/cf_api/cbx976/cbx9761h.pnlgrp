@@ -1,0 +1,55 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX9761H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:IMPORT  NAME='*'       PNLGRP=QHWCCMD1.
+ 
+:HELP NAME='CHGJOBITPS'.
+Change Job Interrupt Status - Help
+:P.
+The Change Job Interrupt Status (CHGJOBITPS) command will retrieve and
+optionally modify the job interrupt status of the current job.
+:P.
+For a job to be interrupted, the system must allow jobs to be
+interrupted.  The Allow jobs to be interrupted (QALWJOBITP)
+:LINK PERFORM='DSPHELP DSPSYSVAL/SYSVAL'.
+system value
+:ELINK.
+determines if the system will allow jobs to be interrupted.  For all
+new jobs becoming active, the QALWJOBITP system value is used to
+determine the initial value for the job interrupt status for that job.
+:P.
+If the job is currently uninterruptible, any command called by the Run
+Job Command (RUNJOBCMD), will not be able to run in this job.
+:EHELP.
+ 
+:HELP NAME='CHGJOBITPS/ITPSTS'.
+Interrupt status (ITPSTS) - Help
+ 
+:XH3.Interrupt status (ITPSTS)
+:P.
+Specifies the new job interrupt status.
+:PARML.
+:PT.:PK DEF.*CHECK:EPK.
+:PD.
+The current job interrupt status is retrieved and returned in an
+informational message.  The job interrupt status is not modified.
+:PT.:PK.*DLWITP:EPK.
+:PD.
+The current job interrupt status will be set to uninterruptible and
+any attempt to interrupt the job will be disallowed.
+:PT.:PK.*ALWITP:EPK.
+:PD.
+The current job interrupt status will be set to interruptible and
+attempts to interrupt the job will be allowed.
+:EPARML.
+:EHELP.
+ 
+:EPNLGRP.

@@ -1,0 +1,706 @@
+.*-----------------------------------------------------------------------**
+.*
+.*  Compile options:
+.*
+.*    CrtPnlGrp PnlGrp( CBX978H )
+.*              SrcFile( QPNLSRC )
+.*              SrcMbr( *PNLGRP )
+.*
+.*-----------------------------------------------------------------------**
+:PNLGRP.
+ 
+:HELP NAME='RTVCMDINF'.
+Retrieve Command Information - Help
+:P.
+The Retrieve Command Information (RTVCMDINF) command retrieves
+information for the specified command and returns this information
+in CL variables.
+:P.
+For the parameters that are returned into CL variables by this command,
+the parameter descriptive title/prompt text lists the minimum length
+for the CL variable.  For character variables, a single number is
+shown.  For decimal variables, two numbers are shown.  The first number
+indicates the minimum variable length and the second number indicates
+the minimum number of decimal positions.
+:P.
+:HP2.Restrictions::EHP2.
+:OL.
+:LI.
+You must have execute (*EXECUTE) authority for the library.
+:LI.
+You must have some authority other than *EXCLUDE authority for the
+command.
+:EOL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/CMD'.
+Command (CMD) - Help
+ 
+:XH3.Command (CMD)
+:P.
+Specifies the command whose information is to be retrieved.
+:P.
+This is a required parameter.
+:P.
+:HP2.Qualifier 1: Command:EHP2.
+:PARML.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of the command.
+:EPARML.
+:P.
+:HP2.Qualifier 2: Library:EHP2.
+:PARML.
+:PT.:PK DEF.*LIBL:EPK.
+:PD.
+All libraries in the library list for the current thread are searched
+until the first match is found.
+:PT.:PK.*CURLIB:EPK.
+:PD.
+The current library for the job is used to locate the command.  If no
+library is specified as the current library for the job, QGPL is used.
+:PT.:PV.name:EPV.
+:PD.
+Specify the name of the library that contains the command.
+:EPARML.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/RTNLIB'.
+CL var for RTNLIB       (10) (RTNLIB) - Help
+ 
+:XH3.CL var for RTNLIB       (10) (RTNLIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library where the command resides.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PGM'.
+CL var for PGM          (10) (PGM) - Help
+ 
+:XH3.CL var for PGM          (10) (PGM)
+:P.
+Specifies the name of the CL variable that receives the name of the
+command processing program.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PGMLIB'.
+CL var for PGMLIB       (10) (PGMLIB) - Help
+:XH3.CL var for PGMLIB       (10) (PGMLIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library where the command processing program resides.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/SRCFIL'.
+CL var for SRCFIL       (10) (SRCFIL) - Help
+ 
+:XH3.CL var for SRCFIL       (10) (SRCFIL)
+:P.
+Specifies the name of the CL variable that receives the name of the
+source file that contains the source file member used to create the
+command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/SRCLIB'.
+CL var for SRCLIB       (10) (SRCLIB) - Help
+ 
+:XH3.CL var for SRCLIB       (10) (SRCLIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library in which the source file resides.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/SRCMBR'.
+CL var for SRCMBR       (10) (SRCMBR) - Help
+:XH3.CL var for SRCMBR       (10) (SRCMBR)
+:P.
+Specifies the name of the CL variable that receives the name of the
+source file member that contains the command definition statements used
+to create the command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/VLDCKR'.
+CL var for VLDCKR       (10) (VLDCKR) - Help
+ 
+:XH3.CL var for VLDCKR       (10) (VLDCKR)
+:P.
+Specifies the name of the CL variable that receives the name of the
+program that performs additional user-defined validity checking on the
+parameters in the command.
+:P.
+If *NONE is returned, no separate user-defined validity checking is
+done for this command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/VLDCKRLIB'.
+CL var for VLDCKRLIB    (10) (VLDCKRLIB) - Help
+ 
+:XH3.CL var for VLDCKRLIB    (10) (VLDCKRLIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library in which the validity check program resides.
+:P.
+Blanks will be returned, if *NONE was specified for the :HP2.VLDCKR:EHP2.
+parameter.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/MODE'.
+CL var for MODE        (100) (MODE) - Help
+ 
+:XH3.CL var for MODE        (100) (MODE)
+:P.
+Specifies the name of the CL variable that receives the list of modes
+of operating environments to which the command applies.
+:P.
+The variable must be a character variable with a minimum length of 100
+characters.
+:P.
+The format returned is a list of up to 10 entries.  Each entry is 10
+characters in length and each entry contains a mode value.  If there
+are fewer than 10 mode values in the list, the remaining entries are
+padded on the right with blanks.
+:P.
+Possible return values:
+:DL.
+:DT.*PROD   :DD.Production mode
+:DT.*DEBUG  :DD.Debug mode
+:DT.*SERVICE:DD.Service mode
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/ALLOW'.
+CL var for ALLOW       (150) (ALLOW) - Help
+ 
+:XH3.CL var for ALLOW       (150) (ALLOW)
+:P.
+Specifies the name of the CL variable that receives the list of
+the environments in which this command is allowed to run.
+:P.
+The variable must be a character variable with a minimum length of 150
+characters.
+:P.
+The format returned is a list of up to 15 entries.  Each entry is 10
+characters in length and each entry contains a mode value.  If there
+are fewer than 15 mode values in the list, the remaining entries are
+padded on the right with blanks.
+:P.
+Possible return values:
+:DL.
+:DT.*BPGM    :DD.Batch program
+:DT.*IPGM    :DD.Interactive program
+:DT.*EXEC    :DD.Can be run using QCMDEXC, QCAEXEC, or QCAPCMD API
+:DT.*INTERACT:DD.Interactive job
+:DT.*BATCH   :DD.Batch job
+:DT.*BREXX   :DD.Batch REXX procedure
+:DT.*IREXX   :DD.Interactive REXX procedure
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/ALWLMTUSR'.
+CL var for ALWLMTUSR     (1) (ALWLMTUSR) - Help
+ 
+:XH3.CL var for ALWLMTUSR     (1) (ALWLMTUSR)
+:P.
+Specifies the name of the CL variable that receives the indicator
+defining whether or not a user with limited authorities is allowed to
+run the specified command.
+:P.
+The variable must be a character variable with a minimum length of 1
+character.
+:P.
+Possible return values:
+:DL.
+:DT.'0':DD.*NO
+:DT.'1':DD.*YES
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/MAXPOS'.
+CL var for MAXPOS     (10 0) (MAXPOS) - Help
+ 
+:XH3.CL var for MAXPOS     (10 0) (MAXPOS)
+:P.
+Specifies the name of the CL variable that receives the maximum number
+of parameters than can be coded in a positional manner for the
+specified command.
+:P.
+The variable must be a decimal variable with a size of 10 digits and
+0 decimals (10 0).
+:P.
+Possible return values:
+:DL.
+:DT.-1  :DD.No maximum positional coding limit was specified for this
+command.  This value equals the *NOMAX special value.
+:DT.1-75:DD.The maximum number of parameters in the range of 1 to 75
+parameters that can be coded in a positional manner for this command.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PMTFILE'.
+CL var for PMTFILE      (10) (PMTFILE) - Help
+ 
+:XH3.CL var for PMTFILE      (10) (PMTFILE)
+:P.
+Specifies the name of the CL variable that receives the name of the
+message file that contains the prompt text for this command.
+:P.
+If *NONE is returned, no message file was specified for prompt text
+for this command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PMTFILELIB'.
+CL var for PMTFILELIB   (10) (PMTFILELIB) - Help
+ 
+:XH3.CL var for PMTFILELIB   (10) (PMTFILELIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library in which the prompt message file resides.
+:P.
+Blanks will be returned, if *NONE was specified for the :HP2.PMTFILE:EHP2.
+parameter.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/MSGF'.
+CL var for MSGF         (10) (MSGF) - Help
+ 
+:XH3.CL var for MSGF         (10) (MSGF)
+:P.
+Specifies the name of the CL variable that receives the name of the
+message file from which messages identified on the DEP statements used
+to define the command are retrieved.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/MSGFLIB'.
+CL var for MSGFLIB      (10) (MSGFLIB) - Help
+ 
+:XH3.CL var for MSGFLIB      (10) (MSGFLIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library in which the message file resides.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/HLPPNLGRP'.
+CL var for HLPPNLGRP    (10) (HLPPNLGRP) - Help
+ 
+:XH3.CL var for HLPPNLGRP    (10) (HLPPNLGRP)
+:P.
+Specifies the name of the CL variable that receives the name of the
+panel group in which the online help information exists for this
+command.
+:P.
+If *NONE is returned, no help panel group is defined for this command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/HLPPNLGRPL'.
+CL var for HLPPNLGRPL   (10) (HLPPNLGRPL) - Help
+ 
+:XH3.CL var for HLPPNLGRPL   (10) (HLPPNLGRPL)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library in which the panel group resides.des.
+:P.
+Blanks will be returned, if *NONE was specified for the :HP2.HLPPNLGRP:EHP2.
+parameter.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/HLPID'.
+CL var for HLPID        (10) (HLPID) - Help
+ 
+:XH3.CL var for HLPID        (10) (HLPID)
+:P.
+Specifies the name of the CL variable that receives the name of the
+general help module for the names of the help identifiers for this
+command.
+:P.
+Possible return values:
+:DL.
+:DT.*NONE       :DD.No help identifier is specified.
+:DT.*CMD        :DD.The name of the command is used.
+:DT.help-ID-name:DD.A user-specified help module was used.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/HLPSCHIDX'.
+CL var for HLPSCHIDX    (10) (HLPSCHIDX) - Help
+ 
+:XH3.CL var for HLPSCHIDX    (10) (HLPSCHIDX)
+:P.
+Specifies the name of the CL variable that receives the name of the
+search index for this command.
+:P.
+If *NONE is returned, No help search index is specified for this
+command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/HLPSCHIDXL'.
+CL var for HLPSCHIDXL   (10) (HLPSCHIDXL) - Help
+ 
+:XH3.CL var for HLPSCHIDXL   (10) (HLPSCHIDXL)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library in which the help search index resides.
+:P.
+Blanks will be returned, if *NONE was specified for the :HP2.HLPSCHIDX:EHP2.
+parameter.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/CURLIB'.
+CL var for CURLIB       (10) (CURLIB) - Help
+ 
+:XH3.CL var for CURLIB       (10) (CURLIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library used as the current library during the processing of this
+command.
+:P.
+Possible return values:
+:DL.
+:DT.*NOCHG      :DD.The current library does not change for the
+processing of this command.  If the current library is changed during
+processing of the command, the change remains in effect after command
+command processing is complete.
+:DT.*CRTDFT     :DD.No current library is active during processing of
+the command. The current library that was active before command
+processing began is restored when processing is completed.
+:DT.command-name:DD.The name of the library that is used as the current
+library. When command processing is completed, the current library is
+restored to its previous value.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PRDLIB'.
+CL var for PRDLIB       (10) (PRDLIB) - Help
+ 
+:XH3.CL var for PRDLIB       (10) (PRDLIB)
+:P.
+Specifies the name of the CL variable that receives the name of the
+product library that is in effect during the processing of this
+command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:P.
+Possible return values:
+:DL.
+:DT.*NOCHG      :DD.The product library does not change for the
+processing of this command.
+:DT.*CRTDFT     :DD.There is no product library in the job's library
+list.
+:DT.command-name:DD.The name of the library that is used as the product
+library during the processing of the command.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PMTOVRPGM'.
+CL var for PMTOVRPGM    (10) (PMTOVRPGM) - Help
+ 
+:XH3.CL var for PMTOVRPGM    (10) (PMTOVRPGM)
+:P.
+Specifies the name of the CL variable that receives the name of the
+prompt override program that replaces default values (on the prompt
+display) with the current actual values for the parameter.
+:P.
+If *NONE is returned, no prompt override program was specified for this
+command.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PMTOVRPGML'.
+CL var for PMTOVRPGML   (10) (PMTOVRPGML) - Help
+ 
+:XH3.CL var for PMTOVRPGML   (10) (PMTOVRPGML)
+:P.
+Specifies the name of the CL variable that receives the name of the
+library in which the prompt override program resides.
+:P.
+Blanks will be returned, if *NONE was specified for the :HP2.PMTOVRPGM:EHP2.
+parameter.
+:P.
+The variable must be a character variable with a minimum length of 10
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/TGTRLS'.
+CL var for TGTRLS        (6) (TGTRLS) - Help
+ 
+:XH3.CL var for TGTRLS        (6) (TGTRLS)
+:P.
+Specifies the name of the CL variable that receives the version,
+release, and modification level to which this command is restricted.
+:P.
+If this field is blank, the command can be used in the current release.
+This applies only to a command used in a CL program.  It must match the
+contents of the target release parameter on the Create CL Program
+(CRTCLPGM) command. See the CRTCLPGM command for more information.
+:P.
+The variable must be a character variable with a minimum length of 6
+characters.
+:P.
+This field has the format VvRrMm, where:
+:DL.
+:DT.Vv:DD.The character V is followed by a 1-character version number.
+:DT.Rr:DD.The character R is followed by a 1-character release level.
+:DT.Mm:DD.The character M is followed by a 1-character modification
+level.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/TEXT'.
+CL var for TEXT         (50) (TEXT) - Help
+ 
+:XH3.CL var for TEXT         (50) (TEXT)
+:P.
+Specifies the name of the CL variable that receives the text, if any,
+used to briefly describe the command and its function.
+:P.
+The variable must be a character variable with a minimum length of 50
+characters.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/CPPSTATE'.
+CL var for CPPSTATE      (2) (CPPSTATE) - Help
+ 
+:XH3.CL var for CPPSTATE      (2) (CPPSTATE)
+:P.
+Specifies the name of the CL variable that receives the state value
+identifying the state the command processing program is called from.
+:P.
+The variable must be a character variable with a minimum length of 2
+characters.
+:P.
+Possible return values:
+:DL.
+:DT.*S:DD.The command processing program is called from system state.
+:DT.*U:DD.The command processing program is called from user state.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/VCPSTATE'.
+CL var for VCPSTATE      (2) (VCPSTATE) - Help
+ 
+:XH3.CL var for VCPSTATE      (2) (VCPSTATE)
+:P.
+Specifies the name of the CL variable that receives the state value
+identifying the state the validity check program is called from.
+:P.
+The variable must be a character variable with a minimum length of 2
+characters.
+:P.
+Possible return values:
+:DL.
+:DT.*S:DD.The validity check program is called from system state.
+:DT.*U:DD.The validity check program is called from user state.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/POPSTATE'.
+CL var for POPSTATE      (2) (POPSTATE) - Help
+ 
+:XH3.CL var for POPSTATE      (2) (POPSTATE)
+:P.
+Specifies the name of the CL variable that receives the state value
+identifying the state the prompt override program is called from.
+:P.
+The variable must be a character variable with a minimum length of 2
+characters.
+:P.
+Possible return values:
+:DL.
+:DT.*S:DD.The prompt override program is called from system state.
+:DT.*U:DD.The prompt overfide program is called from user state.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/CCSID'.
+CL var for CCSID       (5 0) (CCSID) - Help
+ 
+:XH3.CL var for CCSID       (5 0) (CCSID)
+:P.
+Specifies the value of the coded character set ID associated with this
+command.  It is the value of the job coded character set ID when this
+command was created.
+:P.
+The variable must be a decimal variable with a size of 5 digits and
+0 decimals (5 0).
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/ENBGUI'.
+CL var for ENBGUI        (1) (ENBGUI) - Help
+ 
+:XH3.CL var for ENBGUI        (1) (ENBGUI)
+:P.
+Specifies the name of the CL variable that receives the indicator
+defining whether the command prompt panels are enabled for conversion
+to a graphical user interface.
+:P.
+The variable must be a character variable with a minimum length of 1
+character.
+:P.
+Possible return values:
+:DL.
+:DT.'0':DD.The command prompt panels are not enabled for conversion to
+a graphical user interface.
+:DT.'1':DD.The command prompt panels are enabled for conversion to a
+graphical user interface by including information about the panel
+content in the 5250 data stream.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/THDSAFE'.
+CL var for THDSAFE       (1) (THDSAFE) - Help
+ 
+:XH3.CL var for THDSAFE       (1) (THDSAFE)
+:P.
+Specifies the name of the CL variable that receives the indicator
+defining whether the command can be used safely in a multithreaded job.
+:P.
+The variable must be a character variable with a minimum length of 1
+character.
+:P.
+Possible return values:
+:DL.
+:DT.'0':DD.The command is not threadsafe and should not be used in a
+in a multithreaded job.  The value for the multithreaded job action
+:HP2.(MLTTHDACN):EHP2. defines the action to be taken by the command
+analyzer when the command is used in a multithreaded job.
+:DT.'1':DD.The command is threadsafe and can be used safely in a
+multithreaded job.
+:DT.'2':DD.The command is threadsafe under certain conditions.  See the
+documentation for the command to determine the conditions under which
+the command can be used safely in a multithreaded job.
+:EDL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/MLTTHDACN'.
+CL var for MLTTHDACN     (1) (MLTTHDACN) - Help
+ 
+:XH3.CL var for MLTTHDACN     (1) (MLTTHDACN)
+:P.
+Specifies the name of the CL variable that receives the value defining
+the action to take when a command that is not threadsafe is called in a
+multithreaded job.
+:P.
+The variable must be a character variable with a minimum length of 1
+character.
+:P.
+Possible return values:
+:DL.
+:DT.'0':DD.Use the action specified in QMLTTHDACN system value.
+:DT.'1':DD.Run the command. Do not send a message.
+:DT.'2':DD.Send an informational message and run the command.
+:DT.'3':DD.Send an escape message, and do not run the command.
+:EDL.
+:P.
+If the threadsafe indicator is either threadsafe or conditionally
+threadsafe, the multithreaded job action value will be returned as 1.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/PXYIND'.
+CL var for PXYIND        (1) (PXYIND) - Help
+ 
+:XH3.CL var for PXYIND        (1) (PXYIND)
+:P.
+Specifies the name of the CL variable that receives the indicator
+defining whether the command processing program name and command
+processing program library name fields contain program or command
+information.
+:P.
+The variable must be a character variable with a minimum length of 1
+character.
+:P.
+Possible return values:
+:DL.
+:DT.'0':DD.The values specified for the command processing program and
+library refer to a program.
+:DT.'1':DD.The values specified for the command processing program and
+library refer to a proxy target command.
+:EDL.
+:P.
+When true, the only return parameters available are:
+:UL.
+:LI.Command library name :HP2.(RTNLIB):EHP2.
+:LI.Command processing program or proxy target command name
+:HP2.(PGM):EHP2.
+:LI.Command processing program or proxy target command library name
+:HP2.(PGMLIB):EHP2.
+:LI.Text description :HP2.(TEXT):EHP2.
+:EUL.
+:EHELP.
+ 
+:HELP NAME='RTVCMDINF/ERROR/MESSAGES'.
+&MSG(CPX0005,QCPFMSG). RTVCMDINF - Help
+ 
+:XH3.&MSG(CPX0005,QCPFMSG). RTVCMDINF
+:P.
+:HP3.*ESCAPE &MSG(CPX0006,QCPFMSG).:EHP3.
+:DL COMPACT.
+:DT.CPF9801
+:DD.&MSG(CPF9801,QCPFMSG,*LIBL,NOSUB).
+:DT.CPF9802
+:DD.&MSG(CPF9802,QCPFMSG,*LIBL,NOSUB).
+:DT.CPF9803
+:DD.&MSG(CPF9803,QCPFMSG,*LIBL,NOSUB).
+:DT.CPF9807
+:DD.&MSG(CPF9807,QCPFMSG,*LIBL,NOSUB).
+:DT.CPF9808
+:DD.&MSG(CPF9808,QCPFMSG,*LIBL,NOSUB).
+:DT.CPF9810
+:DD.&MSG(CPF9810,QCPFMSG,*LIBL,NOSUB).
+:DT.CPF9820
+:DD.&MSG(CPF9820,QCPFMSG,*LIBL,NOSUB).
+:DT.CPF9830
+:DD.&MSG(CPF9830,QCPFMSG,*LIBL,NOSUB).
+:EDL.
+:EHELP.
+ 
+:EPNLGRP.
