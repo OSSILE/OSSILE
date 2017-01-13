@@ -79,7 +79,7 @@ Welcome to the OSSILE project. This project is to serve three purposes:
 #### Method 1: download the .zip file and compile
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
 2. From a PASE-capable shell (ssh client, QP2term, etc), run:
-  * ``tar -xvf OSSILE-master.zip``
+  * ``jar -xvf OSSILE-master.zip``
   * ``cd OSSILE-master/main && chmod +x ./setup && ./setup``
 
     To exclude an item from building, remove it from buildlist.txt or comment it out with a preceding '#'
