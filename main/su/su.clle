@@ -1,0 +1,77 @@
+/*===============================================================================*/  
+/* Copyright (c) 2016 Volubis                                                    */
+/*                                                                               */
+/* Vous Ãªtes autorisÃ© Ã  :                                                        */
+/*                                                                               */
+/*    Partager â copier, distribuer et communiquer le matÃ©riel                   */
+/*                        par tous moyens et sous tous formats                   */
+/*    Adapter â remixer, transformer et crÃ©er Ã  partir du matÃ©riel               */ 
+/*===============================================================================*/  
+             PGM        PARM(&PRF)
+             DCL        VAR(&PRF) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&CURCOD) TYPE(*CHAR) LEN(12)
+             DCL        VAR(&PRFCOD) TYPE(*CHAR) LEN(12)
+             DCL        VAR(&MDPL) TYPE(*INT) VALUE(32)
+             DCL        VAR(&ERRCOD) TYPE(*CHAR) LEN(15) VALUE(X'00000000')
+             DCL        VAR(&CCSID) TYPE(*INT) VALUE(-1)
+
+
+             DCLF OSSILE/      FILE(SU_DSPF)
+             /* for messages MONITORING */
+             DCL        &ERRORSW *LGL /* SWITCH  */
+             DCL        &MSGID *CHAR LEN(7) /* ID MSG  */
+             DCL        &MSGDTA *CHAR LEN(100) /* DATA    */
+             DCL        &MSGF *CHAR LEN(10) /* FILE */
+             DCL        &MSGFLIB *CHAR LEN(10) /* LIBRARY  */
+             /*   */
+             MONMSG     MSGID(CPF0000) EXEC(GOTO ERR)
+
+
+             SNDRCVF    RCDFMT(FMT)
+             IF         &IN03 DO
+                SNDPGMMSG  MSG('Commande SU canceled') MSGTYPE(*COMP)
+                RETURN
+             ENDDO
+
+
+ /* VALIDATING CURRENT PROFILE */
+             CALL       QSYGETPH  PARM('*CURRENT' ' ' &CURCOD)
+ /* VALIDATING NEW PROFILE */
+             CALL       QSYGETPH  PARM(&PRF &PWD &PRFCOD &ERRCOD &MDPL &CCSID)
+
+
+ /* SWAPPING  */
+             CALL       QWTSETP  PARM(&PRFCOD)
+             CALL       QUSCMDLN
+
+
+ /* BACK TO ORIGINAL PROFILE */
+             CALL       QWTSETP  PARM(&CURCOD)
+/* CANCELING PREVIOUS VALIDATIONS */
+             CALL       QSYRLSPH  PARM(&PRFCOD)
+             CALL       QSYRLSPH  PARM(&CURCOD)
+
+
+             RETURN
+
+
+              /*----------------------------------------*/
+ ERR:         /*        ERROR MONITORING                */
+              /*----------------------------------------*/
+
+             IF         &ERRORSW SNDPGMMSG MSGID(CPF9999) MSGF(QCPFMSG) MSGTYPE(*ESCAPE) /* 2nd TIME*/
+                                                         /* STOP PGM*/
+             CHGVAR     &ERRORSW '1' /* SWITCH     */
+
+
+ /* SENDING BACK *DIAG MESSAGES        */
+ DIAGMSG:    RCVMSG     MSGTYPE(*DIAG) MSGDTA(&MSGDTA) MSGID(&MSGID) MSGF(&MSGF) MSGFLIB(&MSGFLIB)
+             IF         (&MSGID *EQ '       ') GOTO EXCPMSG
+             SNDPGMMSG  MSGID(&MSGID) MSGF(&MSGFLIB/&MSGF) MSGDTA(&MSGDTA) MSGTYPE(*DIAG)
+             GOTO       DIAGMSG /* BOUCLE SUR MESSAGES *DIAG      */
+
+
+ /* FINALY SENDING BACK ERROR MESSAGE   */
+ EXCPMSG:    RCVMSG     MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID) MSGF(&MSGF) MSGFLIB(&MSGFLIB)
+             SNDPGMMSG  MSGID(&MSGID) MSGF(&MSGFLIB/&MSGF) MSGDTA(&MSGDTA) MSGTYPE(*ESCAPE)
+             ENDPGM
