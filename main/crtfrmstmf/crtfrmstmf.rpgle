@@ -122,8 +122,9 @@ DCL-DS CommandsDS;
     *n CHAR(10) INZ('CRTPF');
 	*n CHAR(10) INZ('CRTMNU');
     *n CHAR(10) INZ('CRTPNLGRP');
+    *n CHAR(10) INZ('CRTQMQRY');
     *n CHAR(10) INZ('CRTSRVPGM');
-    Commands CHAR(10) DIM(10) POS(1);
+    Commands CHAR(10) DIM(11) POS(1);
 END-DS;
 
 DCL-DS ObjTypesDS;
@@ -136,8 +137,9 @@ DCL-DS ObjTypesDS;
     *n CHAR(10) INZ('FILE');
 	*n CHAR(10) INZ('MENU');
     *n CHAR(10) INZ('PNLGRP');
+    *n CHAR(10) INZ('QMQRY');
     *n CHAR(10) INZ('SRVPGM');
-    ObjTypes CHAR(10) DIM(10) POS(1);
+    ObjTypes CHAR(10) DIM(11) POS(1);
 END-DS;
 
 
