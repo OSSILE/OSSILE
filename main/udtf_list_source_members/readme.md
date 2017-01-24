@@ -2,11 +2,13 @@
 
 A SQL user defined table function to list all or somes source members in a source file.
 
-### What is this repository for? ###
+### What is this UDTF do ? ###
 
-* This SQL function will return a list af the source members in a source file.
+* This SQL function will return a list of source members in a source file
 
-* The following attributes are returned:
+* You can use *LIBL for the library and an OVRDBF commande before.
+
+* The following attributes will be returned:
     + Member name
     + Source type
     + creation date
@@ -15,18 +17,19 @@ A SQL user defined table function to list all or somes source members in a sourc
 
 ### How do I get set up? ###
 
-* Clone this git repository to a local directory in the IFS, e.g. in your home directory.
-* Compile the source using the following CL commands (objects will be placed in the OSSILE library):
+For build and setup instructions, refer to the [README.md](../../README.md) for the OSSILE project.
 
-```
+### Usage examples ###
 
-CRTBNDRPG CRTBNDRPG PGM(OSSILE/LISTMEMBER) SRCSTMF('listmember.rpgle') TEXT('List source file members')
-RUNSQLSTM SRCSTMF('udtf_source_members_Info.sql') DFTRDBCOL(OSSILE)
+* Call the SQL function like the following (you can use OVRDBF before)
 
-```
-* Call the SQL function like the following
-```
-SELECT * FROM table(list_source_members('MYLIB' , 'QRPGLESRC', 'UDTF*'))
-```
-SELECT * FROM table(list_source_members('MYLIB' , 'QRPGLESRC'))
-```
+        select * from table(OSSILE.list_source_members('QGPL', 'QCLSRC' , 'CL*') ) as s
+
+    or without a member name (*ALL) :
+
+        select * from table(OSSILE.list-source_membres('QGPL' , QCLSRC') ) as s
+
+    or with only a file name (*LIBL) :
+
+        select * from table(OSSILE.lis_source_members('QCLSRC') ) as s
+

@@ -1,0 +1,86 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+
+SRCLIB = OSSZLIBSRC
+OLIB = OSSZLIB
+OUTPUT = *PRINT
+SYSIFCOPT = *IFS64IO
+D1 = AS400
+D2 = HAVE_MEMCPY
+D3 = unix
+D4 = OS400
+D5 = NODOBANNER
+D6 = FPRINT2SNDMSG
+D7 = CASESENSITIVITYDEFAULT_NO
+  
+# build the source files
+SRC_FILES = (H QCLSRC QCMDSRC QCSRC QREXSRC QUIMSRC)
+for FILE in $SRC_FILES
+   do
+      system -kpieb "CRTSRCPF FILE($SRCLIB/$FILE) RCDLEN(150)"
+done
+# copy the header files into the H source file
+HDR_FILES = (crc32 crypt deflate inffast inffixed inflate inftrees ioapi trees unzip zconf zconf.in zip zlib zutil)
+for HDR in $HDR_FILES
+   do
+      system -kpieb "ADDPFM FILE($SRCLIB/H) MBR($HDR)"
+      system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/h/$HDR.h') TOMBR('/QSYS.LIB/$SRCLIB.LIB/H.FILE/$HDR.MBR')"
+done
+# copy the CL Source files and build the programs
+CL_FILES = (dspzipclp unzipclp zipclp)
+for CLP in $CLP_FILES
+   do
+      system -kpieb "ADDPFM FILE($SRCLIB/QCLSRC) MBR($CLP)"
+      system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/qclsrc/$CLP.clle') TOMBR('/QSYS.LIB/$SRCLIB.LIB/QCLSRC.FILE/$CLP.MBR')"
+      system -kpieb "CRTCLMOD MODULE($SRCLIB/$CLP) SRCFILE($SRCLIB/QCLSRC)"
+      system -kpieb "CRTPGM PGM($OLIB/$CLP) MODULE($OLIB/$CLP)" 
+done
+# copy the CMD Source files and build the commands
+CMD_FILES = (dspzip unzip zip)
+for CMD in $CMD_FILES
+   do
+      system -kpieb "ADDPFM FILE($SRCLIB/QCMDLSRC) MBR($CMD)"
+      system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/qcmdsrc/$CMD.cmd') TOMBR('/QSYS.LIB/$SRCLIB.LIB/QCMDSRC.FILE/$CMD.MBR')"
+      system -kpieb "CRTCMD CMD($OLIB/$CMD) PGM($CMD) SRCFILE(&SRCLIB/QCMDSRC) SRCMBR($CMD)"
+done
+# copy the C Source files
+C_FILES = (adler32 compress crc32 deflate ebcdic example gzio infback inffast inflate inftrees ioapi miniunz minizip trees uncompr unzip zip zutil)
+for C in $C_FILES
+   do
+      system -kpieb "ADDPFM FILE($SRCLIB/QCSRC) MBR($C)"
+      system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/qcsrc/$C.c') TOMBR('/QSYS.LIB/$SRCLIB.LIB/QCSRC.FILE/$C.MBR')"
+done
+# copy the rexx files
+system -kpieb "ADDPFM     FILE(&INTOLIB/QREXSRC) MBR(MAKE) SRCTYPE(REXX)"
+system -kpieb "CPYFRMSTMF FROMSTMF('&DIR/qrexsrc/make.rexx') TOMBR('/QSYS.LIB/&INTOLIB.LIB/QREXSRC.FILE/MAKE.MBR')"
+# copy the uim files for the command help and build the panel groups
+UIM_FILES = (dspziphlp unziphlp ziphlp)
+for UIM in $UIM_FILES
+   do
+      system -kpieb "ADDPFM FILE($SRCLIB/QUIMSRC) MBR($UIM)"
+      system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/quimsrc/$UIM.pnlgrp') TOMBR('/QSYS.LIB/$SRCLIB.LIB/QUIMSRC.FILE/$UIM.MBR')"
+      system -kpieb "CRTPNLGRP PNLGRP($UIM) SRCFILE($SRCLIB/QUIMSRC)"
+done    
+# now build the service program
+# zlib modules 
+MO = (adler32 compress crc32 deflate gzio infback inffast inflate inftrees ioapi trees uncompr zutil)
+# create the modules
+for M in $MO
+   do
+      system -kpieb "CRTCMOD MODULE($SRCLIB/$M) SRCFILE($SRCLIB/QCSRC) OUTPUT($OUTPUT) DEFINE($D1 $D2 $D4) SYSIFCOPT($SYSIFCOPT)"
+done
+system -kpieb "CRTSRVPGM SRVPGM($OLIB/ZLIB) MODULE($SRCLIB/${MO[0]} $SRCLIB/${MO[1]} $SRCLIB/${MO[2]} $SRCLIB/${MO[3]} $SRCLIB/${MO[4]} $SRCLIB/${MO[5]} $SRCLIB/${MO[6]} $SRCLIB/${MO[7]} $SRCLIB/${MO[8]} $SRCLIB/${MO[9]} $SRCLIB/${MO[10]} $SRCLIB/${MO[11]} $SRCLIB/${MO[12]}) EXPORT(*ALL)"  
+# now build the C programs
+# minizip 
+MN = (miniunz minizip zip unzip ebcdic)
+for N in $MN
+   do
+      system -kpieb "CRTCMOD MODULE($SRCLIB/$N400) SRCFILE($SRCLIB/QCSRC) SRCMBR($N) OUTPUT($OUTPUT) OPTIMIZE($OPTIMIZE) DEFINE($D1 $D3 $D5 $D6 $D7) SYSIFCOPT($SYSIFCOPT)" 
+done
+system -kpieb "CRTPGM PGM($OLIB/MINIUNZ400) MODULE($SRCLIB/MINIUNZ400 $SRCLIB/UNZIP400 $SRCLIB/EBCDIC400) BNDSRVPGM($OLIB/ZLIB)"
+# clean up the files??
+system -kpieb "DLTF FILE($SRCLIB/H)"
+system -kpieb "DLTF FILE($SRCLIB/QCSRC)"
+system -kpieb "DLTF FILE($SRCLIB/QCMDSRC)"
+system -kpieb "DLTF FILE($SRCLIB/QREXSRC)"
+system -kpieb "DLTF FILE($SRCLIB/QCLSRC)"

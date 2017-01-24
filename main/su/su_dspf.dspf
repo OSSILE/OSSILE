@@ -1,0 +1,8 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R NOTUSED                   ASSUME
+     A                                  1  2' '
+     A          R FMT
+     A                                      CA03(03) CA12(03)
+     A                                      WINDOW(20 10 1 50 *NOMSGLIN)
+     A                                  1  1'Password .....'
+     A            PWD           32   I  1 17DSPATR(ND) LOWER

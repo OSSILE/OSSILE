@@ -1,0 +1,64 @@
+///
+// Testing structures and alignment
+//
+// This module provides a function which returns a pointer to a struct. It shows
+// how structures and pointers can be passed to RPG and how to handle the 
+// alignment of the members of the struct.
+//
+// See the IBM redbook "ILE C Language Reference" chapter 3 Declarations ->
+// Type Specifiers -> Compound Types -> Structures for more information.
+//
+// \author Mihael Schmidt
+// \date 2016-12-16
+///
+
+
+#include <stdlib.h>
+#include <strings.h>
+
+struct string {
+  char * value;
+  size_t length;
+};
+
+struct message {
+  int id;
+  char * value;
+  struct string parts[3];
+  int checksum;
+} message_t;
+
+
+struct message * testStructures();
+
+
+///
+// Returning a filled structure
+// 
+// The struct contains a value variable which contains the message. The entry of
+// the parts array points to a part of the message. The checksum only exists to
+// make sure that the alignment of members after the parts array is still ok. Its
+// value is the sum of the length of each part in the parts array.
+//
+// The caller of this function must free the memory used by the returned data
+// structure.
+//
+// \return pointer to message data structure
+///
+struct message * testStructures() {
+  struct message * msg = malloc(sizeof(message_t)); 
+  
+  msg->id = 101;
+  msg->value = "One Warrior Nation";
+  
+  msg->parts[0].value = msg->value;
+  msg->parts[0].length = 3;
+  msg->parts[1].value = msg->value + 4;
+  msg->parts[1].length = 7;
+  msg->parts[2].value = msg->value + 12;
+  msg->parts[2].length = 6;
+  
+  msg->checksum = msg->parts[0].length + msg->parts[1].length + msg->parts[2].length;
+  
+  return msg;
+}
