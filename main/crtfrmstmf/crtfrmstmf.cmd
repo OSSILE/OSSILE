@@ -8,7 +8,7 @@
              PARM       KWD(OBJ) TYPE(QUAL1) RSTD(*NO) MIN(1) MAX(1) PROMPT('Object')
 
              PARM       KWD(CMD) TYPE(*NAME) LEN(10) RSTD(*YES) VALUES(CRTCMD CRTBNDCL CRTCLMOD CRTDSPF CRTPRTF +
-                          CRTLF CRTPF CRTMNU CRTPNLGRP CRTSRVPGM) MIN(1) CHOICE(*VALUES) PROMPT('Compile command')
+                          CRTLF CRTPF CRTMNU CRTPNLGRP CRTQMQRY CRTSRVPGM) MIN(1) CHOICE(*VALUES) PROMPT('Compile command')
 
              PARM       KWD(SRCSTMF) TYPE(*PNAME) LEN(5000) MIN(1) VARY(*YES *INT2) CASE(*MIXED) PROMPT('Source +
                           stream file')

@@ -64,6 +64,9 @@ The CRTMNU compile command is executed.
 :pt.:pk.CRTPNLGRP:epk.
 :pd.
 The CRTPNLGRP compile command is executed.
+:pt.:pk.CRTQMQRY:epk.
+:pd.
+The CRTQMQRY compile command is executed.
 :pt.:pk.CRTSRVPGM:epk.
 :pd.
 The CRTSRVPGM compile command is executed.
