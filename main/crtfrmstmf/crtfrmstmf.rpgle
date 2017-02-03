@@ -111,7 +111,7 @@ DCL-DS PgmSts PSDS;
 END-DS;
 
 
-// Valid commands and the cooresponding object type
+// Valid commands and the corresponding object type
 DCL-DS CommandsDS;
     *n CHAR(10) INZ('CRTCMD');
     *n CHAR(10) INZ('CRTBNDCL');
@@ -124,7 +124,8 @@ DCL-DS CommandsDS;
     *n CHAR(10) INZ('CRTPNLGRP');
     *n CHAR(10) INZ('CRTQMQRY');
     *n CHAR(10) INZ('CRTSRVPGM');
-    Commands CHAR(10) DIM(11) POS(1);
+    *n CHAR(10) INZ('CRTWSCST');
+    Commands CHAR(10) DIM(12) POS(1);
 END-DS;
 
 DCL-DS ObjTypesDS;
@@ -139,7 +140,8 @@ DCL-DS ObjTypesDS;
     *n CHAR(10) INZ('PNLGRP');
     *n CHAR(10) INZ('QMQRY');
     *n CHAR(10) INZ('SRVPGM');
-    ObjTypes CHAR(10) DIM(11) POS(1);
+    *n CHAR(10) INZ('WSCST');
+    ObjTypes CHAR(10) DIM(12) POS(1);
 END-DS;
 
 
