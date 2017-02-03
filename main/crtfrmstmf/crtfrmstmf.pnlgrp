@@ -70,6 +70,9 @@ The CRTQMQRY compile command is executed.
 :pt.:pk.CRTSRVPGM:epk.
 :pd.
 The CRTSRVPGM compile command is executed.
+:pt.:pk.CRTWSCST:epk.
+:pd.
+The CRTWSCST compile command is executed.
 :eparml.
 :ehelp.
 
