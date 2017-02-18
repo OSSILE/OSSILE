@@ -1,148 +1,100 @@
-# Arraylist
+# Linked List
 
-An ArrayList is a one-dimensional array. In our case it is also a dynamic array
-which means that the size is not set at compile time but at runtime and it can 
-grow if required.
+Linked lists and arrays are similar since they both store collections of data. 
+The terminology is that arrays and linked lists store "elements" on behalf of 
+"client" code. 
 
-An array allocates memory for all its elements lumped together as one 
-block of memory. In this implementation only the pointer to the data is 
-stored in this one block of memory. In this way millions of entries can be 
-stored and accessed.
+An array allocates memory for all its elements lumped together as one block of 
+memory. In contrast, a linked list allocates space for each element separately 
+in its own block of memory called a _linked list element_ or _node_. The list 
+gets is overall structure by using pointers to connect all	its nodes together 
+like the links in a chain.
+
+A more sophisticated kind of linked list is a doubly-linked list or two-way 
+linked list. Each node has two links: one points to the previous node, or points
+to a null value or empty list if it is the first node, and one points to the 
+next, or points to a null value or empty list if it is the final node.
+
+For a more detailed description see [Wikipedia: Linked List](http://en.wikipedia.org/wiki/Linked_list) 
+or the [Stanford CS education library](http://cslibrary.stanford.edu/103/).
+
 
 ## Features
 
-The following features are available in the ArrayList service program
+The following features are available in the linked list service program
 (in no particular order):
 
-- Creating an ArrayList
-- Adding entries (beginning, end, by index)
-- Replacing entries
-- Removing entries (beginning, end, by index, range)
-- Creating a new ArrayList with a subset of another ArrayList
-- Clearing
-- Check fill status (empty or not empty)
-- Get entry (beginning, end, by index)
-- Check if the ArrayList contains an entry
+- Creating a linked list
+- Adding to the linked list (beginning, end, by index)
+- Adding all entries of another list
+- Replaceing entries of the list
+- Removing entries from the list (beginning, end, by index)
+- Creating a sublist
+- Rotating the list
+- Clear the list
+- Check size of the list
+- Check fill status of list (empty or not empty)
+- Get entry of the list (beginning, end, by index)
+- Check if the list contains an item
+- Iterate through the list (forward and backward)		
 - Get index of an entry
 - Get last index of an entry
 - Copy all entries to a character array
-- Swap entries
-- Execute a procedure on every entry
-- Reverse entry order
-- Create ArrayList from a character string
-- Copy
-- Count the frequency of an entry
+- Swap entries in the list
+- Execute a procedure on all entries of the list
+- Reverse list
+- Create a list from a character string
+- Create a copy of a list
+- Count the frequency of an entry in the list
 - Data type specific procedures for storing and getting values
+- Sort list
+- Merge two lists
 
-The ArrayList service program has no special procedures for iterating through
-all elements as in the Linked List service program because the access to any 
-entry in the ArrayList is constant and can be made with passing the index of 
-the desired	entry.
 
 ## Implementation
-			
-The ArrayList service program uses dynamic memory allocation via the 
-built-in functions. Because of that it is necessary to use the dispose 
-procedure after using the ArrayList for freeing up the allocated memory. 
-If the memory is not freed with the dispose procedure it will be released 
-with the ending of the activation group or job.
 
-The create() procedure of the ArrayList has two optional parameters:
+The implemented list is a doubly-linked list. Entries are stored in dynamically 
+allocated memory (allocated via %alloc). Because of that it is necessary to use 
+the dispose procedure after using the list for freeing up the allocated memory.
+If the memory is not freed with the dispose procedure it will be released with 
+the ending of the activation group or job.
 
-1. Init size: the initial size of the ArrayList (default: 10)
-2. Increment size: the space for the number of entries which will be added if there is no space left for a new entry (default: current size * 2)
+The code is written in RPG IV free format. It uses some C-functions for working
+with memory and strings and intensely uses pointers.
 
-Both parameters are optional and need not to be passed.
-
-The code is written in RPG IV /free format. It uses some C-functions
-for working with memory and strings and intensely uses pointers.
 
 ## Code sample
-
 ```
-// creating an arraylist
-arraylist = arraylist_create();
+// creating a list
+listPtr = list_create();
 
-// check if the arraylist is empty (it should be)
-if (arraylist_isEmpty(arraylist));
-  dsply 'ArrayList is empty';
+// check if the list is empty (it should be)
+if (list_isEmpty(listPtr));
+  dsply 'List is empty';
 else;
-  dsply 'ArrayList is not empty';
+  dsply 'List is not empty';
 endif;
 
-// add a string to the arraylist
-arraylist_addString(arraylist : 'This a test string.');
-
-// add a data structure to the arraylist
-arraylist_add(arraylist : %addr(my_data_structure) : 
-                          %size(my_data_structure));
-
-// add an integer to the arraylist
-arraylist_add(arraylist : %addr(my_int_var) : %size(my_int_var));
-
-// add an integer with the data type specific procedure
-arraylist_addInteger(arraylist : my_int_var);
-
-// create a new arraylist which is populated with 
-// a subset of data from the original arraylist
-subset = arraylist_sublist(arraylist : 2);
+// create a new list which is populated with 
+// a subset of data from the original list
+sublistPtr = list_sublist(listPtr : 2);
 
 // iterate through the entries of the list
-for i = 0 to arraylist_getSize(arraylist) - 1;
-  value = %str(arraylist_get(arraylist : i));
+valuePtr = list_iterate(sublistPtr);
+dow (valuePtr &lt;&gt; *null);
+  value = %str(valuePtr);
   dsply value;
-endfor;
+  valuePtr = list_iterate(sublistPtr);
+enddo;
 
 // freeing the allocated memory
-arraylist_dispose(arraylist);
+list_dispose(listPtr);
+</p>
 ```
 
-## Large ArrayList
-
-As this service program relies on allocating a large single block of 
-memory it can only hold some 100.000 entries. If the application needs to
-add some millions of entries then the service program and all calling programs
-must be compiled with teraspace support. Using compile options this is only
-available starting with OS release 7.1. See the compile and link/bind flags 
-in the Makefile (STGMDL). 
-
-### Storage Model
-
-The storage model parameter specifies how memory will be allocated
-(static and dynamic memory). The parameter accepts the values *SNGLVL, 
-*INHERIT, *TERASPACE. The values *SNGLVL and *TERASPACE should be clear.
-
-The value *INHERIT tells the operating system that the service program will
-use the storage model of the activation group it is executed in.
-
-> Only programs and  service programs with the same storage model can be 
-> executed in the same activation group. If the calling program is compiled
-> with STGMDL(*SNGLVL) and the service program with STGMDL(*TERASPACE) then
-> the service program must run in an activation group with the teraspace 
-> storage model.
-
-## Alternative Installation Instructions
-
-The service program comes as source files (stream files). The alternative installation script is a Makefile. The destination library and the
-destination folder for the copy book should be adjusted in the Makefile or 
-be passed as parameters. To create/install the service program just enter 
-QSH or PASE Shell and go to the directory where the sources/Makefile are 
-located. Then call "make".
-
-    make BIN_LIB=MSCHMIDT2 INCLUDE=/home/mschmidt/include
-
-## Requirements
-
-This software has no further dependencies. It comes with all necessary files.
-
-## Examples
-The _examples_ folder contains some examples of how to use the service program procedures.
 
 ## Documentation
-[API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/SCHMIDTM.LIB/QRPGLESRC.FILE/ARRAYLIST.MBR)
-of the ArrayList service program can be found at the open documentation
-library [ILEDocs at Sourceforge.net](http://iledocs.sourceforge.net).
 
-## License
-
-This service program is released under the MIT License.
+[API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LLIST.MBR)
+of the Linked List service program can be found at [ILEDocs](http://iledocs.sourceforge.net/docs/)
+on Sourceforge.net. The documentation is generated from the source code.
