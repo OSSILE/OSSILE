@@ -89,7 +89,6 @@ enddo;
 
 // freeing the allocated memory
 list_dispose(listPtr);
-</p>
 ```
 
 
