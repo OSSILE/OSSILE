@@ -1,0 +1,34 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+
+TARGET_LIB=OSSILE
+
+if [ -e /qsys.lib/$TARGET_LIB.lib/llist.file ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*FILE)"
+fi
+system -kpieb "CRTSRCPF FILE($TARGET_LIB/LLIST) RCDLEN(112)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/llist.bnd') TOMBR('/QSYS.LIB/$TARGET_LIB.LIB/LLIST.FILE/LLIST.MBR') MBROPT(*REPLACE)"
+
+if [ -e /qsys.lib/$TARGET_LIB.lib/llist.module ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*MODULE)"
+fi
+if [ -e /qsys.lib/$TARGET_LIB.lib/llist_sort.module ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST_SORT) OBJTYPE(*MODULE)"
+fi
+
+system -kpieb "CRTRPGMOD $TARGET_LIB/LLIST SRCSTMF('llist.rpgle') OPTION(*SRCSTMT) DBGVIEW(*LIST) OPTIMIZE(*BASIC) STGMDL(*INHERIT)"
+system -kpieb "CRTRPGMOD $TARGET_LIB/LLIST_SORT SRCSTMF('llist_sort.rpgle') OPTION(*SRCSTMT) DBGVIEW(*LIST) OPTIMIZE(*BASIC) STGMDL(*INHERIT)"
+
+if [ -e /qsys.lib/$TARGET_LIB.lib/llist.srvpgm ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*SRVPGM)"
+fi
+system -kpieb "CRTSRVPGM $TARGET_LIB/LLIST MODULE($TARGET_LIB/LLIST $TARGET_LIB/LLIST_SORT) STGMDL(*INHERIT) EXPORT(*SRCFILE) SRCFILE($TARGET_LIB/LLIST) TEXT('Linked List')"
+
+# cleanup
+system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*FILE)"
+system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*MODULE)"
+system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST_SORT) OBJTYPE(*MODULE)"
+
+if [ ! -e /qsys.lib/$TARGET_LIB.lib/llist.srvpgm ] ; then
+  exit 5
+fi

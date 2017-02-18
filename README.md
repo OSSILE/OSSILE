@@ -75,11 +75,22 @@ Welcome to the OSSILE project. This project is to serve three purposes:
       - [README](main/arraylist/README.md)
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/SCHMIDTM.LIB/QRPGLESRC.FILE/ARRAYLIST.MBR) at [ILEDocs at Sourceforge.net](http://iledocs.sourceforge.net)
 
- - SU, originally sourced from [bitbucket.org/cmasseVolubis/volubis](https://bitbucket.org/cmasseVolubis/volubis).
+  - SU, originally sourced from [bitbucket.org/cmasseVolubis/volubis](https://bitbucket.org/cmasseVolubis/volubis).
     Like Under Linux, become QSECOFR as needed
 
     Documentation:
       - [README](main/su/readme.md)
+
+  - Linked List, originally sourced from [RPG Next Gen](http://rpgnextgen.com).
+    An array allocates memory for all its elements lumped together as one block 
+    of memory. In contrast, a linked list allocates space for each element 
+    separately in its own block of memory called a linked list element or node. 
+    The list gets is overall structure by using pointers to connect all its 
+    nodes together like the links in a chain.
+    
+    Documentation:
+      - [README](main/linkedlist/README.md)
+      - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LLIST.MBR)
       
 # Installing OSSILE on your IBM i
 #### Method 1: download the .zip file and compile
