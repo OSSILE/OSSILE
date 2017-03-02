@@ -92,8 +92,20 @@ list_dispose(listPtr);
 ```
 
 
+## Linked List Utilities
+The linked list utilities service program shows how the linked list can be used
+to make returning a list of simple data easier than using a userspace.
+
+An example of how to use the service program can be found in the examples folder
+of the project.
+
+
 ## Documentation
 
 [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LLIST.MBR)
 of the Linked List service program can be found at [ILEDocs](http://iledocs.sourceforge.net/docs/)
+on Sourceforge.net. The documentation is generated from the source code.
+
+[API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LUTIL.MBR)
+of the Linked List Utilities service program can be found at [ILEDocs](http://iledocs.sourceforge.net/docs/)
 on Sourceforge.net. The documentation is generated from the source code.
