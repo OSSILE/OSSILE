@@ -1,4 +1,4 @@
-      /if not defined LIBC
+      /if not defined(LIBC)
       /define LIBC
 
       *-------------------------------------------------------------------------

@@ -1,8 +1,11 @@
 #!/QOpenSys/usr/bin/sh
 export PWD=$(pwd)
 
-TARGET_LIB=OSSILE
+TARGET_LIB=MSCHMIDT2
 
+#
+# Linked List Service Program
+#
 if [ -e /qsys.lib/$TARGET_LIB.lib/llist.file ] ; then
   system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*FILE)"
 fi
@@ -24,11 +27,49 @@ if [ -e /qsys.lib/$TARGET_LIB.lib/llist.srvpgm ] ; then
 fi
 system -kpieb "CRTSRVPGM $TARGET_LIB/LLIST MODULE($TARGET_LIB/LLIST $TARGET_LIB/LLIST_SORT) STGMDL(*INHERIT) EXPORT(*SRCFILE) SRCFILE($TARGET_LIB/LLIST) TEXT('Linked List')"
 
+
+#
+# Linked List Utilities Service Program
+#
+if [ -e /qsys.lib/$TARGET_LIB.lib/lutil.file ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/LUTIL) OBJTYPE(*FILE)"
+fi
+system -kpieb "CRTSRCPF FILE($TARGET_LIB/LUTIL) RCDLEN(112)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/lutil.bnd') TOMBR('/QSYS.LIB/$TARGET_LIB.LIB/LUTIL.FILE/LUTIL.MBR') MBROPT(*REPLACE)"
+
+if [ -e /qsys.lib/$TARGET_LIB.lib/LUTIL.MODULE ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/LUTIL) OBJTYPE(*MODULE)"
+fi
+if [ -e /qsys.lib/$TARGET_LIB.lib/PARMEVAL.MODULE ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/PARMEVAL) OBJTYPE(*MODULE)"
+fi
+
+system -kpieb "CRTRPGMOD $TARGET_LIB/PARMEVAL SRCSTMF('parmeval.rpgle') OPTION(*SRCSTMT) DBGVIEW(*LIST) OPTIMIZE(*BASIC) STGMDL(*INHERIT)"
+system -kpieb "CRTRPGMOD $TARGET_LIB/LUTIL SRCSTMF('lutil.rpgle') OPTION(*SRCSTMT) DBGVIEW(*LIST) OPTIMIZE(*BASIC) STGMDL(*INHERIT)"
+
+if [ -e /qsys.lib/$TARGET_LIB.lib/LUTIL.SRVPGM ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/LUTIL) OBJTYPE(*SRVPGM)"
+fi
+system -kpieb "CRTSRVPGM $TARGET_LIB/LUTIL MODULE($TARGET_LIB/LUTIL $TARGET_LIB/PARMEVAL) BNDSRVPGM($TARGET_LIB/LLIST) STGMDL(*INHERIT) EXPORT(*SRCFILE) SRCFILE($TARGET_LIB/LUTIL) TEXT('Linked List Utilities')"
+
+
+#
 # cleanup
+#
 system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*FILE)"
 system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST) OBJTYPE(*MODULE)"
 system -kpieb "DLTOBJ OBJ($TARGET_LIB/LLIST_SORT) OBJTYPE(*MODULE)"
+system -kpieb "DLTOBJ OBJ($TARGET_LIB/LUTIL) OBJTYPE(*FILE)"
+system -kpieb "DLTOBJ OBJ($TARGET_LIB/LUTIL) OBJTYPE(*MODULE)"
 
+
+#
+# check if everything has been created
+#
 if [ ! -e /qsys.lib/$TARGET_LIB.lib/llist.srvpgm ] ; then
+  exit 5
+fi
+
+if [ ! -e /qsys.lib/$TARGET_LIB.lib/lutil.srvpgm ] ; then
   exit 5
 fi

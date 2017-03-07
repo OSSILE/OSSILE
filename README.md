@@ -88,9 +88,13 @@ Welcome to the OSSILE project. This project is to serve three purposes:
     The list gets is overall structure by using pointers to connect all its 
     nodes together like the links in a chain.
     
+    The linked list utilities service program shows how to get data via a list
+    instead of using a userspace.
+    
     Documentation:
       - [README](main/linkedlist/README.md)
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LLIST.MBR)
+      - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LUTIL.MBR)
       
 # Installing OSSILE on your IBM i
 #### Method 1: download the .zip file and compile
