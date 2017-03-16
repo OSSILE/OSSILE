@@ -1,0 +1,13 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+
+TARGET_LIB=MSCHMIDT2
+
+if [ -e /QSYS.LIB/$TARGET_LIB.LIB/UPDUSRATTR.PGM ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/UPDUSRATTR) OBJTYPE(*PGM)"
+fi
+system -kpieb "CRTBNDRPG $TARGET_LIB/UPDUSRATTR SRCSTMF('updusrattr.rpgle') TEXT('Update User-Defined Attribute')"
+
+if [ ! -e /QSYS.LIB/$TARGET_LIB.LIB/UPDUSRATTR.PGM ] ; then
+  exit 5
+fi
