@@ -95,7 +95,21 @@ Welcome to the OSSILE project. This project is to serve three purposes:
       - [README](main/linkedlist/README.md)
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LLIST.MBR)
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LUTIL.MBR)
-      
+
+  - Update User-Defined Attribute
+    Tags a QSYS object with a value. The value is stored in the user-defined
+    attribute of the object.
+    
+    Documentation:
+      - [README](main/updusrattr/README.md)
+
+  - Message, originally sourced from [RPGUnit](http://rpgunit.sourceforge.net).
+    This service program provides wrappers for the OS message API QMHRCVPM, QMHRSNEM
+    and QMHSNDPM. It eases the handling of program and escape messages.
+    
+    Documentation:
+      - [README](main/message/README.md)
+
 # Installing OSSILE on your IBM i
 #### Method 1: download the .zip file and compile
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
