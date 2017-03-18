@@ -1,4 +1,4 @@
-##Synopsis
+## Synopsis
 The program will tag an object with the passed value. The value is stored
 in the user-defined attribute of the object.
 
@@ -8,8 +8,8 @@ in the user-defined attribute of the object.
 3. object type (f. e. *PGM)
 4. tag (max. 10 characters)
 
-##Contributors
+## Contributors
 Provided by Mihael Schmidt.
    
-##Copyright
+## Copyright
 Copyright (c) Mihael Schmidt 2017. Made available under the terms of the license of the containing project

@@ -1,7 +1,7 @@
 #!/QOpenSys/usr/bin/sh
 export PWD=$(pwd)
 
-TARGET_LIB=MSCHMIDT2
+TARGET_LIB=OSSILE
 
 if [ -e /QSYS.LIB/$TARGET_LIB.LIB/UPDUSRATTR.PGM ] ; then
   system -kpieb "DLTOBJ OBJ($TARGET_LIB/UPDUSRATTR) OBJTYPE(*PGM)"
