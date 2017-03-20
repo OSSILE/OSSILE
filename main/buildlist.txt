@@ -26,3 +26,5 @@ endalljob
 arraylist
 nstat
 linkedlist
+updusrattr
+message
