@@ -255,6 +255,7 @@
       *
      D arraylist_getString...
      D                 PR         65535A   extproc('arraylist_getString')
+     D                                     varying
      D   arraylist                     *   const
      D   index                       10U 0 const
       *
