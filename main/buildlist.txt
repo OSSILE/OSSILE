@@ -28,3 +28,4 @@ nstat
 linkedlist
 updusrattr
 message
+assert

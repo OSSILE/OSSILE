@@ -109,6 +109,14 @@ Welcome to the OSSILE project. This project is to serve three purposes:
     
     Documentation:
       - [README](main/message/README.md)
+  
+  - Assert,  originally sourced from [RPGUnit](http://rpgunit.sourceforge.net).
+    This service program provides procedures to make assertions and provides
+    information if an assertion fails.
+    
+    Documentation:
+      - [README](main/assert/README.md)
+
 
 # Installing OSSILE on your IBM i
 #### Method 1: download the .zip file and compile
