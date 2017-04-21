@@ -64,6 +64,26 @@ system -kpieb "DLTOBJ OBJ($TARGET_LIB/LUTIL) OBJTYPE(*MODULE)"
 
 
 #
+# copy copybook to OSSILE include directory if is is specified and does exit
+#
+if [[ $OSSILE_INCDIR != "" ]] ; then
+  if [[ ! -e $OSSILE_INCDIR ]] ; then
+    echo "include directory $OSSILE_INCDIR does not exist"
+  else
+    
+    if [ ! -e $OSSILE_INCDIR/linkedlist ] ; then
+      mkdir $OSSILE_INCDIR/linkedlist
+    fi
+    
+    cp $PWD/llist_h.rpgle $OSSILE_INCDIR/linkedlist/llist_h.rpgle
+    cp $PWD/llist_so_h.rpgle $OSSILE_INCDIR/linkedlist/llist_so_h.rpgle
+    cp $PWD/lutil_h.rpgle $OSSILE_INCDIR/linkedlist/lutil_h.rpgle
+    
+  fi
+fi
+
+
+#
 # check if everything has been created
 #
 if [ ! -e /qsys.lib/$TARGET_LIB.lib/llist.srvpgm ] ; then
