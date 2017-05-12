@@ -26,6 +26,14 @@ system -kpieb "DLTOBJ OBJ($TARGET_LIB/MESSAGE) OBJTYPE(*MODULE)"
 
 
 #
+# check if the service program has been created
+#
+if [ ! -e /QSYS.LIB/$TARGET_LIB.LIB/MESSAGE.SRVPGM ] ; then
+  exit 5
+fi
+
+
+#
 # copy copybook to OSSILE include directory if is is specified and does exit
 #
 if [[ $OSSILE_INCDIR != "" ]] ; then
@@ -40,12 +48,4 @@ if [[ $OSSILE_INCDIR != "" ]] ; then
     cp $PWD/message_h.rpgle $OSSILE_INCDIR/message/message_h.rpgle
     
   fi
-fi
-
- 
-#
-# check if the service program has been created
-#
-if [ ! -e /QSYS.LIB/$TARGET_LIB.LIB/MESSAGE.SRVPGM ] ; then
-  exit 5
 fi

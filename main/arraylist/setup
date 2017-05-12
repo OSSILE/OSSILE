@@ -21,9 +21,12 @@ system -kpieb "CRTSRVPGM OSSILE/ARRAYLIST MODULE(OSSILE/ARRAYLIST) STGMDL(*INHER
 system -kpieb "DLTOBJ OBJ(OSSILE/ARRAYLIST) OBJTYPE(*FILE)"
 system -kpieb "DLTOBJ OBJ(OSSILE/ARRAYLIST) OBJTYPE(*MODULE)"
 
-#
+# check if service program has been built successfully
+if [ ! -e /qsys.lib/ossile.lib/arraylist.srvpgm ] ; then
+  exit 5
+fi
+
 # copy copybook to OSSILE include directory if is is specified and does exit
-#
 if [[ $OSSILE_INCDIR != "" ]] ; then
   if [[ ! -e $OSSILE_INCDIR ]] ; then
     echo "include directory $OSSILE_INCDIR does not exist"
@@ -36,8 +39,4 @@ if [[ $OSSILE_INCDIR != "" ]] ; then
     cp $PWD/arraylist_h.rpgle $OSSILE_INCDIR/arraylist/arraylist_h.rpgle
     
   fi
-fi
-
-if [ ! -e /qsys.lib/ossile.lib/arraylist.srvpgm ] ; then
-  exit 5
 fi

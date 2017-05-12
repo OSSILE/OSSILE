@@ -64,6 +64,18 @@ system -kpieb "DLTOBJ OBJ($TARGET_LIB/LUTIL) OBJTYPE(*MODULE)"
 
 
 #
+# check if everything has been created
+#
+if [ ! -e /qsys.lib/$TARGET_LIB.lib/llist.srvpgm ] ; then
+  exit 5
+fi
+
+if [ ! -e /qsys.lib/$TARGET_LIB.lib/lutil.srvpgm ] ; then
+  exit 5
+fi
+
+
+#
 # copy copybook to OSSILE include directory if is is specified and does exit
 #
 if [[ $OSSILE_INCDIR != "" ]] ; then
@@ -80,16 +92,4 @@ if [[ $OSSILE_INCDIR != "" ]] ; then
     cp $PWD/lutil_h.rpgle $OSSILE_INCDIR/linkedlist/lutil_h.rpgle
     
   fi
-fi
-
-
-#
-# check if everything has been created
-#
-if [ ! -e /qsys.lib/$TARGET_LIB.lib/llist.srvpgm ] ; then
-  exit 5
-fi
-
-if [ ! -e /qsys.lib/$TARGET_LIB.lib/lutil.srvpgm ] ; then
-  exit 5
 fi

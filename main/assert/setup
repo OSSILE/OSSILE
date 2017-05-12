@@ -40,6 +40,14 @@ system -kpieb "DLTOBJ OBJ($TARGET_LIB/$MODULE) OBJTYPE(*FILE)"
 
 
 #
+# check if service program has been created
+#
+if [ ! -e /QSYS.LIB/$TARGET_LIB.LIB/$MODULE.SRVPGM ] ; then
+  exit 5
+fi
+
+
+#
 # copy copybook to OSSILE include directory if is is specified and does exit
 #
 if [[ $OSSILE_INCDIR != "" ]] ; then
@@ -54,11 +62,4 @@ if [[ $OSSILE_INCDIR != "" ]] ; then
     cp $PWD/assert_h.rpgle $OSSILE_INCDIR/assert/assert_h.rpgle
     
   fi
-fi
-
-#
-# check if service program has been created
-#
-if [ ! -e /QSYS.LIB/$TARGET_LIB.LIB/$MODULE.SRVPGM ] ; then
-  exit 5
 fi
