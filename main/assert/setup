@@ -1,0 +1,65 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+
+TARGET_LIB=MSCHMIDT2
+MODULE=ASSERT
+
+#
+# we need the OSSILE include directory for the message_h.rpgle copybook
+#
+if [[ $OSSILE_INCDIR == "" ]] ; then
+  exit 5
+fi
+
+
+#
+# compilation steps
+#
+if [ -e /QSYS.LIB/$TARGET_LIB.LIB/$MODULE.FILE ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/$MODULE) OBJTYPE(*FILE)"
+fi
+system -kpieb "CRTSRCPF FILE($TARGET_LIB/$MODULE) RCDLEN(112)"
+system -kpieb "CPYFRMSTMF FROMSTMF('$PWD/assert.bnd') TOMBR('/QSYS.LIB/$TARGET_LIB.LIB/$MODULE.FILE/$MODULE.MBR') MBROPT(*REPLACE)"
+
+if [ -e /QSYS.LIB/$TARGET_LIB.LIB/$MODULE.MODULE ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/$MODULE) OBJTYPE(*MODULE)"
+fi
+system -kpieb "CRTRPGMOD $TARGET_LIB/$MODULE SRCSTMF('assert.rpgle') INCDIR('$OSSILE_INCDIR') OPTION(*SRCSTMT) DBGVIEW(*LIST) OPTIMIZE(*BASIC) STGMDL(*INHERIT)"
+
+if [ -e /QSYS.LIB/$TARGET_LIB.LIB/$MODULE.SRVPGM ] ; then
+  system -kpieb "DLTOBJ OBJ($TARGET_LIB/$MODULE) OBJTYPE(*SRVPGM)"
+fi
+system -kpieb "CRTSRVPGM $TARGET_LIB/$MODULE MODULE($TARGET_LIB/$MODULE) STGMDL(*INHERIT) BNDSRVPGM($TARGET_LIB/MESSAGE) EXPORT(*SRCFILE) SRCFILE($TARGET_LIB/$MODULE) TEXT('Assert')"
+
+
+#
+# cleanup
+#
+system -kpieb "DLTOBJ OBJ($TARGET_LIB/$MODULE) OBJTYPE(*FILE)"
+# system -kpieb "DLTOBJ OBJ($TARGET_LIB/$MODULE) OBJTYPE(*MODULE)"
+
+
+#
+# check if service program has been created
+#
+if [ ! -e /QSYS.LIB/$TARGET_LIB.LIB/$MODULE.SRVPGM ] ; then
+  exit 5
+fi
+
+
+#
+# copy copybook to OSSILE include directory if is is specified and does exit
+#
+if [[ $OSSILE_INCDIR != "" ]] ; then
+  if [[ ! -e $OSSILE_INCDIR ]] ; then
+    echo "include directory $OSSILE_INCDIR does not exist"
+  else
+    
+    if [ ! -e $OSSILE_INCDIR/assert ] ; then
+      mkdir $OSSILE_INCDIR/assert
+    fi
+    
+    cp $PWD/assert_h.rpgle $OSSILE_INCDIR/assert/assert_h.rpgle
+    
+  fi
+fi

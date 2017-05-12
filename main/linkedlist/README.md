@@ -99,6 +99,21 @@ to make returning a list of simple data easier than using a userspace.
 An example of how to use the service program can be found in the examples folder
 of the project.
 
+## Requirements
+
+This software has no further dependencies. It comes with all necessary files.
+
+## Installation
+For standard installation the setup script can be executed as is. For automatically
+copying the copybook to a directory in the IFS export `OSSILE_INCDIR` like this
+
+    export OSSILE_INCDIR=/usr/local/include/ossile
+
+before executing the setup script. The directory which is stated in the export
+should exist before executing the script.
+
+## Examples
+The _examples_ folder contains some examples of how to use the service program procedures.
 
 ## Documentation
 

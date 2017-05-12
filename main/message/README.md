@@ -18,6 +18,15 @@ further encourages reuse.
 
 This software has no further dependencies. It comes with all necessary files.
 
+## Installation
+For standard installation the setup script can be executed as is. For automatically
+copying the copybook to a directory in the IFS export `OSSILE_INCDIR` like this
+
+    export OSSILE_INCDIR=/usr/local/include/ossile
+
+before executing the setup script. The directory which is stated in the export
+should exist before executing the script.
+
 ## Usage
 
 Just include the `message_h.rpgle` file to use the procedures.

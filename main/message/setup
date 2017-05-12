@@ -19,10 +19,33 @@ if [ -e /QSYS.LIB/$TARGET_LIB.LIB/MESSAGE.SRVPGM ] ; then
 fi
 system -kpieb "CRTSRVPGM $TARGET_LIB/MESSAGE MODULE($TARGET_LIB/MESSAGE) STGMDL(*INHERIT) EXPORT(*SRCFILE) SRCFILE($TARGET_LIB/MESSAGE) TEXT('Messages')"
 
+
 # cleanup
 system -kpieb "DLTOBJ OBJ($TARGET_LIB/MESSAGE) OBJTYPE(*FILE)"
 system -kpieb "DLTOBJ OBJ($TARGET_LIB/MESSAGE) OBJTYPE(*MODULE)"
 
+
+#
+# check if the service program has been created
+#
 if [ ! -e /QSYS.LIB/$TARGET_LIB.LIB/MESSAGE.SRVPGM ] ; then
   exit 5
+fi
+
+
+#
+# copy copybook to OSSILE include directory if is is specified and does exit
+#
+if [[ $OSSILE_INCDIR != "" ]] ; then
+  if [[ ! -e $OSSILE_INCDIR ]] ; then
+    echo "include directory $OSSILE_INCDIR does not exist"
+  else
+    
+    if [ ! -e $OSSILE_INCDIR/message ] ; then
+      mkdir $OSSILE_INCDIR/message
+    fi
+    
+    cp $PWD/message_h.rpgle $OSSILE_INCDIR/message/message_h.rpgle
+    
+  fi
 fi
