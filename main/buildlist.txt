@@ -25,3 +25,6 @@ c_zlib
 endalljob
 arraylist
 nstat
+linkedlist
+updusrattr
+message

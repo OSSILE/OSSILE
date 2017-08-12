@@ -75,12 +75,41 @@ Welcome to the OSSILE project. This project is to serve three purposes:
       - [README](main/arraylist/README.md)
       - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/SCHMIDTM.LIB/QRPGLESRC.FILE/ARRAYLIST.MBR) at [ILEDocs at Sourceforge.net](http://iledocs.sourceforge.net)
 
- - SU, originally sourced from [bitbucket.org/cmasseVolubis/volubis](https://bitbucket.org/cmasseVolubis/volubis).
+  - SU, originally sourced from [bitbucket.org/cmasseVolubis/volubis](https://bitbucket.org/cmasseVolubis/volubis).
     Like Under Linux, become QSECOFR as needed
 
     Documentation:
       - [README](main/su/readme.md)
-      
+
+  - Linked List, originally sourced from [RPG Next Gen](http://rpgnextgen.com).
+    An array allocates memory for all its elements lumped together as one block 
+    of memory. In contrast, a linked list allocates space for each element 
+    separately in its own block of memory called a linked list element or node. 
+    The list gets is overall structure by using pointers to connect all its 
+    nodes together like the links in a chain.
+    
+    The linked list utilities service program shows how to get data via a list
+    instead of using a userspace.
+    
+    Documentation:
+      - [README](main/linkedlist/README.md)
+      - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LLIST.MBR)
+      - [API documentation](http://iledocs.sourceforge.net/docs/index.php?program=/QSYS.LIB/FIST1.LIB/QRPGLESRC.FILE/LUTIL.MBR)
+
+  - Update User-Defined Attribute
+    Tags a QSYS object with a value. The value is stored in the user-defined
+    attribute of the object.
+    
+    Documentation:
+      - [README](main/updusrattr/README.md)
+
+  - Message, originally sourced from [RPGUnit](http://rpgunit.sourceforge.net).
+    This service program provides wrappers for the OS message API QMHRCVPM, QMHRSNEM
+    and QMHSNDPM. It eases the handling of program and escape messages.
+    
+    Documentation:
+      - [README](main/message/README.md)
+
 # Installing OSSILE on your IBM i
 #### Method 1: download the .zip file and compile
 1. Download https://github.com/OSSILE/OSSILE/archive/master.zip and place it in IFS
