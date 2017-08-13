@@ -26,6 +26,44 @@ DCL-PI CRTFRMSTMF;
 END-PI;
 
 
+// Prototype for Get Attributes API
+DCL-PR GetAttr INT(10) ExtPRoc('Qp0lGetAttr');
+    path                 POINTER VALUE;
+    attr_array           POINTER VALUE;
+    buffer               POINTER VALUE;
+    buffer_size_provided UNS(10) VALUE;
+    buffer_size_needed   UNS(10);
+    num_bytes_returned   UNS(10);
+    follow_symlnk        UNS(10) VALUE;
+END-PR;
+
+DCL-DS path_name_format QUALIFIED ALIGN;
+    ccsid               INT(10)     INZ(0);
+    country_ID          CHAR(2)     INZ(*ALLx'00');
+    language_ID         CHAR(3)     INZ(*ALLx'00');
+    reserved1           CHAR(3)     INZ(*ALLx'00');
+    path_type_indicator INT(10)     INZ(0);
+    length_of_path_name INT(10);
+    path_name_delimiter CHAR(2)     INZ('/');
+    reserved2           CHAR(10)    INZ(*ALLx'00');
+    path_name           CHAR(2048);
+END-DS;
+
+DCL-DS attr_array QUALIFIED ALIGN;
+    num_attrs INT(10) INZ(1);
+    attr      INT(10) INZ(27);
+END-DS;
+
+DCL-DS attr_return BASED(p_attr_return) QUALIFIED ALIGN;
+    offset_to_next INT(10);
+    attribute_id   INT(10);
+    size_attr_data INT(10);
+    reserved       CHAR(4);
+    attr_data      CHAR(1024);
+    attr_int       INT(10) OVERLAY(attr_data);
+END-DS;
+
+
 // Prototype for Execute Command API
 DCL-PR ExecuteCommand EXTPGM('QCMDEXC');
     CommandString CHAR(32767) OPTIONS(*VARSIZE);
@@ -46,15 +84,6 @@ DCL-PR ProcessCommand EXTPGM('QCAPCMD');
     ErrorCode     CHAR(32767) OPTIONS(*VARSIZE);
 END-PR;
 
-DCL-PR moveProgramMessages EXTPGM('QMHMOVPM');
-    messageKey         char(4) const;
-    messageTypes       char(40) const;
-    messageTypesCount  int(10) const;
-    toCallStackEntry   char(10) const;
-    toCallStackCounter int(10) const;
-    error              char(1) options(*varsize) const;
-END-PR;
-
 DCL-DS OptCtlBlk QUALIFIED;
     Type   INT(10) INZ(0);
     DBCS   CHAR(1) INZ('0');
@@ -64,13 +93,16 @@ DCL-DS OptCtlBlk QUALIFIED;
     Rsvd   CHAR(9) INZ(*LOVAL);
 END-DS;
 
-DCL-DS APIError QUALIFIED;
-    Provided INT(10) INZ(%size(APIError));
-    Avail    INT(10) INZ(0);
-    MsgID    CHAR(7);
-    Rsvd     CHAR(1);
-    MsgDta   CHAR(256);
-END-DS;
+
+// Prototype for Move Program Message API
+DCL-PR moveProgramMessages EXTPGM('QMHMOVPM');
+    messageKey         char(4) const;
+    messageTypes       char(40) const;
+    messageTypesCount  int(10) const;
+    toCallStackEntry   char(10) const;
+    toCallStackCounter int(10) const;
+    error              char(1) options(*varsize) const;
+END-PR;
 
 
 // Prototype for Send Program Message API
@@ -104,6 +136,22 @@ DCL-DS ParmsDS;
 END-DS;
 
 
+// Prototypes for errno functions
+DCL-PR strerror POINTER EXTPROC('strerror');
+    errnum INT(10) VALUE;
+END-PR;
+
+
+// Standard API error return structure
+DCL-DS APIError QUALIFIED;
+    Provided INT(10) INZ(%size(APIError));
+    Avail    INT(10) INZ(0);
+    MsgID    CHAR(7);
+    Rsvd     CHAR(1);
+    MsgDta   CHAR(256);
+END-DS;
+
+
 // Program Status Data Strucure
 DCL-DS PgmSts PSDS;
     ErrorCode CHAR(7) POS(40);
@@ -120,7 +168,7 @@ DCL-DS CommandsDS;
     *n CHAR(10) INZ('CRTPRTF');
     *n CHAR(10) INZ('CRTLF');
     *n CHAR(10) INZ('CRTPF');
-	*n CHAR(10) INZ('CRTMNU');
+    *n CHAR(10) INZ('CRTMNU');
     *n CHAR(10) INZ('CRTPNLGRP');
     *n CHAR(10) INZ('CRTQMQRY');
     *n CHAR(10) INZ('CRTSRVPGM');
@@ -136,7 +184,7 @@ DCL-DS ObjTypesDS;
     *n CHAR(10) INZ('FILE');
     *n CHAR(10) INZ('FILE');
     *n CHAR(10) INZ('FILE');
-	*n CHAR(10) INZ('MENU');
+    *n CHAR(10) INZ('MENU');
     *n CHAR(10) INZ('PNLGRP');
     *n CHAR(10) INZ('QMQRY');
     *n CHAR(10) INZ('SRVPGM');
@@ -146,9 +194,15 @@ END-DS;
 
 
 // String to contain the OS commands to execute
+DCL-S Buffer           CHAR(1024);
+DCL-S BufferSizeNeeded UNS(10);
 DCL-S CommandString    CHAR(2500);
+DCL-S CCSID            INT(10);
+DCL-S ErrorString      CHAR(100);
 DCL-S I                INT(10);
 DCL-S MsgKey           CHAR(4);
+DCL-S NumBytesReturned UNS(10);
+DCL-S RtnCode          INT(10);
 DCL-S UpdatedString    CHAR(2500);
 DCL-S UpdatedStringLen INT(10);
 
@@ -159,11 +213,26 @@ SrcStmfDS  = pSrcStmf;
 ParmsDS = pParms;
 
 
+// Retreive the CCSID of the stream file
+path_name_format.length_of_path_name = SrcStmfLen;
+path_name_format.path_name = %SUBST(SrcStmf:1:SrcStmfLen);
+RtnCode = GetAttr(%ADDR(path_name_format):%ADDR(attr_array):%ADDR(Buffer):%SIZE(Buffer):BufferSizeNeeded:NumBytesReturned:0);
+IF RtnCode = -1;
+    ErrorString = %STR(strerror(errno));
+    ErrorText = 'Error determining CCSID of stream file: ' + ErrorString;
+    SendProgramMessage('CPF9898':'QCPFMSG   QSYS':ErrorText:%LEN(%TRIMR(ErrorText)):
+                       '*ESCAPE':'*':2:MsgKey:APIError);
+ELSE;
+    p_attr_return = %ADDR(Buffer);
+    CCSID = attr_return.attr_int;
+ENDIF;
+
+
 // Create temporary source file
 CommandString = 'DLTF FILE(QTEMP/QSOURCE)';
 CALLP(E) ExecuteCommand(CommandString:%LEN(CommandString));
 
-CommandString = 'CRTSRCPF FILE(QTEMP/QSOURCE) RCDLEN(198) MBR(' + %TRIMR(Obj) + ')';
+CommandString = 'CRTSRCPF FILE(QTEMP/QSOURCE) RCDLEN(198) MBR(' + %TRIMR(Obj) + ') CCSID(' + %CHAR(CCSID)+ ')';
 CALLP(E) ExecuteCommand(CommandString:%LEN(CommandString));
 
 
@@ -203,3 +272,20 @@ ENDIF;
 // Exit
 *INLR = *ON;
 RETURN;
+
+
+
+// wrapper to get errno
+DCL-PROC errno;
+    DCL-PI *n INT(10);
+    END-PI;
+
+    DCL-PR sys_errno POINTER EXTPROC('__errno');
+    END-PR;
+
+    DCL-S wwreturn INT(10) BASED(p_errno);
+    p_errno = sys_errno;
+    RETURN wwreturn;
+
+END-PROC;
+
