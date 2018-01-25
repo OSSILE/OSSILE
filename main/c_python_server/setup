@@ -1,0 +1,13 @@
+#!/QOpenSys/usr/bin/sh
+export PWD=$(pwd)
+
+TARGET=OSSILE
+
+system -kpieb "CRTCMOD MODULE($TARGET/INIH) SRCSTMF('$PWD/inih/ini.c') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('$PWD/inih')"
+system -kpieb "CRTCMOD MODULE($TARGET/GUNICRNTCP) SRCSTMF('$PWD/gunicorn_tcp.c') DEFINE('__cplusplus__strings__') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('$PWD/inih')"
+
+system -kpieb "CRTPGM PGM($TARGET/GUNICRNTCP) MODULE($TARGET/GUNICRNTCP $TARGET/INIH) TEXT('STRTCPSVR *GUNICORN processing program')"
+RC=$?
+
+echo "run ADDTCPSVR SVRSPCVAL(*GUNICORN) PGM($TARGET/GUNICRNTCP) SVRNAME(GUNICORN) SVRTYPE(GUNICORN) TEXT('Python gunicorn application server')"
+exit $RC
