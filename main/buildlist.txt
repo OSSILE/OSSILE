@@ -8,6 +8,7 @@ getiptf
 sha256
 c_inih
 c_generic_server
+c_gunicorn_server
 c_backup_pgm
 c_check_recvr_delete
 c_chk_os_lvl
