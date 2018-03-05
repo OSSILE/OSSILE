@@ -1,0 +1,13 @@
+#!/QOpenSys/usr/bin/ksh
+
+set -e
+
+TARGET=${TARGET:-OSSILE}
+
+system -kpieb "CRTCMOD MODULE(${TARGET}/GENERICTCP) SRCSTMF('$PWD/generic_tcp.c') DEFINE('__cplusplus__strings__') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('$PWD/../c_inih/inih')"
+
+system -kpieb "CRTPGM PGM(${TARGET}/GENERICTCP) MODULE(${TARGET}/GENERICTCP) BNDSRVPGM(${TARGET}/INIH) TEXT('STRTCPSVR *GENERIC processing program')"
+RC=$?
+
+echo "run ADDTCPSVR SVRSPCVAL(*GENERIC) PGM(${TARGET}/GENERICTCP) SVRNAME(GENERIC) SVRTYPE(GENERIC) TEXT('Generic TCP application server')"
+exit $RC
