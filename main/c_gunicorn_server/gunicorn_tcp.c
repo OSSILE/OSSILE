@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Kevin Adler
+// Copyright (c) 2018 Kevin Adler
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -36,7 +36,7 @@ autostart = 1 ; whether to start/end with INSTANCE(*AUTOSTART). values: 0 or 1
 user = qtmhhtp ; user to run SBMJOB under
 
 [gunicorn]
-python = /QOpenSys/QIBM/ProdData/OPS/Python3.4/bin ; Path where gunicorn & python are located
+bin_dir = /QOpenSys/QIBM/ProdData/OPS/Python3.4/bin ; Path where gunicorn & python are located
 
 workers = 2 ; Number of worker jobs to run. values: 1+ (default 1)
 
@@ -109,7 +109,8 @@ typedef struct {
     char* user;
     char* app;
     char* app_path;
-    char* python_path;
+    char* run_path;
+    char* bin_dir;
     char* bind;
     int workers;
     int autostart;
@@ -120,7 +121,8 @@ void free_opts(gunicorn_opts_t* opts)
     free(opts->user);
     free(opts->app);
     free(opts->app_path);
-    free(opts->python_path);
+    free(opts->run_path);
+    free(opts->bin_dir);
     free(opts->bind);
 }
 
@@ -178,13 +180,17 @@ int handler(void* user, const char* section, const char* name, const char* value
         {
             opts->app_path = strdup(value);
         }
+        else if(strcmp(name, "run_path") == 0)
+        {
+            opts->run_path = strdup(value);
+        }
         else if(strcmp(name, "bind") == 0)
         {
             opts->bind = strdup(value);
         }
-        else if(strcmp(name, "python") == 0)
+        else if(strcmp(name, "bin_dir") == 0)
         {
-            opts->python_path = strdup(value);
+            opts->bin_dir = strdup(value);
         }
         else
         {
@@ -415,7 +421,7 @@ int handle_instance(const char* action, const char* instance, int multiple, int 
             offset += len;
         }
         
-        const char* path = opts.python_path ? opts.python_path : "/QOpenSys/QIBM/ProdData/OPS/Python3.4/bin";
+        const char* path = opts.bin_dir ? opts.bin_dir : "/QOpenSys/QIBM/ProdData/OPS/Python3.4/bin";
         len = sprintf(&command[offset], " CMD(" QSH_CMD_STR "exec %s/gunicorn -D -p %s", path, pid_file);
         if(len < 0)
         {
@@ -440,6 +446,18 @@ int handle_instance(const char* action, const char* instance, int multiple, int 
         if(opts.app_path)
         {
             len = sprintf(&command[offset], " --pythonpath %s", opts.app_path);
+            if(len < 0)
+            {
+                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
+                rc = RC_FAILED;
+                goto end;
+            }
+            offset += len;
+        }
+        
+        if(opts.run_path)
+        {
+            len = sprintf(&command[offset], " --chdir %s", opts.run_path);
             if(len < 0)
             {
                 Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
