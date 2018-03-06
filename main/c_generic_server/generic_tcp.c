@@ -41,7 +41,7 @@ run_command = java -jar start.jar
 
 Register it like so:
  ADDTCPSVR SVRSPCVAL(*GENERIC) PGM(GENERICTCP) SVRNAME('GENERIC') +
-  SVRTYPE('GENERIC') TEXT('Generic commandlication servers')
+  SVRTYPE('GENERIC') TEXT('Generic application servers')
 */
 
 #include <stdio.h>
