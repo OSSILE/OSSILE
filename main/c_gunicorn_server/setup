@@ -1,14 +1,17 @@
-#!/QOpenSys/usr/bin/sh
+#!/QOpenSys/usr/bin/ksh
 
+# exit immediately if command returns non-zero rc
 set -e
 
 TARGET=${TARGET:-OSSILE}
 
-system -kpieb "CRTCMOD MODULE($TARGET/INIH) SRCSTMF('$PWD/inih/ini.c') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('$PWD/inih')"
-system -kpieb "CRTCMOD MODULE($TARGET/GUNICRNTCP) SRCSTMF('$PWD/gunicorn_tcp.c') DEFINE('__cplusplus__strings__') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('$PWD/../c_inih/inih')"
+system -kpieb "CRTCMOD MODULE(${TARGET}/GUNICRNTCP) SRCSTMF('${PWD}/gunicorn_tcp.c') DEFINE('__cplusplus__strings__') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('${PWD}/../c_inih/inih')"
 
-system -kpieb "CRTPGM PGM($TARGET/GUNICRNTCP) MODULE($TARGET/GUNICRNTCP) BNDSRVPGM(${TARGET}/INIH) TEXT('STRTCPSVR *GUNICORN processing program')"
-RC=$?
+system -kpieb "DLTPGM PGM(${TARGET}/GUNICRNTCP)" || :
 
-echo "run ADDTCPSVR SVRSPCVAL(*GUNICORN) PGM($TARGET/GUNICRNTCP) SVRNAME(GUNICORN) SVRTYPE(GUNICORN) TEXT('Python gunicorn application server')"
-exit $RC
+system -kpieb "CRTPGM PGM(${TARGET}/GUNICRNTCP) MODULE(${TARGET}/GUNICRNTCP) BNDSRVPGM(${TARGET}/INIH) USRPRF(*OWNER) TEXT('STRTCPSVR *GUNICORN processing program')"
+
+echo "run ADDTCPSVR SVRSPCVAL(*GUNICORN) PGM(${TARGET}/GUNICRNTCP) SVRNAME(GUNICORN) SVRTYPE(GUNICORN) TEXT('Python gunicorn application server')"
+echo
+echo "Ensure that ${TARGET}/GUNICRNTCP is owned by profile with sufficient authority to submit jobs under the users defined in the ini."
+echo "eg. CHGOBJOWN OBJ(${TARGET}/GUNICRNTCP) OBJTYPE(*PGM) NEWOWN(QSYS) CUROWNAUT(*SAME)"
