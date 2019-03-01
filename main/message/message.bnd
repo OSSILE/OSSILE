@@ -22,7 +22,7 @@
       * SOFTWARE.
       */
 
-STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('MESSAGE 1.0.0')
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('MESSAGE 1.1.0')
 
     EXPORT SYMBOL('message_receiveMessageInfo')
     EXPORT SYMBOL('message_receiveMessageData')
@@ -34,5 +34,22 @@ STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('MESSAGE 1.0.0')
     EXPORT SYMBOL('message_sendEscapeMessageAboveControlBody')
     EXPORT SYMBOL('message_sendInfoMessage')
     EXPORT SYMBOL('message_sendStatusMessage')
-    
+    EXPORT SYMBOL('message_removeMessage')
+    EXPORT SYMBOL('message_removeMessageByKey')
+
+ENDPGMEXP
+
+STRPGMEXP PGMLVL(*PRV) SIGNATURE('MESSAGE 1.0.0')
+
+    EXPORT SYMBOL('message_receiveMessageInfo')
+    EXPORT SYMBOL('message_receiveMessageData')
+    EXPORT SYMBOL('message_receiveMessageText')
+    EXPORT SYMBOL('message_receiveMessage')
+    EXPORT SYMBOL('message_sendCompletionMessage')
+    EXPORT SYMBOL('message_sendEscapeMessage')
+    EXPORT SYMBOL('message_sendEscapeMessageToCaller')
+    EXPORT SYMBOL('message_sendEscapeMessageAboveControlBody')
+    EXPORT SYMBOL('message_sendInfoMessage')
+    EXPORT SYMBOL('message_sendStatusMessage')
+
 ENDPGMEXP
