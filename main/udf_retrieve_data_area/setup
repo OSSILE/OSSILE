@@ -1,0 +1,10 @@
+#!/QOpenSys/usr/bin/sh
+set -eu
+
+TGTLIB=${TGTLIB:-OSSILE}
+
+# cpp compilers can't run if PASE already started, so no -i here
+system -kpeb "CRTCPPMOD MODULE(${TGTLIB}/SQLRTVDTAA) SRCSTMF('$PWD/sqlrtvdtara.cpp')"
+system -kpieb "CRTSRVPGM SRVPGM(${TGTLIB}/SQLRTVDTAA) EXPORT(*ALL) TEXT('Retrieve Data Area UDF')"
+
+exec system -kpieb "RUNSQLSTM SRCSTMF('$PWD/sqlrtvdtara.sql') DFTRDBCOL(${TGTLIB})"

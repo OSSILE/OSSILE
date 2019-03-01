@@ -1,0 +1,9 @@
+name:
+	SQL UDF Retrieve Data Area
+version:
+	1
+build:
+	CRTCPPMOD MODULE(&INTOLIB/SQLRTVDTAA) SRCSTMF('&DIR/sqlrtvdtara.cpp')
+	CRTSRVPGM SRVPGM(&INTOLIB/SQLRTVDTAA) EXPORT(*ALL) TEXT('Retrieve Data Area UDF')
+	RUNSQLSTM SRCSTMF('&DIR/sqlrtvdtara.sql') DFTRDBCOL(&INTOLIB)
+

@@ -1692,14 +1692,14 @@
       */
      P arraylist_getString...
      P                 B                   export
-     D                 PI         65535A
+     D                 PI         65535A   varying
      D   arraylist                     *   const
      D   index                       10U 0 const
       *
      D header          DS                  likeds(tmpl_header) based(arraylist)
      D ptr             S               *
-     D dataptr         S               *   based(ptr)
-     D retVal          S          65535A
+     D entry           DS                  likeds(tmpl_entry) based(ptr)
+     D retVal          S          65535A   varying
       /free
        // check if the arraylist is empty or the position is outside of the arraylist
        if (header.elementCount = 0);
@@ -1715,7 +1715,8 @@
        monitor;
          // test if the temp variable is filled with the right data for the type
          // by moving the data from temp to another var (retVal in this case)
-         retVal = %str(dataPtr);
+         retVal = %str(entry.value);
+         %len(retVal) = entry.length;
          return retVal;
          on-error *all;
            sendEscapeMessage('Invalid value type');
