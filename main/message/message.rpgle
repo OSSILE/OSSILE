@@ -13,8 +13,8 @@
 //
 // \link http://rpgunit.sourceforge.net RPGUnit
 ///
-     
-      
+
+
 ctl-opt nomain;
 
 
@@ -33,6 +33,14 @@ dcl-pr QMHRCVPM extpgm('QMHRCVPM');
   msgKey char(4) const;
   waitTime int(10) const;
   msgAction char(10) const;
+  errorCode char(32565) options(*varsize) noopt;
+end-pr;
+
+dcl-pr QMHRMVPM extpgm('QMHRMVPM');
+  callStkEnt char(10) const;
+  callStkCnt int(10) const;
+  msgKey char(4) const;
+  msgToRemove char(10) const;
   errorCode char(32565) options(*varsize) noopt;
 end-pr;
 
@@ -58,6 +66,8 @@ dcl-c ALL_MSG_INFO_WITH_SENDER_INFO 'RCVM0300';
 dcl-c THIS_CALL_STACK_ENTRY '*';
 // No message key
 dcl-c NO_MSG_KEY const(*blank);
+// By message key
+dcl-c MSG_KEY '*BYKEY';
 // Do not wait for receiving the message.
 dcl-c NO_WAIT 0;
 // Message action (keep the message in the message queue and mark it as an old message)
@@ -166,7 +176,7 @@ end-ds;
 //
 dcl-proc message_receiveMessageInfo export;
   dcl-pi *N likeds(messageInfo_t) end-pi;
-  
+
   dcl-ds message likeds(message_t);
   dcl-ds messageInfo likeds(messageInfo_t);
 
@@ -186,7 +196,7 @@ dcl-proc message_receiveMessageData export;
   dcl-pi *N char(256);
     type char(10) const;
   end-pi;
-  
+
   dcl-ds message likeds(message_t);
 
    message = message_receiveMessage(type : MESSAGE_ONE_CALL_STACK_LEVEL_ABOVE);
@@ -198,7 +208,7 @@ dcl-proc message_receiveMessageText export;
   dcl-pi *N char(256);
      type char(10) const;
   end-pi;
-  
+
   dcl-ds message likeds(message_t);
 
   message = message_receiveMessage(type : MESSAGE_ONE_CALL_STACK_LEVEL_ABOVE );
@@ -211,7 +221,57 @@ dcl-proc message_receiveMessage export;
     type char(10) const;
     callStackLevelAbove int(10) const options(*nopass);
   end-pi;
-  
+
+  if ( %parms() > 1 );
+    return getMessage( MARK_AS_OLD : type : callStackLevelAbove );
+  else;
+    return getMessage( MARK_AS_OLD : type );
+  endIf;
+
+end-proc;
+
+
+dcl-proc message_removeMessage export;
+  dcl-pi *N likeds(message_t);
+    type char(10) const;
+    callStackLevelAbove int(10) const options(*nopass);
+  end-pi;
+
+  if ( %parms() > 1 );
+    return getMessage( REMOVE_MSG : type : callStackLevelAbove );
+  else;
+    return getMessage( REMOVE_MSG : type );
+  endIf;
+
+end-proc;
+
+
+dcl-proc message_removeMessageByKey export;
+  dcl-pi *N;
+    key char(4) const;
+  end-pi;
+
+  dcl-ds errorCode likeds(qusec);
+
+  clear errorCode;
+
+  QMHRMVPM( MESSAGE_CURRENT_CALL_STACK_ENTRY :
+            0 :
+            key :
+            MSG_KEY :
+            errorCode );
+
+end-proc;
+
+
+dcl-proc getMessage;
+
+  dcl-pi *N likeds(message_t);
+    action char(10) const;
+    type char(10) const;
+    callStackLevelAbove int(10) const options(*nopass);
+  end-pi;
+
   // Safe value for the NoPass parameter callStackLevelAbove
   dcl-s safeCallStackLevelAbove int(10);
   // Buffer for message info
@@ -226,11 +286,14 @@ dcl-proc message_receiveMessage export;
 
   dcl-ds errorCode likeds(qusec);
 
-  if (%parms() > 1);
+  if (%parms() > 2);
     safeCallStackLevelAbove = callStackLevelAbove;
   else;
     safeCallStackLevelAbove = 0;
   endif;
+
+  // another stack entry was added when this logic was refactored to an internal sub-procedure
+  safeCallStackLevelAbove += 1;
 
   clear errorCode;
 
@@ -242,15 +305,16 @@ dcl-proc message_receiveMessage export;
            type :
            NO_MSG_KEY :
            NO_WAIT :
-           MARK_AS_OLD :
+           action :
            errorCode);
   rawMsgHdr_p = %addr( rawMsgBuf );
-  
+
   if (rawMsgHdr.bytesA = 0);
       message_sendEscapeMessageToCaller(%trim(type) + ' message not found');
   endif;
 
   message.id = rawMsgHdr.msgId;
+  message.key = rawMsgHdr.msgKey;
 
   bufPos = %size(rawMsgHdr) + 1;
   message.replacementData = %subst(rawMsgBuf : bufPos : rawMsgHdr.rplDataLenR);
@@ -264,7 +328,7 @@ dcl-proc message_receiveMessage export;
   message.sender.programName  = senderInfo.sndPgmNm;
   message.sender.procedureName = senderInfo.sndProcNm;
   message.sender.statement  = senderInfo.sndPgmSttNb;
-   
+
   return message;
 end-proc;
 
@@ -273,18 +337,18 @@ dcl-proc message_sendCompletionMessage export;
   dcl-pi *N;
     message char(256) const;
   end-pi;
-  
+
   // The message reference key.
   dcl-s messageKey char(4);
   dcl-ds errorCode likeds(qusec);
-  
+
   clear errorCode;
 
   QMHSNDPM('CPF9897' :
            'QCPFMSG   *LIBL' :
            %trimr(message) :
            %len(%trimr(message)) :
-           '*COMP' :
+           MESSAGE_TYPE_COMPLETION :
            MESSAGE_CONTROL_BOUNDARY :
            MESSAGE_ONE_CALL_STACK_LEVEL_ABOVE :
            messageKey :
@@ -297,18 +361,18 @@ dcl-proc message_sendEscapeMessage export;
     message char(256) const;
     callStackLevelAbove int(10) const;
   end-pi;
-  
+
   // The message reference key.
   dcl-s messageKey char(4);
   dcl-ds errorCode likeds(qusec);
-  
+
   clear errorCode;
 
   QMHSNDPM('CPF9897' :
            'QCPFMSG   *LIBL' :
            %trimr(message) :
            %len(%trimr(message)) :
-           '*ESCAPE' :
+           MESSAGE_TYPE_ESCAPE :
            MESSAGE_CURRENT_CALL_STACK_ENTRY :
            MESSAGE_ONE_CALL_STACK_LEVEL_ABOVE + callStackLevelAbove :
            messageKey :
@@ -320,7 +384,7 @@ dcl-proc message_sendEscapeMessageToCaller export;
   dcl-pi *N;
     message char(256) const;
   end-pi;
-  
+
   message_sendEscapeMessage(message : MESSAGE_TWO_CALL_STACK_LEVEL_ABOVE);
 end-proc;
 
@@ -333,14 +397,14 @@ dcl-proc message_sendEscapeMessageAboveControlBody export;
   // The message reference key
   dcl-s messageKey char(4);
   dcl-ds errorCode likeds(qusec);
-  
+
   clear errorCode;
 
   QMHSNDPM('CPF9897' :
            'QCPFMSG   *LIBL' :
            %trimr(message) :
            %len(%trimr(message)) :
-           '*ESCAPE' :
+           MESSAGE_TYPE_ESCAPE :
            MESSAGE_CONTROL_BOUNDARY :
            MESSAGE_ONE_CALL_STACK_LEVEL_ABOVE :
            messageKey :
@@ -356,14 +420,14 @@ dcl-proc message_sendInfoMessage export;
   // The message reference key
   dcl-s messageKey char(4);
   dcl-ds errorCode likeds(qusec);
-  
+
   clear errorCode;
 
   QMHSNDPM(*blank :    // TODO Create generic identifier.
            'QCPFMSG   *LIBL' :
            %trimr(message) :
            %len(%trimr(message)) :
-           '*INFO' :
+           MESSAGE_TYPE_INFORMATION :
            MESSAGE_CURRENT_CALL_STACK_ENTRY :
            MESSAGE_ONE_CALL_STACK_LEVEL_ABOVE :
            messageKey :
@@ -379,14 +443,14 @@ dcl-proc message_sendStatusMessage export;
   // The message reference key
   dcl-s messageKey char(4);
   dcl-ds errorCode likeds(qusec);
-  
+
   clear errorCode;
 
   QMHSNDPM('CPF9897' :
            'QCPFMSG   *LIBL' :
            %trimr(message) :
            %len(%trimr(message)) :
-           '*STATUS' :
+           MESSAGE_TYPE_STATUS :
            '*EXT' :
            *zero :
            messageKey :

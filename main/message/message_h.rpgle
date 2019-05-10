@@ -19,6 +19,15 @@ dcl-c MESSAGE_CURRENT_CALL_STACK_ENTRY '*';
 // Control boundary
 dcl-c MESSAGE_CONTROL_BOUNDARY '*CTLBDY';
 
+// message types
+dcl-c MESSAGE_TYPE_ANY         '*ANY';
+dcl-c MESSAGE_TYPE_COMPLETION  '*COMP';
+dcl-c MESSAGE_TYPE_DIAGNOSTIC  '*DIAG';
+dcl-c MESSAGE_TYPE_ESCAPE      '*ESCAPE';
+dcl-c MESSAGE_TYPE_EXCEPTION   '*EXCP';
+dcl-c MESSAGE_TYPE_INFORMATION '*INFO';
+dcl-c MESSAGE_TYPE_STATUS      '*STATUS';
+
 
 //----------------------------------------------------------------------
 // Message Data Structures (Templates)
@@ -40,6 +49,7 @@ dcl-ds message_t qualified template;
   text varchar(254);
   replacementData varchar(254);
   sender likeds(messageSender_t);
+  key char(4);
 end-ds;
 
 // Program Message Sender
@@ -76,6 +86,20 @@ dcl-pr message_receiveMessage likeds(message_t) extproc(*dclcase);
   // If the message was sent to a procedure above in the call stack,
   // indicate how many level above it is.
   callStackLevelAbove int(10) const options(*nopass);
+end-pr;
+
+// Remove a program message.
+dcl-pr message_removeMessage likeds(message_t) extproc(*dclcase);
+  // Message type: *ANY, *COMP, *EXCP...
+  type char(10) const;
+  // If the message was sent to a procedure above in the call stack,
+  // indicate how many level above it is.
+  callStackLevelAbove int(10) const options(*nopass);
+end-pr;
+
+// Remove a program message by (message) key.
+dcl-pr message_removeMessageByKey extproc(*dclcase);
+  key char(4) const;
 end-pr;
 
 // Resend an escape message that was monitored in a monitor block.
