@@ -33,7 +33,7 @@ Sample ini:
 autostart = 1 ; whether to start/end with INSTANCE(*AUTOSTART). values: 0 or 1
 
 [sbmjob]
-user = qtmhhtp ; user to run SBMJOB under
+user = qtmhhttp ; user to run SBMJOB under
 
 [gunicorn]
 bin_dir = /QOpenSys/QIBM/ProdData/OPS/Python3.4/bin ; Path where gunicorn & python are located
