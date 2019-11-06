@@ -1,7 +1,7 @@
      /*
       *                          The MIT License (MIT)
       *
-      * Copyright (c) 2017 Mihael Schmidt
+      * Copyright (c) 2018 Kevin Adler
       *
       * Permission is hereby granted, free of charge, to any person obtaining a copy 
       * of this software and associated documentation files (the "Software"), to deal 
@@ -21,35 +21,13 @@
       * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
       * SOFTWARE.
       */
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE(X'4452494E4B4D4F524F56414C54494E45')
 
-STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('MESSAGE 1.1.0')
-
-    EXPORT SYMBOL('message_receiveMessageInfo')
-    EXPORT SYMBOL('message_receiveMessageData')
-    EXPORT SYMBOL('message_receiveMessageText')
-    EXPORT SYMBOL('message_receiveMessage')
-    EXPORT SYMBOL('message_sendCompletionMessage')
-    EXPORT SYMBOL('message_sendEscapeMessage')
-    EXPORT SYMBOL('message_sendEscapeMessageToCaller')
-    EXPORT SYMBOL('message_sendEscapeMessageAboveControlBody')
-    EXPORT SYMBOL('message_sendInfoMessage')
-    EXPORT SYMBOL('message_sendStatusMessage')
-    EXPORT SYMBOL('message_removeMessage')
-    EXPORT SYMBOL('message_removeMessageByKey')
-
+    EXPORT SYMBOL('ini_parse')
+    EXPORT SYMBOL('ini_parse_file')
+    EXPORT SYMBOL('ini_parse_stream')
+    EXPORT SYMBOL('ini_parse_string')
+    
 ENDPGMEXP
 
-STRPGMEXP PGMLVL(*PRV) SIGNATURE('MESSAGE 1.0.0')
 
-    EXPORT SYMBOL('message_receiveMessageInfo')
-    EXPORT SYMBOL('message_receiveMessageData')
-    EXPORT SYMBOL('message_receiveMessageText')
-    EXPORT SYMBOL('message_receiveMessage')
-    EXPORT SYMBOL('message_sendCompletionMessage')
-    EXPORT SYMBOL('message_sendEscapeMessage')
-    EXPORT SYMBOL('message_sendEscapeMessageToCaller')
-    EXPORT SYMBOL('message_sendEscapeMessageAboveControlBody')
-    EXPORT SYMBOL('message_sendInfoMessage')
-    EXPORT SYMBOL('message_sendStatusMessage')
-
-ENDPGMEXP

@@ -1,0 +1,17 @@
+#!/QOpenSys/usr/bin/ksh
+
+# exit immediately if command returns non-zero rc
+set -e
+
+TARGET=${TARGET:-OSSILE}
+
+system -kpieb "CRTCMOD MODULE(${TARGET}/GENERICTCP) SRCSTMF('${PWD}/generic_tcp.c') DEFINE('__cplusplus__strings__') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('${PWD}/../c_inih/inih')"
+
+system -kpieb "DLTPGM PGM(${TARGET}/GENERICTCP)" || :
+
+system -kpieb "CRTPGM PGM(${TARGET}/GENERICTCP) MODULE(${TARGET}/GENERICTCP) BNDSRVPGM(${TARGET}/INIH) USRPRF(*OWNER) TEXT('STRTCPSVR *GENERIC processing program')"
+
+echo "run ADDTCPSVR SVRSPCVAL(*GENERIC) PGM(${TARGET}/GENERICTCP) SVRNAME(GENERIC) SVRTYPE(GENERIC) TEXT('Generic TCP application server')"
+echo
+echo "Ensure that ${TARGET}/GENERICTCP is owned by profile with sufficient authority to submit jobs under the users defined in the ini."
+echo "eg. CHGOBJOWN OBJ(${TARGET}/GENERICTCP) OBJTYPE(*PGM) NEWOWN(QSYS) CUROWNAUT(*SAME)"
