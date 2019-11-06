@@ -135,6 +135,10 @@ DCL-DS ParmsDS;
     Parms    CHAR(2000);
 END-DS;
 
+DCL-DS LDA QUALIFIED DTAARA(*LDA);
+    Eventf_lib CHAR(10);
+    Eventf_mbr CHAR(10);
+END-DS;
 
 // Prototypes for errno functions
 DCL-PR strerror POINTER EXTPROC('strerror');
@@ -198,6 +202,7 @@ DCL-S Buffer           CHAR(1024);
 DCL-S BufferSizeNeeded UNS(10);
 DCL-S CommandString    CHAR(2500);
 DCL-S CCSID            INT(10);
+DCL-S CCSID_c          CHAR(10);
 DCL-S ErrorString      CHAR(100);
 DCL-S I                INT(10);
 DCL-S MsgKey           CHAR(4);
@@ -232,7 +237,13 @@ ENDIF;
 CommandString = 'DLTF FILE(QTEMP/QSOURCE)';
 CALLP(E) ExecuteCommand(CommandString:%LEN(CommandString));
 
-CommandString = 'CRTSRCPF FILE(QTEMP/QSOURCE) RCDLEN(198) MBR(' + %TRIMR(Obj) + ') CCSID(' + %CHAR(CCSID)+ ')';
+// Source physical files that are unicode create problems with CRTPF. Use Job's CCSID instead.
+IF (CCSID = 1208);
+    CCSID_c = '*JOB';
+ELSE;
+    CCSID_c = %CHAR(CCSID);
+ENDIF;
+CommandString = 'CRTSRCPF FILE(QTEMP/QSOURCE) RCDLEN(198) MBR(' + %TRIMR(Obj) + ') CCSID(' + CCSID_c + ')';
 CALLP(E) ExecuteCommand(CommandString:%LEN(CommandString));
 
 
@@ -254,6 +265,19 @@ CommandString = %TRIMR(Cmd) + ' '
 CALLP ProcessCommand(CommandString:%SIZE(CommandString):OptCtlBlk:%SIZE(OptCtlBlk):
                      'CPOP0100':UpdatedString:%SIZE(UpdatedString):UpdatedStringLen:
                      APIError);
+
+if ( %scan( '*EVENTF' : CommandString ) > 0 );
+  if ( Lib = '*CURLIB' );
+    Lib = RetrieveCurrrentLibrary();
+  endif;
+  if ( Lib = '*NONE' );
+    Lib = 'QGPL';
+  endif;
+  UpdateEventFile();
+  LDA.Eventf_lib = Lib;
+  LDA.Eventf_mbr = Obj;
+  out LDA;
+endif;
 
 // If an error occurred then fail the command
 IF APIError.Avail > 0;
@@ -289,3 +313,133 @@ DCL-PROC errno;
 
 END-PROC;
 
+
+dcl-proc RetrieveCurrrentLibrary;
+  dcl-pi *n char( 10 );
+  end-pi;
+
+  dcl-s  Result char( 10 ) inz( '*NONE' );
+
+  dcl-pr QUSRJOBI extpgm( 'QUSRJOBI' );
+    RcvVar     char( 32767 ) options( *varsize );
+    RcvVarLen  int( 10 )     const;
+    Format     char(  8 )    const;
+    QualJob    char( 26 )    const;
+    IntJobId   char( 16 )    const;
+  end-pr;
+
+  dcl-ds JOBI0700 qualified;
+    numsys  int( 10 )  pos( 65 );
+    numprd  int( 10 )  pos( 69 );
+    numcur  int( 10 )  pos( 73 );
+    libl    char( 11 ) pos( 81 ) dim(250);
+  end-ds;
+
+  QUSRJOBI( JOBI0700 : %size( JOBI0700 ) : 'JOBI0700' : '*' : *blanks );
+
+  if ( JOBI0700.numcur > 0 );
+    Result = JOBI0700.libl( JOBI0700.numsys + JOBI0700.numprd + 1 );
+  endif;
+
+  return ( Result );
+
+end-proc;
+
+
+dcl-proc UpdateEventFile;
+
+  dcl-f  EvfEvent      disk( 300 ) usage( *update ) extfile( EvfFilename ) extmbr( Obj ) usropn;
+
+  dcl-ds EvfEvent_rec      qualified len( 300 );
+    id   char( 10 );
+  end-ds;
+  dcl-ds New_EvfEvent_rec  likeds( Evfevent_rec );
+
+  dcl-s  EvfFilename  char( 21 );
+
+  dcl-ds Char3;
+    Zoned3 zoned( 3 );
+  end-ds;
+
+  // File Information Structure (stat):
+
+  dcl-ds statds   qualified;
+    st_mode       uns( 10 );
+    st_ino        uns( 10 );
+    st_nlink      uns(  5 );
+    *n            uns(  5 );
+    st_uid        uns( 10 );
+    st_gid        uns( 10 );
+    st_size       int( 10 );
+    st_atime      int( 10 );
+    st_mtime      int( 10 );
+    st_ctime      int( 10 );
+    st_dev        uns( 10 );
+    st_blksize    uns( 10 );
+    st_allocsize  uns( 10 );
+    st_objtype    char( 11 );
+    *n            char(  1 );
+    st_codepage   uns(  5 );
+    st_ccsid      uns(  5 );
+    st_rdev       uns( 10 );
+    st_nlink32    uns( 10 );
+    st_rdev64     uns( 20 );
+    st_dev64      uns( 20 );
+    *n            char( 36 );
+    st_ino_gen_id uns( 10 );
+  end-ds;
+
+  // int stat(const char *path, struct stat *buf)
+
+  dcl-pr stat int( 10 ) extproc('stat');
+    path   pointer value options(*string);
+    buf    likeds(statds);
+  end-pr;
+
+  // int stat(const char *path, struct stat *buf)
+
+  dcl-pr CEEUTCO opdesc;
+    Hours         int( 10 );
+    Minutes       int( 10 );
+    Seconds       float( 8 );
+    fc            char( 12 ) options(*omit);
+  end-pr;
+
+  dcl-s  junk1    int( 10 );
+  dcl-s  junk2    int( 10 );
+  dcl-s  secs     float( 8 );
+  dcl-s  epoch    timestamp( 0 );
+  dcl-s  IFS_tms  timestamp( 0 );
+
+  // Get Epoch (Unix timestammp offset).
+
+  CEEUTCO( junk1 : junk2 : secs : *omit);
+  Epoch = z'1970-01-01-00.00.00.000000' + %seconds(%int(secs));
+
+  // Change FILEID record to reflect streamfile name instead of QTEMP/QSOURCE...
+
+  EvfFileName = %trim( Lib ) + '/EVFEVENT';
+  open EvfEvent;
+
+  dou ( %eof( EvfEvent ) );
+    read EvfEvent EvfEvent_rec;
+
+    if ( not %eof( EvfEvent ) );
+      if ( EvfEvent_rec.id = 'FILEID    ' );
+        Zoned3 = SrcStmfLen;
+        stat( %subst( SrcStmf : 1 : SrcStmfLen ) : statds );
+        IFS_tms = epoch + %seconds(statds.st_mtime);
+
+        New_EvfEvent_rec = %subst( EvfEvent_rec : 1 : 24 )
+                         + Char3 + ' '
+                         + %subst( SrcStmf : 1 : SrcStmfLen ) + ' '
+                         + %char( IFS_tms : *ISO0 ) + ' '
+                         + '0';
+        update EvfEvent New_EvfEvent_rec;
+      endif;
+    endif;
+  enddo;
+
+  close EvfEvent;
+
+end-proc;
