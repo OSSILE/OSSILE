@@ -46,6 +46,7 @@ app_path = /home/kadler/bottle-example ; Path to where your module is located, i
 
 bind = 127.0.0.1:6000 ; Which host and port to bind to (default 127.0.0.1:5000)
 
+venv = /home/user/project/.venv ; Path to where virtual environment is located.
 
 Register it like so:
  ADDTCPSVR SVRSPCVAL(*GUNICORN) PGM(STRPYSRVR) SVRNAME('GUNICORN') +
@@ -112,6 +113,7 @@ typedef struct {
     char* run_path;
     char* bin_dir;
     char* bind;
+    char* venv;
     int workers;
     int autostart;
 } gunicorn_opts_t;
@@ -124,6 +126,7 @@ void free_opts(gunicorn_opts_t* opts)
     free(opts->run_path);
     free(opts->bin_dir);
     free(opts->bind);
+    free(opts->venv);
 }
 
 int handler(void* user, const char* section, const char* name, const char* value)
@@ -191,6 +194,10 @@ int handler(void* user, const char* section, const char* name, const char* value
         else if(strcmp(name, "bin_dir") == 0)
         {
             opts->bin_dir = strdup(value);
+        }
+        else if(strcmp(name, "venv") == 0)
+        {
+            opts->venv = strdup(value);
         }
         else
         {
@@ -420,9 +427,9 @@ int handle_instance(const char* action, const char* instance, int multiple, int 
             }
             offset += len;
         }
-        
-        const char* path = opts.bin_dir ? opts.bin_dir : "/QOpenSys/QIBM/ProdData/OPS/Python3.4/bin";
-        len = sprintf(&command[offset], " CMD(" QSH_CMD_STR "exec %s/gunicorn -D -p %s", path, pid_file);
+
+        // set the FLASK_ENV to production
+        len = sprintf(&command[offset], " CMD(" QSH_CMD_STR "export FLASK_ENV=production;");
         if(len < 0)
         {
             Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
@@ -430,7 +437,35 @@ int handle_instance(const char* action, const char* instance, int multiple, int 
             goto end;
         }
         offset += len;
-        
+
+        if(opts.venv) 
+        {
+            // activate the venv first
+            len = sprintf(&command[offset], " source %s/bin/activate; exec gunicorn", opts.venv);
+        } 
+        else 
+        {
+            const char* path = opts.bin_dir ? opts.bin_dir : "/QOpenSys/pkgs/bin";
+            len = sprintf(&command[offset], " exec %s/gunicorn", path);
+        }
+
+        if(len < 0)
+        {
+            Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
+            rc = RC_FAILED;
+            goto end;
+        }
+        offset += len;
+
+        len = sprintf(&command[offset], " -D -p %s", pid_file);
+        if(len < 0)
+        {
+            Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
+            rc = RC_FAILED;
+            goto end;
+        }
+        offset += len;
+
         if(opts.workers)
         {
             len = sprintf(&command[offset], " -w %d", opts.workers);
