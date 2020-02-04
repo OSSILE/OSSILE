@@ -114,6 +114,8 @@ typedef struct {
     char* bin_dir;
     char* bind;
     char* venv;
+    char* error_log;
+    int capture_output;
     int workers;
     int autostart;
 } gunicorn_opts_t;
@@ -127,6 +129,7 @@ void free_opts(gunicorn_opts_t* opts)
     free(opts->bin_dir);
     free(opts->bind);
     free(opts->venv);
+    free(opts->error_log);
 }
 
 int handler(void* user, const char* section, const char* name, const char* value)
@@ -198,6 +201,14 @@ int handler(void* user, const char* section, const char* name, const char* value
         else if(strcmp(name, "venv") == 0)
         {
             opts->venv = strdup(value);
+        }
+        else if(strcmp(name, "error_log") == 0)
+        {
+            opts->error_log = strdup(value);
+        }
+        else if(strcmp(name, "capture_output") == 0)
+        {
+            opts->capture_output = strcmp(value, "true") == 0;
         }
         else
         {
@@ -443,6 +454,8 @@ int handle_instance(const char* action, const char* instance, int multiple, int 
         if(opts.app_path) APPEND_COMMAND_STRING(" --pythonpath %s", opts.app_path);
         if(opts.run_path) APPEND_COMMAND_STRING(" --chdir %s", opts.run_path);
         if(opts.bind) APPEND_COMMAND_STRING(" --bind %s", opts.bind);
+        if(opts.error_log) APPEND_COMMAND_STRING(" --error-logfile %s", opts.error_log);
+        if(opts.capture_output) APPEND_COMMAND_STRING(" --capture-output");
         
         APPEND_COMMAND_STRING(" %s" QSH_CMD_END ")", opts.app);
         
