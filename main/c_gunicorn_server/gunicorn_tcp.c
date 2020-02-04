@@ -406,122 +406,45 @@ int handle_instance(const char* action, const char* instance, int multiple, int 
         char command[MAX_SBMJOB_LEN + sizeof(QSH_CMD_STR) + 5000 + sizeof(QSH_CMD_END)];
         int len = 0;
         int offset = 0;
-        
-        len = sprintf(&command[offset], "QSYS/SBMJOB ALWMLTTHD(*YES)");
-        if(len < 0)
-        {
-            Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-            rc = RC_FAILED;
-            goto end;
-        }
-        offset += len;
-        
-        if(opts.user)
-        {
-            len = sprintf(&command[offset], " USER(%s)", opts.user);
-            if(len < 0)
-            {
-                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-                rc = RC_FAILED;
-                goto end;
-            }
-            offset += len;
+
+#define APPEND_COMMAND_STRING(...) \
+        { \
+            len = sprintf(&command[offset], __VA_ARGS__); \
+            if(len < 0) \
+            { \
+                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno); \
+                rc = RC_FAILED; \
+                goto end; \
+            } \
+            offset += len; \
         }
 
+        APPEND_COMMAND_STRING("QSYS/SBMJOB ALWMLTTHD(*YES)");
+        
+        if(opts.user) APPEND_COMMAND_STRING(" USER(%s)", opts.user);
+
         // set the FLASK_ENV to production
-        len = sprintf(&command[offset], " CMD(" QSH_CMD_STR "export FLASK_ENV=production;");
-        if(len < 0)
-        {
-            Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-            rc = RC_FAILED;
-            goto end;
-        }
-        offset += len;
+        APPEND_COMMAND_STRING(" CMD(" QSH_CMD_STR "export FLASK_ENV=production;");
 
         if(opts.venv) 
         {
             // activate the venv first
-            len = sprintf(&command[offset], " source %s/bin/activate; exec gunicorn", opts.venv);
+            APPEND_COMMAND_STRING(" source %s/bin/activate; exec gunicorn", opts.venv);
         } 
         else 
         {
             const char* path = opts.bin_dir ? opts.bin_dir : "/QOpenSys/pkgs/bin";
-            len = sprintf(&command[offset], " exec %s/gunicorn", path);
+            APPEND_COMMAND_STRING(" exec %s/gunicorn", path);
         }
 
-        if(len < 0)
-        {
-            Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-            rc = RC_FAILED;
-            goto end;
-        }
-        offset += len;
+        APPEND_COMMAND_STRING(" -D -p %s", pid_file);
 
-        len = sprintf(&command[offset], " -D -p %s", pid_file);
-        if(len < 0)
-        {
-            Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-            rc = RC_FAILED;
-            goto end;
-        }
-        offset += len;
-
-        if(opts.workers)
-        {
-            len = sprintf(&command[offset], " -w %d", opts.workers);
-            if(len < 0)
-            {
-                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-                rc = RC_FAILED;
-                goto end;
-            }
-            offset += len;
-        }
+        if(opts.workers) APPEND_COMMAND_STRING(" -w %d", opts.workers);
+        if(opts.app_path) APPEND_COMMAND_STRING(" --pythonpath %s", opts.app_path);
+        if(opts.run_path) APPEND_COMMAND_STRING(" --chdir %s", opts.run_path);
+        if(opts.bind) APPEND_COMMAND_STRING(" --bind %s", opts.bind);
         
-        if(opts.app_path)
-        {
-            len = sprintf(&command[offset], " --pythonpath %s", opts.app_path);
-            if(len < 0)
-            {
-                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-                rc = RC_FAILED;
-                goto end;
-            }
-            offset += len;
-        }
-        
-        if(opts.run_path)
-        {
-            len = sprintf(&command[offset], " --chdir %s", opts.run_path);
-            if(len < 0)
-            {
-                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-                rc = RC_FAILED;
-                goto end;
-            }
-            offset += len;
-        }
-        
-        if(opts.bind)
-        {
-            len = sprintf(&command[offset], " --bind %s", opts.bind);
-            if(len < 0)
-            {
-                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-                rc = RC_FAILED;
-                goto end;
-            }
-            offset += len;
-        }
-        
-        len = sprintf(&command[offset], " %s" QSH_CMD_END ")", opts.app);
-        if(len < 0)
-        {
-            Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
-            rc = RC_FAILED;
-            goto end;
-        }
-        offset += len;
+        APPEND_COMMAND_STRING(" %s" QSH_CMD_END ")", opts.app);
         
         Qp0zLprintf("%s\n", command);
         rc = system(command);
