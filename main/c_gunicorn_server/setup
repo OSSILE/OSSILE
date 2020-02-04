@@ -5,7 +5,7 @@ set -e
 
 TARGET=${TARGET:-OSSILE}
 
-system -kpieb "CRTCMOD MODULE(${TARGET}/GUNICRNTCP) SRCSTMF('${PWD}/gunicorn_tcp.c') DEFINE('__cplusplus__strings__') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('${PWD}/../c_inih/inih')"
+system -kpieb "CRTCMOD MODULE(${TARGET}/GUNICRNTCP) SRCSTMF('${PWD}/gunicorn_tcp.c') DEFINE('__cplusplus__strings__') SYSIFCOPT(*IFS64IO) TERASPACE(*YES *TSIFC) INCDIR('${PWD}/../c_inih/inih') TGTCCSID(37)"
 
 system -kpieb "DLTPGM PGM(${TARGET}/GUNICRNTCP)" || :
 
