@@ -49,8 +49,8 @@ bind = 127.0.0.1:6000 ; Which host and port to bind to (default 127.0.0.1:5000)
 venv = /home/user/project/.venv ; Path to where virtual environment is located.
 
 Register it like so:
- ADDTCPSVR SVRSPCVAL(*GUNICORN) PGM(STRPYSRVR) SVRNAME('GUNICORN') +
-  SVRTYPE('GUNICORN') TEXT('Python gunicorn servers')
+ ADDTCPSVR SVRSPCVAL(*GUNICORN) PGM(OSSILE/GUNICORNTCP)
+ SVRNAME('GUNICORN') SVRTYPE('GUNICORN') TEXT('Python gunicorn servers')
 */
 
 #include <stdio.h>
