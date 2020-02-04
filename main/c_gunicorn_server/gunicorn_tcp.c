@@ -33,20 +33,53 @@ Sample ini:
 autostart = 1 ; whether to start/end with INSTANCE(*AUTOSTART). values: 0 or 1
 
 [sbmjob]
-user = qtmhhttp ; user to run SBMJOB under
+; user to run SBMJOB under
+user = qtmhhttp
 
 [gunicorn]
-bin_dir = /QOpenSys/QIBM/ProdData/OPS/Python3.4/bin ; Path where gunicorn & python are located
+; How to start the application server. values: <module name>:<app variable name>
+; REQUIRED
+app = sample:app
 
-workers = 2 ; Number of worker jobs to run. values: 1+ (default 1)
+; Path to where gunicorn & python are located
+bin_dir = /QOpenSys/QIBM/ProdData/OPS/Python3.4/bin
 
-app = sample:app ; How to start the application server. values: <module name>:<app variable name>
+; Path to where virtual environment is located.
+; NOTE: When venv set, bin_dir is ignored
+venv = /home/user/project/.venv
 
-app_path = /home/kadler/bottle-example ; Path to where your module is located, if not in the default Python Path
+; Number of worker jobs to run. values: 1+ (default 1)
+; Equivalent to --workers option
+; http://docs.gunicorn.org/en/latest/settings.html#workers
+workers = 2
 
-bind = 127.0.0.1:6000 ; Which host and port to bind to (default 127.0.0.1:5000)
+; Path to where your module is located, if not in the default Python Path
+; Equivalent to --pythonpath option
+; http://docs.gunicorn.org/en/latest/settings.html#pythonpath
+app_path = /home/kadler/bottle-example
 
-venv = /home/user/project/.venv ; Path to where virtual environment is located.
+; Path where to run the server from
+; Equivalent to --chdir option
+; http://docs.gunicorn.org/en/latest/settings.html#chdir
+run_path = /home/kadler/bottle-example
+
+; Which host and port to bind to (default 127.0.0.1:5000)
+; Equivalent to --bind option
+; http://docs.gunicorn.org/en/latest/settings.html#bind
+bind = 127.0.0.1:5000
+
+; Path to the error log file (default is stderr)
+; Equivalent to --error-logfile option
+; http://docs.gunicorn.org/en/latest/settings.html#errorlog
+error_log = /QOpenSys/var/log/bottle.log
+
+; Redirect stdout & stderr to error log (default is false)
+; Equivalent to --capture-output option
+; http://docs.gunicorn.org/en/latest/settings.html#capture-output
+; Supports "true" or "false"
+capture_output = true
+
+
 
 Register it like so:
  ADDTCPSVR SVRSPCVAL(*GUNICORN) PGM(OSSILE/GUNICORNTCP)
