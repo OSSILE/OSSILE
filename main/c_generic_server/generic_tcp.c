@@ -72,7 +72,7 @@ Register it like so:
 #define QSH_CMD_END "')"
 
 // Make sure to add additional command options when adding new sbmjob ini options
-#define MAX_SBMJOB "QSYS/SBMJOB ALWMLTTHD(*YES) USER(1234567890) CMD()"
+#define MAX_SBMJOB "QSYS/SBMJOB ALWMLTTHD(*YES) USER(1234567890) JOBD(1234567890/1234567890) JOBMSGQFL(12345678) CMD()"
 #define MAX_SBMJOB_LEN sizeof(MAX_SBMJOB)
 
 enum {
@@ -99,6 +99,8 @@ size_t unpad_length(const char* padded, size_t length)
 
 typedef struct {
     char* user;
+    char* jobd;
+    char* jobmsgqfl;
     char* command;
     char* run_dir;
     int autostart;
@@ -107,6 +109,8 @@ typedef struct {
 void free_opts(generic_opts_t* opts)
 {
     free(opts->user);
+    free(opts->jobd);
+    free(opts->jobmsgqfl);
     free(opts->command);
     free(opts->run_dir);
 }
@@ -140,6 +144,26 @@ int handler(void* user, const char* section, const char* name, const char* value
             }
             
             opts->user = strdup(value);
+        }
+        if(strcmp(name, "jobd") == 0)
+        {
+            // Expect LIBRARY10/OBJECT10
+            if(strlen(value) > 21)
+            {
+                Qp0zLprintf("INVALID JOBD VALUE\n");
+            }
+
+            opts->jobd = strdup(value);
+        }
+        if(strcmp(name, "jobmsgqfl") == 0)
+        {
+            // Expect *JOBD, *SYSVAL, *NOWRAP, *WRAP, or *PRTWRAP
+            if(strlen(value) > 8 || value[0] != '*')
+            {
+                Qp0zLprintf("INVALID JOBMSGQFL VALUE\n");
+            }
+
+            opts->jobmsgqfl = strdup(value);
         }
         else
         {
@@ -381,7 +405,31 @@ int handle_instance(const char* action, const char* instance, int multiple, int 
             }
             offset += len;
         }
-        
+
+        if(opts.jobd)
+        {
+            len = sprintf(&command[offset], " JOBD(%s)", opts.jobd);
+            if(len < 0)
+            {
+                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
+                rc = RC_FAILED;
+                goto end;
+            }
+            offset += len;
+        }
+
+        if(opts.jobmsgqfl)
+        {
+            len = sprintf(&command[offset], " JOBMSGQFL(%s)", opts.jobmsgqfl);
+            if(len < 0)
+            {
+                Qp0zLprintf("UNKNOWN ERROR: %d\n", errno);
+                rc = RC_FAILED;
+                goto end;
+            }
+            offset += len;
+        }
+
         len = sprintf(&command[offset], " CMD(" QSH_CMD_STR "PIDFILE=%s; export PIDFILE; rm $PIDFILE > /dev/null 2>&1; touch -C 819 $PIDFILE; echo $$ > $PIDFILE;", pid_file);
         if(len < 0)
         {
