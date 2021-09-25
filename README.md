@@ -50,16 +50,16 @@ Welcome to the OSSILE project. This project is to serve three purposes:
        - [DSPTRGINF](main/c_display_triggers/README.md)
        - [DSPDQINF](main/c_dspdqinf/README.md)
        - [DSPUSRIDX](main/c_dspusridx/README.md)
-       - [FTPCLNT] (main/c_ftpclnt/README.md)
-       - [FTPCLNT Manual] (main/c_ftpclnt/FTP_Client_OSS.pdf)
+       - [FTPCLNT](main/c_ftpclnt/README.md)
+       - [FTPCLNT Manual](main/c_ftpclnt/FTP_Client_OSS.pdf)
        - [JOBLIST](main/c_joblist/README.md)
        - [LSTDBRTST](main/c_list_dbr/README.md)
-       - [RTVJRNOBJ](main/c_list_jrn_obj/README.md)
+       - [RTVJRNOBJ](main/c_list_jrn_objs/README.md)
        - [MD5CRC](main/c_md5crc/README.md)
        - [RTVDIRSZ](main/c_rtvdirsz/README.md)
        - [SRVPGMCHK](main/c_signature_verification/README.md)
        - [SYSINFO](main/c_sysinfo/README.md)
-       - [ZLIB] (main/c_zlib/README.md)
+       - [ZLIB](main/c_zlib/README.md)
 
   - sha256, originally sourced from https://github.com/miguel-r-s/SHA-256
     a re-implementation of SHA256 in C.
