@@ -125,12 +125,6 @@ Welcome to the OSSILE project. This project is to serve three purposes:
 2. Use the RSTLIB command to restore the OSSILE library from the save file. For example:
   * ``RSTLIB SAVLIB(OSSILE) DEV(*SAVF) SAVF(MYLIB/MYSAVF)``
 
-#### Method 3: Installing via Relic Package Manager
-Each directory in `/main/` is a seperate item, each are installable seperatly with Relic. The base command is `RELICGET PLOC('https://github.com/OSSILE/OSSILE/archive/master.zip') PDIR('OSSILE-master/main/<ITEM>') PNAME(OSSILE)`, where `<ITEM>` is one of those directories. For example:
-
-* `PDIR('OSSILE-master/main/crtfrmstmf')`
-* `PDIR('OSSILE-master/main/udtf_image_catalog_details')`
-
 # OSSILE directory structure
 These are the main directories within OSSILE:
 ## ``main/``
