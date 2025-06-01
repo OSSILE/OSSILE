@@ -125,6 +125,14 @@ Welcome to the OSSILE project. This project is to serve three purposes:
 2. Use the RSTLIB command to restore the OSSILE library from the save file. For example:
   * ``RSTLIB SAVLIB(OSSILE) DEV(*SAVF) SAVF(MYLIB/MYSAVF)``
 
+#### Method 3: Deploy IBM Projects
+1. Give execution permision to the init script `chmod +x ./setup_workspace.sh `
+2. Execute `./setup_workspace.sh`
+3. Open the workspace
+4. Go to your project explorer and hit **Scan For Projects**
+5. Deploy the project and do the compilation
+> For more info about ibm projects check this [Modern IBM i pipeline repo](https://github.com/kraudy/IBM-i-pipeline)
+
 # OSSILE directory structure
 These are the main directories within OSSILE:
 ## ``main/``
