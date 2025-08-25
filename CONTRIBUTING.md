@@ -1,8 +1,7 @@
 
 ## General guidance
 OSSILE follows typical open source processes for community contributions. This article contains great guidance on doing so:
-http://blog.davidecoppola.com/2016/11/howto-contribute-to-open-source-project-on-github/
-
+https://hackerbits.com/how-to-contribute-to-an-open-source-project-on-github-davide-coppola/
 ## Acceptance criteria
 Contributions to OSSILE will be accepted if the following conditions are met:
  * Processes on this page have been followed
